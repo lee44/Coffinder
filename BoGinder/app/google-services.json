@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "950691114311",
+    "firebase_url": "https://boginder-16d9a.firebaseio.com",
+    "project_id": "boginder-16d9a",
+    "storage_bucket": "boginder-16d9a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:950691114311:android:220fd5255e7949928e7062",
+        "android_client_info": {
+          "package_name": "com.apps.jlee.boginder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "950691114311-h91u5vu5llt8fa5b6q650v0mji3343de.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.apps.jlee.boginder",
+            "certificate_hash": "2682a5d3dc70f9c51f0460e4e5d6ddcca48e8ecd"
+          }
+        },
+        {
+          "client_id": "950691114311-vgj221ff3eruhma0lubab4nnl9hb7nuj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1b-Ze-ZqrOtPlB-l5OsbXJe3nKep1lm8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "950691114311-vgj221ff3eruhma0lubab4nnl9hb7nuj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
