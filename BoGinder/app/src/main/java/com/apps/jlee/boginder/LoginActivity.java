@@ -56,7 +56,8 @@ public class LoginActivity extends AppCompatActivity
                 }
             }
         });
-
+        /*Instantiating interface will give compile time error i.e MyInterface foo = new MyInterface();
+        * However instantiating a class that implements the interface is legal. Below we are instantiating an anonymous inner class*/
         authStateListener = new FirebaseAuth.AuthStateListener()
         {
             @Override
