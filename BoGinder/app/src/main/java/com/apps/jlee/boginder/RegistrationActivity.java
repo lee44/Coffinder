@@ -70,8 +70,9 @@ public class RegistrationActivity extends AppCompatActivity
                             else
                             {
                                 String userId = firebaseAuth.getCurrentUser().getUid();
-                                DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId).child("name");
-                                currentUserDB.setValue(name.getText().toString());
+                                DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString());
+                                currentUserDB.child("User_id").setValue(userId);
+                                currentUserDB.child("User_id").child(userId).child("Name").setValue(name.getText().toString());
                             }
                         }
                     });
