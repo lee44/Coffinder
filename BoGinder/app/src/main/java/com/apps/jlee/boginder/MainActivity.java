@@ -23,11 +23,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity
 {
-    private ArrayList<String> al;
-    private ArrayAdapter<String> arrayAdapter;
+    private List<Cards> cardsList;
+    private CardsAdapter cardAdapter;
     private SwipeFlingAdapterView flingContainer;
     private FirebaseAuth firebaseAuth;
     private Button sign_out_button;
@@ -42,14 +43,14 @@ public class MainActivity extends AppCompatActivity
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        al = new ArrayList<>();
+        cardsList = new ArrayList<Cards>();
         checkUserGender();
 
-        arrayAdapter = new ArrayAdapter<String>(this, R.layout.item, R.id.helloText, al);
+        cardAdapter = new CardsAdapter(this,R.layout.item,cardsList);
         flingContainer = findViewById(R.id.frame);
         sign_out_button = findViewById(R.id.sign_out_button);
 
-        flingContainer.setAdapter(arrayAdapter);
+        flingContainer.setAdapter(cardAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener()
         {
             @Override
@@ -190,8 +191,8 @@ public class MainActivity extends AppCompatActivity
             {
                 if(dataSnapshot.exists())
                 {
-                    al.add(dataSnapshot.child("name").getValue().toString());
-                    arrayAdapter.notifyDataSetChanged();
+                    cardsList.add(new Cards(dataSnapshot.getKey(),dataSnapshot.child("name").getValue().toString()));
+                    cardAdapter.notifyDataSetChanged();
                 }
             }
 
