@@ -122,7 +122,9 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                loadSettings(view);
+                Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+                intent.putExtra("Gender",user_gender);
+                startActivity(intent);
             }
         });
     }
@@ -160,12 +162,6 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this,LoginorRegisterActivity.class);
         startActivity(intent);
         finish();
-    }
-
-    public void loadSettings(View view)
-    {
-        Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
-        startActivity(intent);
     }
 
     public void checkUserGender()

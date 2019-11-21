@@ -4,19 +4,24 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -26,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
@@ -39,15 +45,15 @@ import java.util.Map;
 public class SettingsActivity extends AppCompatActivity
 {
     @BindView(R.id.profile_image)
-    private ImageView profile_image;
+    ImageView profile_image;
     @BindView(R.id.name_et)
-    private EditText name_et;
+    EditText name_et;
     @BindView(R.id.phone_et)
-    private EditText phone_et;
+    EditText phone_et;
     @BindView(R.id.confirm_settings)
-    private Button confirm_settings;
+    Button confirm_settings;
     @BindView(R.id.back_settings)
-    private Button back_settings;
+    Button back_settings;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
@@ -62,9 +68,12 @@ public class SettingsActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        ButterKnife.bind(this);
+
+        String gender = getIntent().getExtras().getString("Gender");
         firebaseAuth = FirebaseAuth.getInstance();
         user_id = firebaseAuth.getCurrentUser().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users\\Customers\\"+user_id);
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+gender+"/User_id/"+user_id);
 
         getUserInfo();
 
@@ -87,26 +96,42 @@ public class SettingsActivity extends AppCompatActivity
                 saveUserInformation();
             }
         });
+
+        back_settings.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                finish();
+            }
+        });
     }
 
-    private void saveUserInformation()
+    public void saveUserInformation()
     {
         name = name_et.getText().toString();
         phone = phone_et.getText().toString();
 
         Map userInfo = new HashMap();
-        userInfo.put("name", name);
-        userInfo.put("phone",phone);
+        userInfo.put("Name", name);
+        userInfo.put("Phone",phone);
 
         databaseReference.updateChildren(userInfo);
 
+        //resultUri is the path to the image inside the device
         if(resultUri != null)
         {
-            StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id);
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setTitle("Uploading...");
+            progressDialog.show();
+
+            //Creates a tree with Profile_Image at the top followed by user_id
+            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id);
 
             Bitmap bitmap = null;
             try
             {
+                //Retrieves an image as a bitmap
                 bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
             }catch (IOException e){e.printStackTrace();}
 
@@ -114,35 +139,43 @@ public class SettingsActivity extends AppCompatActivity
             bitmap.compress(Bitmap.CompressFormat.JPEG,20,byteArrayOutputStream);
             byte[] data = byteArrayOutputStream.toByteArray();
 
+            //Since putBytes() accepts a byte[], it requires your app to hold the entire contents of a file in memory at once.
             UploadTask uploadTask = filepath.putBytes(data);
             uploadTask.addOnFailureListener(new OnFailureListener()
             {
                 @Override
                 public void onFailure(@NonNull Exception e)
                 {
+                    Toast.makeText(SettingsActivity.this,"Image Upload Failed", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             });
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
+            {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
+                {
+                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+                    {
                         @Override
-                        public void onSuccess(Uri uri) {
-                            Map newImage = new HashMap();
-                            newImage.put("profileImageUrl", uri.toString());
-                            databaseReference.updateChildren(newImage);
-
+                        public void onSuccess(Uri uri)
+                        {
+                            //uri has the url and store it in the firebase database tree
+                            Map userInfo = new HashMap();
+                            userInfo.put("ProfileImageUrl",uri.toString());
+                            databaseReference.updateChildren(userInfo);
                             finish();
-                            return;
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception exception) {
-                            finish();
-                            return;
                         }
                     });
+                }
+            });
+            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>()
+            {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot)
+                {
+                    double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                    progressDialog.setMessage("Uploaded "+(int)progress+"%");
                 }
             });
         }
@@ -161,13 +194,17 @@ public class SettingsActivity extends AppCompatActivity
                 if(dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0)
                 {
                     Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
-                    if(map.get("name") != null)
+                    if(map.get("Name") != null)
                     {
-                        name_et.setText(map.get("name").toString());
+                        name_et.setText(map.get("Name").toString());
                     }
-                    if(map.get("phone") != null)
+                    if(map.get("Phone") != null)
                     {
-                        phone_et.setText(map.get("phone").toString());
+                        phone_et.setText(map.get("Phone").toString());
+                    }
+                    if(map.get("ProfileImageUrl") != null)
+                    {
+                        Glide.with(getApplication()).load(map.get("ProfileImageUrl").toString()).into(profile_image);
                     }
                 }
             }
