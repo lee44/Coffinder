@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
     private CardsAdapter cardAdapter;
     private SwipeFlingAdapterView flingContainer;
     private FirebaseAuth firebaseAuth;
-    private Button sign_out_button;
+    private Button sign_out_button, settings_button;
     private DatabaseReference databaseReference;
     private int i;
     private String user_gender, opposite_gender, currentUser_id;
@@ -53,6 +53,7 @@ public class MainActivity extends AppCompatActivity
         cardAdapter = new CardsAdapter(this,R.layout.item,cardsList);
         flingContainer = findViewById(R.id.frame);
         sign_out_button = findViewById(R.id.sign_out_button);
+        settings_button = findViewById(R.id.settings_button);
 
         flingContainer.setAdapter(cardAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener()
@@ -115,9 +116,18 @@ public class MainActivity extends AppCompatActivity
                 logoutUser(view);
             }
         });
+
+        settings_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                loadSettings(view);
+            }
+        });
     }
 
-    private void isConnectionMatch(String user_id)
+    public void isConnectionMatch(String user_id)
     {
         DatabaseReference df = databaseReference.child(user_gender).child("User_id").child(currentUser_id).child("Connections").child("Yes").child("User_id").child(user_id);
         df.addListenerForSingleValueEvent(new ValueEventListener()
@@ -150,7 +160,12 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(MainActivity.this,LoginorRegisterActivity.class);
         startActivity(intent);
         finish();
-        return;
+    }
+
+    public void loadSettings(View view)
+    {
+        Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+        startActivity(intent);
     }
 
     public void checkUserGender()
