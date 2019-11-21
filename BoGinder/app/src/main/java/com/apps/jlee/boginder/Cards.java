@@ -3,11 +3,13 @@ package com.apps.jlee.boginder;
 public class Cards
 {
     private String user_id, name;
+    private String profileImageUrl;
 
-    public Cards(String user_id,String name)
+    public Cards(String user_id,String name,String profileImageUrl)
     {
         this.user_id = user_id;
         this.name = name;
+        this.profileImageUrl = profileImageUrl;
     }
 
     public String getUser_id()
@@ -28,5 +30,15 @@ public class Cards
     public void setName(String name)
     {
         this.name = name;
+    }
+
+    public String getProfileImageUrl()
+    {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl)
+    {
+        this.profileImageUrl = profileImageUrl;
     }
 }
