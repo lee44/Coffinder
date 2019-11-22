@@ -202,10 +202,13 @@ public class SettingsActivity extends AppCompatActivity
                     {
                         phone_et.setText(map.get("Phone").toString());
                     }
-                    if(map.get("ProfileImageUrl") != null)
+                    if(map.get("ProfileImageUrl").equals("Default"))
                     {
-                        Glide.with(getApplication()).load(map.get("ProfileImageUrl").toString()).into(profile_image);
+                        Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(profile_image);
                     }
+                    else
+                        Glide.with(getApplication()).load(map.get("ProfileImageUrl").toString()).into(profile_image);
+
                 }
             }
 

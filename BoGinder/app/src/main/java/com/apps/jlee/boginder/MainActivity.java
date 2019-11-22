@@ -235,8 +235,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
             {
-                if(dataSnapshot.exists() && !dataSnapshot.child("Connections/Nope/User_id").hasChild(currentUser_id) &&
-                   !dataSnapshot.child("Connections/Yes/User_id").hasChild(currentUser_id) && dataSnapshot.hasChild("ProfileImageUrl"))
+                if(dataSnapshot.exists() && !dataSnapshot.child("Connections/Nope/User_id").hasChild(currentUser_id) && !dataSnapshot.child("Connections/Yes/User_id").hasChild(currentUser_id))
                 {
                     cardsList.add(new Cards(dataSnapshot.getKey(),dataSnapshot.child("Name").getValue().toString(),dataSnapshot.child("ProfileImageUrl").getValue().toString()));
                     cardAdapter.notifyDataSetChanged();

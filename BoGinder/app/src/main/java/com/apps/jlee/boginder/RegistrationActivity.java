@@ -20,6 +20,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class RegistrationActivity extends AppCompatActivity
 {
     private EditText name, email, password;
@@ -70,9 +73,10 @@ public class RegistrationActivity extends AppCompatActivity
                             else
                             {
                                 String userId = firebaseAuth.getCurrentUser().getUid();
-                                DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString());
-                                currentUserDB.child("User_id").setValue(userId);
-                                currentUserDB.child("User_id").child(userId).child("Name").setValue(name.getText().toString());
+                                DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child("User_id");
+                                currentUserDB.push().child(userId);
+                                currentUserDB.child(userId).child("Name").setValue(name.getText().toString());
+                                currentUserDB.child(userId).child("ProfileImageUrl").setValue("Default");
                             }
                         }
                     });
