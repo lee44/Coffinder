@@ -13,7 +13,8 @@
         android:src="@mipmap/ic_launcher"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toTopOf="@+id/guideline8"></ImageView>
+        app:layout_constraintTop_toTopOf="@+id/guideline8">
+    </ImageView>
 
     <EditText
         android:id="@+id/name_et"
@@ -23,7 +24,8 @@
         android:hint="Name"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/profile_image"></EditText>
+        app:layout_constraintTop_toBottomOf="@+id/profile_image">
+    </EditText>
 
     <EditText
         android:id="@+id/phone_et"
@@ -34,7 +36,34 @@
         android:inputType="number"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/name_et"></EditText>
+        app:layout_constraintTop_toBottomOf="@+id/name_et">
+    </EditText>
+
+    <RadioGroup
+        android:id="@+id/gender_radio_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/guideline4"
+        app:layout_constraintStart_toStartOf="@+id/guideline7"
+        app:layout_constraintTop_toBottomOf="@+id/phone_et">
+
+        <RadioButton
+            android:id="@+id/male_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="4dp"
+            android:text="Male">
+        </RadioButton>
+
+        <RadioButton
+            android:id="@+id/female_radio_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Female">
+        </RadioButton>
+
+    </RadioGroup>
 
     <Button
         android:id="@+id/confirm_settings"
@@ -46,7 +75,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toBottomOf="@+id/phone_et"
-        app:layout_constraintVertical_bias="1.0"></Button>
+        app:layout_constraintVertical_bias="1.0">
+    </Button>
 
     <Button
         android:id="@+id/back_settings"
@@ -58,7 +88,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintTop_toBottomOf="@+id/phone_et"
-        app:layout_constraintVertical_bias="1.0"></Button>
+        app:layout_constraintVertical_bias="1.0">
+    </Button>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline4"
@@ -79,6 +110,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".25" />
+        app:layout_constraintGuide_percent=".15" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -54,8 +56,9 @@ public class SettingsActivity extends AppCompatActivity
     Button confirm_settings;
     @BindView(R.id.back_settings)
     Button back_settings;
+    @BindView(R.id.gender_radio_group)
+    RadioGroup radioGroup;
 
-    private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
 
     private String user_id, name, phone, profileImageURL;
@@ -71,9 +74,9 @@ public class SettingsActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         String gender = getIntent().getExtras().getString("Gender");
-        firebaseAuth = FirebaseAuth.getInstance();
-        user_id = firebaseAuth.getCurrentUser().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+gender+"/User_id/"+user_id);
+        user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+user_id);
 
         getUserInfo();
 
@@ -94,6 +97,7 @@ public class SettingsActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 saveUserInformation();
+                finish();
             }
         });
 
@@ -176,6 +180,7 @@ public class SettingsActivity extends AppCompatActivity
                 {
                     double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
                     progressDialog.setMessage("Uploaded "+(int)progress+"%");
+                    finish();
                 }
             });
         }
@@ -194,21 +199,16 @@ public class SettingsActivity extends AppCompatActivity
                 if(dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0)
                 {
                     Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
-                    if(map.get("Name") != null)
-                    {
-                        name_et.setText(map.get("Name").toString());
-                    }
-                    if(map.get("Phone") != null)
-                    {
-                        phone_et.setText(map.get("Phone").toString());
-                    }
+
+                    name_et.setText(map.get("Name") != null ? map.get("Name").toString() : "");
+                    phone_et.setText(map.get("Phone") != null ? map.get("Phone").toString() : "");
+                    if(map.get("Gender") != null)
+                        ((RadioButton)radioGroup.findViewById(map.get("Gender").toString().equals("Male") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
+
                     if(map.get("ProfileImageUrl").equals("Default"))
-                    {
                         Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(profile_image);
-                    }
                     else
                         Glide.with(getApplication()).load(map.get("ProfileImageUrl").toString()).into(profile_image);
-
                 }
             }
 
