@@ -1,4 +1,4 @@
-package com.apps.jlee.boginder;
+package com.apps.jlee.boginder.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.apps.jlee.boginder.Cards;
+import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
@@ -28,7 +30,7 @@ public class CardsAdapter extends ArrayAdapter
 
         if(convertView == null)
         {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item,parent,false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.card,parent,false);
         }
 
         TextView name = convertView.findViewById(R.id.potential_match_name);

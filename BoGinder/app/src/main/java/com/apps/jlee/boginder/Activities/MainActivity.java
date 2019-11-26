@@ -1,4 +1,4 @@
-package com.apps.jlee.boginder;
+package com.apps.jlee.boginder.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -7,14 +7,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.apps.jlee.boginder.Cards;
+import com.apps.jlee.boginder.Adapter.CardsAdapter;
+import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
         cardsList = new ArrayList<Cards>();
         checkUserGender();
 
-        cardAdapter = new CardsAdapter(this,R.layout.item,cardsList);
+        cardAdapter = new CardsAdapter(this,R.layout.card,cardsList);
         flingContainer = findViewById(R.id.frame);
         sign_out_button = findViewById(R.id.sign_out_button);
         settings_button = findViewById(R.id.settings_button);
@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 intent.putExtra("Gender",user_gender);
                 startActivity(intent);
             }
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity
     public void logoutUser(View view)
     {
         firebaseAuth.signOut();
-        Intent intent = new Intent(MainActivity.this,LoginorRegisterActivity.class);
+        Intent intent = new Intent(MainActivity.this, LoginorRegisterActivity.class);
         startActivity(intent);
         finish();
     }

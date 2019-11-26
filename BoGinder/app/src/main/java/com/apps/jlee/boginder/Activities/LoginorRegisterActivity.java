@@ -1,4 +1,4 @@
-package com.apps.jlee.boginder;
+package com.apps.jlee.boginder.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import com.apps.jlee.boginder.R;
 
 public class LoginorRegisterActivity extends AppCompatActivity
 {
@@ -25,7 +27,7 @@ public class LoginorRegisterActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(LoginorRegisterActivity.this,LoginActivity.class);
+                Intent intent = new Intent(LoginorRegisterActivity.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }
@@ -36,7 +38,7 @@ public class LoginorRegisterActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(LoginorRegisterActivity.this,RegistrationActivity.class);
+                Intent intent = new Intent(LoginorRegisterActivity.this, RegistrationActivity.class);
                 startActivity(intent);
                 finish();
             }
