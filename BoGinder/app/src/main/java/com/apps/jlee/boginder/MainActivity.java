@@ -227,4 +227,10 @@ public class MainActivity extends AppCompatActivity
             public void onCancelled(@NonNull DatabaseError databaseError){}
         });
     }
+
+    public void loadMatchesActivity(View view)
+    {
+        Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+        startActivity(intent);
+    }
 }

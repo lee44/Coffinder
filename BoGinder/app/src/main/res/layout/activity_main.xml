@@ -23,7 +23,19 @@
         android:layout_marginEnd="16dp"
         android:text="Sign Out"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"></Button>
+        app:layout_constraintEnd_toEndOf="parent">
+    </Button>
+
+    <Button
+        android:id="@+id/matches_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Matches"
+        android:onClick="loadMatchesActivity"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sign_out_button"
+        app:layout_constraintStart_toEndOf="@+id/settings_button">
+    </Button>
 
     <Button
         android:id="@+id/settings_button"
@@ -32,6 +44,7 @@
         android:layout_marginStart="16dp"
         android:text="Settings"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"></Button>
+        app:layout_constraintStart_toStartOf="parent">
+    </Button>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
