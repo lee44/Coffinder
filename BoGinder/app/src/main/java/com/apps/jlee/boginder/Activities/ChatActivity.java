@@ -9,6 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -54,15 +55,15 @@ public class ChatActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         match_id = getIntent().getExtras().getString("MatchID");
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/Connections/Matches/"+match_id+"/chat_id");
+        current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+current_user_id+"/Connections/Matches/"+match_id+"/chat_id");
         databaseChat = FirebaseDatabase.getInstance().getReference().child("Chat");
-        current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+
+        getChatID();
 
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatAdapter = new ChatAdapter(getChats(),this);
         recyclerView.setAdapter(chatAdapter);
-
-        getChatID();
 
         button.setOnClickListener(new View.OnClickListener()
         {
