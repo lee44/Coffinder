@@ -2,42 +2,27 @@ package com.apps.jlee.boginder;
 
 public class Chat
 {
-    private String user_id, name, profileImageUrl;
+    private String message;
+    private Boolean currentUser;
 
-    public Chat(String user_id, String name, String profileImageUrl)
+    public Chat(String message, Boolean currentUser)
     {
-        this.user_id = user_id;
-        this.name = name;
-        this.profileImageUrl = profileImageUrl;
+        this.message = message;
+        this.currentUser = currentUser;
     }
 
-    public String getUser_id()
+    public Boolean getCurrentUser()
     {
-        return user_id;
+        return currentUser;
     }
 
-    public void setUser_id(String user_id)
+    public String getMessage()
     {
-        this.user_id = user_id;
+        return message;
     }
 
-    public String getProfileImageUrl()
+    public void setMessage(String message)
     {
-        return profileImageUrl;
-    }
-
-    public void setProfileImageUrl(String profileImageUrl)
-    {
-        this.profileImageUrl = profileImageUrl;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public void setName(String name)
-    {
-        this.name = name;
+        this.message = message;
     }
 }

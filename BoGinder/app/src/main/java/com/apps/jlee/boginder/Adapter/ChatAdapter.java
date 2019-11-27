@@ -2,7 +2,9 @@ package com.apps.jlee.boginder.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +36,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
     public ChatAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.activity_chat, parent, false);
+        View view = inflater.inflate(R.layout.item_chat, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
@@ -43,7 +45,17 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(ChatAdapter.ViewHolder holder, int position)
     {
-
+        holder.chatTextView.setText(chat.get(position).getMessage());
+        if(chat.get(position).getCurrentUser())
+        {
+            holder.chatTextView.setGravity(Gravity.END);
+            holder.chatTextView.setBackgroundColor(Color.YELLOW);
+        }
+        else
+        {
+            holder.chatTextView.setGravity(Gravity.START);
+            holder.chatTextView.setBackgroundColor(Color.RED);
+        }
     }
 
     @Override
@@ -54,9 +66,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
+        private TextView chatTextView;
+
         public ViewHolder(View itemView)
         {
             super(itemView);
+            chatTextView = itemView.findViewById(R.id.chat_editText);
         }
     }
 }

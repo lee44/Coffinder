@@ -1,6 +1,7 @@
 package com.apps.jlee.boginder.Activities;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,6 +19,7 @@ import com.apps.jlee.boginder.Chat;
 import com.apps.jlee.boginder.Matches;
 import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -99,14 +101,56 @@ public class ChatActivity extends AppCompatActivity
                 {
                     chat_id = dataSnapshot.getValue().toString();
                     databaseChat = databaseChat.child(chat_id);
+                    getChatMessages();
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError)
-            {
+            public void onCancelled(@NonNull DatabaseError databaseError){}
+        });
+    }
 
+    private void getChatMessages()
+    {
+        databaseChat.addChildEventListener(new ChildEventListener()
+        {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
+            {
+                if(dataSnapshot.exists())
+                {
+                    String message = null;
+                    String created_by = null;
+
+                    if(dataSnapshot.child("text").getValue().toString() != null)
+                    {
+                        message = dataSnapshot.child("text").getValue().toString();
+                    }
+                    if(dataSnapshot.child("created_by").getValue().toString() != null)
+                    {
+                        created_by = dataSnapshot.child("created_by").getValue().toString();
+                    }
+                    if(message != null && created_by != null)
+                    {
+                        Boolean currentUserBoolean = false;
+                        if (created_by.equals(current_user_id))
+                        {
+                            currentUserBoolean = true;
+                        }
+                        Chat newMessage = new Chat(message, currentUserBoolean);
+                        resultChats.add(newMessage);
+                        chatAdapter.notifyDataSetChanged();
+                    }
+                }
             }
+
+            @Override public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s){}
+
+            @Override public void onChildRemoved(@NonNull DataSnapshot dataSnapshot){}
+
+            @Override public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s){}
+
+            @Override public void onCancelled(@NonNull DatabaseError databaseError){}
         });
     }
 
