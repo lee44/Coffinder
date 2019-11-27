@@ -142,6 +142,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     makeToast(MainActivity.this, "New Connection");
 
+                    //When calling push method on an empty location, it will generate a unique id
                     String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
 
                     //dataSnapshot is pointing to the profile's user_id stored under current user's tree since the variable df was assigned the path to the profile's user_id
