@@ -141,9 +141,12 @@ public class MainActivity extends AppCompatActivity
                 if(dataSnapshot.exists())
                 {
                     makeToast(MainActivity.this, "New Connection");
+
+                    String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
+
                     //dataSnapshot is pointing to the profile's user_id stored under current user's tree since the variable df was assigned the path to the profile's user_id
-                    databaseReference.child(dataSnapshot.getKey()).child("Connections").child("Matches").child(currentUser_id).setValue(true);
-                    databaseReference.child(currentUser_id).child("Connections").child("Matches").child(dataSnapshot.getKey()).setValue(true);
+                    databaseReference.child(dataSnapshot.getKey()).child("Connections/Matches/"+currentUser_id+"/chat_id").setValue(key);
+                    databaseReference.child(currentUser_id).child("Connections/Matches/"+dataSnapshot.getKey()+"/chat_id").setValue(key);
                 }
             }
 
@@ -230,7 +233,7 @@ public class MainActivity extends AppCompatActivity
 
     public void loadMatchesActivity(View view)
     {
-        Intent intent = new Intent(MainActivity.this,SettingsActivity.class);
+        Intent intent = new Intent(MainActivity.this,MatchesActivity.class);
         startActivity(intent);
     }
 }

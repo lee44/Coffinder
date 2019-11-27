@@ -1,10 +1,10 @@
 package com.apps.jlee.boginder;
 
-public class Matches
+public class Chat
 {
     private String user_id, name, profileImageUrl;
 
-    public Matches(String user_id,String name, String profileImageUrl)
+    public Chat(String user_id, String name, String profileImageUrl)
     {
         this.user_id = user_id;
         this.name = name;
