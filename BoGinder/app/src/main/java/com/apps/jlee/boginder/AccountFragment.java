@@ -1,19 +1,23 @@
-package com.apps.jlee.boginder.Activities;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import butterknife.BindView;
-import butterknife.ButterKnife;
+package com.apps.jlee.boginder;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -21,7 +25,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -41,7 +44,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SettingsActivity extends AppCompatActivity
+public class AccountFragment extends Fragment
 {
     @BindView(R.id.profile_image)
     ImageView profile_image;
@@ -51,28 +54,27 @@ public class SettingsActivity extends AppCompatActivity
     EditText phone_et;
     @BindView(R.id.confirm_settings)
     Button confirm_settings;
-    @BindView(R.id.back_settings)
-    Button back_settings;
     @BindView(R.id.gender_radio_group)
     RadioGroup radioGroup;
 
     private DatabaseReference databaseReference;
-
     private String user_id, name, phone, profileImageURL;
-
     private Uri resultUri;
+    private Context context;
+
+    public AccountFragment(Context context)
+    {
+        this.context = context;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_settings);
+        View view = inflater.inflate(R.layout.fragment_account, container, false);
 
-        ButterKnife.bind(this);
+        ButterKnife.bind(this,view);
 
-        String gender = getIntent().getExtras().getString("Gender");
         user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+user_id);
 
         getUserInfo();
@@ -94,18 +96,10 @@ public class SettingsActivity extends AppCompatActivity
             public void onClick(View view)
             {
                 saveUserInformation();
-                finish();
             }
         });
 
-        back_settings.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                finish();
-            }
-        });
+        return view;
     }
 
     public void saveUserInformation()
@@ -122,7 +116,7 @@ public class SettingsActivity extends AppCompatActivity
         //resultUri is the path to the image inside the device
         if(resultUri != null)
         {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
+            final ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.setTitle("Uploading...");
             progressDialog.show();
 
@@ -133,7 +127,7 @@ public class SettingsActivity extends AppCompatActivity
             try
             {
                 //Retrieves an image as a bitmap
-                bitmap = MediaStore.Images.Media.getBitmap(getApplication().getContentResolver(), resultUri);
+                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), resultUri);
             }catch (IOException e){e.printStackTrace();}
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -147,8 +141,7 @@ public class SettingsActivity extends AppCompatActivity
                 @Override
                 public void onFailure(@NonNull Exception e)
                 {
-                    Toast.makeText(SettingsActivity.this,"Image Upload Failed", Toast.LENGTH_SHORT).show();
-                    finish();
+                    Toast.makeText(context,"Image Upload Failed", Toast.LENGTH_SHORT).show();
                 }
             });
             uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
@@ -165,7 +158,6 @@ public class SettingsActivity extends AppCompatActivity
                             Map userInfo = new HashMap();
                             userInfo.put("ProfileImageUrl",uri.toString());
                             databaseReference.updateChildren(userInfo);
-                            finish();
                         }
                     });
                 }
@@ -177,7 +169,6 @@ public class SettingsActivity extends AppCompatActivity
                 {
                     double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
                     progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                    finish();
                 }
             });
         }
@@ -203,9 +194,9 @@ public class SettingsActivity extends AppCompatActivity
                         ((RadioButton)radioGroup.findViewById(map.get("Gender").toString().equals("Male") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
 
                     if(map.get("ProfileImageUrl").equals("Default"))
-                        Glide.with(getApplication()).load(R.mipmap.ic_launcher).into(profile_image);
+                        Glide.with(context).load(R.mipmap.ic_launcher).into(profile_image);
                     else
-                        Glide.with(getApplication()).load(map.get("ProfileImageUrl").toString()).into(profile_image);
+                        Glide.with(context).load(map.get("ProfileImageUrl").toString()).into(profile_image);
                 }
             }
 
@@ -215,7 +206,7 @@ public class SettingsActivity extends AppCompatActivity
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1 && resultCode == Activity.RESULT_OK)

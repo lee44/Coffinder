@@ -1,51 +1,60 @@
-package com.apps.jlee.boginder.Activities;
+package com.apps.jlee.boginder;
+
+import android.content.Context;
+import android.os.Bundle;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.apps.jlee.boginder.Adapter.MatchesAdapter;
-import com.apps.jlee.boginder.Matches;
-import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchesActivity extends AppCompatActivity
+public class MatchFragment extends Fragment
 {
     @BindView(R.id.matches_recycleView)
     RecyclerView recyclerView;
 
+    private Context context;
     private ArrayList<Matches> resultMatches = new ArrayList<>();
     private MatchesAdapter matchesAdapter;
     private String current_user_id;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
+    public MatchFragment(Context context)
     {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_matches);
+        this.context = context;
+    }
 
-        ButterKnife.bind(this);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
+    {
+        View view = inflater.inflate(R.layout.fragment_match, container, false);
+
+        ButterKnife.bind(this,view);
 
         current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         getMatchUserID();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        matchesAdapter = new MatchesAdapter(getMatches(),this);
+        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        matchesAdapter = new MatchesAdapter(getMatches(),context);
         recyclerView.setAdapter(matchesAdapter);
+
+        return view;
     }
 
     private List<Matches> getMatches()
