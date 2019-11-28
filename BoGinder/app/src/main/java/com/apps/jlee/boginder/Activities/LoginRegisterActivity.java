@@ -27,13 +27,14 @@ public class LoginRegisterActivity extends AppCompatActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_register);
+        getSupportActionBar().hide();
 
         ButterKnife.bind(this);
 
         AnimationDrawable animationDrawable = (AnimationDrawable)constraintLayout.getBackground();
         animationDrawable.setEnterFadeDuration(10);
         animationDrawable.setExitFadeDuration(4000);
-        animationDrawable.start();
+        //animationDrawable.start();
 
 
         login.setOnClickListener(new View.OnClickListener()
