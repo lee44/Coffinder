@@ -1,21 +1,13 @@
 package com.apps.jlee.boginder.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.apps.jlee.boginder.Activities.ChatActivity;
 import com.apps.jlee.boginder.Chat;
-import com.apps.jlee.boginder.Matches;
 import com.apps.jlee.boginder.R;
-import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -25,6 +17,8 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
 {
     List<Chat> chat;
     private Context context;
+    private static final int VIEW_TYPE_MESSAGE_SENT = 1;
+    private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
 
     public ChatAdapter(List<Chat> chat, Context context)
     {
@@ -36,7 +30,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
     public ChatAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_chat, parent, false);
+        View view = null;
+
+        if(viewType == VIEW_TYPE_MESSAGE_SENT)
+            view = inflater.inflate(R.layout.item_chat_send, parent, false);
+        else if(viewType == VIEW_TYPE_MESSAGE_RECEIVED)
+            view = inflater.inflate(R.layout.item_chat_receive, parent, false);
 
         ViewHolder viewHolder = new ViewHolder(view);
         return viewHolder;
@@ -59,6 +58,21 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
     public int getItemCount()
     {
         return chat.size();
+    }
+
+    @Override
+    public int getItemViewType(int position)
+    {
+        Chat message = chat.get(position);
+
+        if (message.getCurrentUser())
+        {
+            return VIEW_TYPE_MESSAGE_SENT;
+        }
+        else
+        {
+            return VIEW_TYPE_MESSAGE_RECEIVED;
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder
