@@ -45,16 +45,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(ChatAdapter.ViewHolder holder, int position)
     {
-        holder.chatTextView.setText(chat.get(position).getMessage());
         if(chat.get(position).getCurrentUser())
         {
-            holder.chatTextView.setGravity(Gravity.END);
-            holder.chatTextView.setBackgroundColor(Color.YELLOW);
+            holder.senderTextView.setText(chat.get(position).getMessage());
         }
         else
         {
-            holder.chatTextView.setGravity(Gravity.START);
-            holder.chatTextView.setBackgroundColor(Color.RED);
+            holder.receiver_TextView.setText(chat.get(position).getMessage());
         }
     }
 
@@ -66,12 +63,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        private TextView chatTextView;
+        private TextView receiver_TextView, senderTextView;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
-            chatTextView = itemView.findViewById(R.id.chat_textView);
+            receiver_TextView = itemView.findViewById(R.id.receiver_textView);
+            senderTextView = itemView.findViewById(R.id.sender_textView);
         }
     }
 }
