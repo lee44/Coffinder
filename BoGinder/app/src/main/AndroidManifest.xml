@@ -22,7 +22,7 @@
         <activity
             android:name=".Activities.RegistrationActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".Activities.LoginorRegisterActivity">
+        <activity android:name=".Activities.LoginRegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

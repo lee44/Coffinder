@@ -8,4 +8,9 @@
     <color name="black">#000000</color>
     <color name="skyblue_chat_textView">#2196F3</color>
     <color name="grey_chat_textView">#E7E7E7</color>
+    <color name="red_orange">#F44336</color>
+
+    <color name="colorGradientStart">#D9FF43</color>
+    <color name="colorGradientCenter">#F67831</color>
+    <color name="colorGradientEnd">#FF1493</color>
 </resources>

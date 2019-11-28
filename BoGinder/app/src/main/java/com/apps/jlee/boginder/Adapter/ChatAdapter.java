@@ -66,13 +66,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
         Chat message = chat.get(position);
 
         if (message.getCurrentUser())
-        {
             return VIEW_TYPE_MESSAGE_SENT;
-        }
         else
-        {
             return VIEW_TYPE_MESSAGE_RECEIVED;
-        }
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder

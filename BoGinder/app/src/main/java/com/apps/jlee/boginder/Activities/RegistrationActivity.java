@@ -114,4 +114,12 @@ public class RegistrationActivity extends AppCompatActivity
         super.onStop();
         firebaseAuth.removeAuthStateListener(authStateListener);
     }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(RegistrationActivity.this, LoginRegisterActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }
