@@ -7,6 +7,7 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         final AccountFragment accountFragment = new AccountFragment(this);
-        final MatchFragment chatFragment = new MatchFragment(this);
+        final MatchFragment matchFragment = new MatchFragment(this);
         final DateFragment dateFragment = new DateFragment(this);
 
         setFragment(dateFragment);
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity
                         setFragment(dateFragment);
                         break;
                     case R.id.chat:
-                        setFragment(chatFragment);
+                        setFragment(matchFragment);
                         break;
                 }
                 return true;
@@ -62,5 +63,12 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_frame,fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this,LoginRegisterActivity.class);
+        startActivity(intent);
     }
 }

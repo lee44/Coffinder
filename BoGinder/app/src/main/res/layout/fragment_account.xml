@@ -3,8 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".Activities.SettingsActivity">
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/profile_image"
@@ -16,52 +15,62 @@
         app:layout_constraintTop_toTopOf="@+id/guideline8">
     </ImageView>
 
-    <EditText
-        android:id="@+id/name_et"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/name_textInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:hint="Name"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
         app:layout_constraintTop_toBottomOf="@+id/profile_image">
-    </EditText>
 
-    <EditText
-        android:id="@+id/phone_et"
+        <EditText
+            android:id="@+id/name_et"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="8dp"
+            android:hint="Name"></EditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/phone_textInput"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:hint="Phone Number"
-        android:inputType="number"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/name_et">
-    </EditText>
+        app:layout_constraintTop_toBottomOf="@+id/name_textInput">
+
+        <EditText
+            android:id="@+id/phone_et"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:hint="Phone Number"
+            android:inputType="number"></EditText>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <RadioGroup
         android:id="@+id/gender_radio_group"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/guideline4"
         app:layout_constraintStart_toStartOf="@+id/guideline7"
-        app:layout_constraintTop_toBottomOf="@+id/phone_et">
+        app:layout_constraintTop_toBottomOf="@+id/phone_textInput">
 
         <RadioButton
             android:id="@+id/male_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
-            android:text="Male">
-        </RadioButton>
+            android:text="Male"></RadioButton>
 
         <RadioButton
             android:id="@+id/female_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Female">
-        </RadioButton>
+            android:text="Female"></RadioButton>
 
     </RadioGroup>
 
@@ -69,8 +78,8 @@
         android:id="@+id/confirm_settings"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:background="@drawable/rounded_corner_signin"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/round_corner_signin"
         android:text="Save"
         android:textColor="@color/white"
         android:textSize="18sp"

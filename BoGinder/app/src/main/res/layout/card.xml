@@ -8,7 +8,7 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="0dp"
-        android:layout_height="250dp"
+        android:layout_height="500dp"
         android:layout_gravity="center"
         android:elevation="2dp"
         card_view:cardCornerRadius="4dp"
@@ -41,10 +41,10 @@
                 android:layout_marginBottom="2dp"
                 android:background="@color/white"
                 android:gravity="center|left"
+                android:paddingLeft="10dp"
                 android:text="hello_world"
                 android:textColor="@color/black"
                 android:textSize="30sp"
-                android:paddingLeft="10dp"
                 card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
@@ -66,13 +66,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        card_view:layout_constraintGuide_percent=".1" />
+        card_view:layout_constraintGuide_percent=".05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        card_view:layout_constraintGuide_percent=".9" />
+        card_view:layout_constraintGuide_percent=".95" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

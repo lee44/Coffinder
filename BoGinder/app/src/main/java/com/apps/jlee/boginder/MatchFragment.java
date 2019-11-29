@@ -13,6 +13,7 @@ import butterknife.ButterKnife;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.apps.jlee.boginder.Adapter.MatchesAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +30,8 @@ public class MatchFragment extends Fragment
 {
     @BindView(R.id.matches_recycleView)
     RecyclerView recyclerView;
+    @BindView(R.id.No_Matches)
+    TextView textView;
 
     private Context context;
     private ArrayList<Matches> resultMatches = new ArrayList<>();
@@ -114,6 +117,16 @@ public class MatchFragment extends Fragment
                     }
 
                     resultMatches.add(new Matches(user_id,name,profileImageUrl));
+                    if(resultMatches.size() != 0)
+                    {
+                        textView.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        textView.setVisibility(View.VISIBLE);
+                        recyclerView.setVisibility(View.GONE);
+                    }
                     matchesAdapter.notifyDataSetChanged();
                 }
             }
