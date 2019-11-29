@@ -10,15 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apps.jlee.boginder.Activities.ChatActivity;
-import com.apps.jlee.boginder.Matches;
+import com.apps.jlee.boginder.Objects.Matches;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 
 public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder>
 {

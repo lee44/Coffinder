@@ -1,4 +1,4 @@
-package com.apps.jlee.boginder;
+package com.apps.jlee.boginder.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,8 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.apps.jlee.boginder.Activities.MainActivity;
 import com.apps.jlee.boginder.Adapter.CardsAdapter;
+import com.apps.jlee.boginder.Objects.Cards;
+import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;

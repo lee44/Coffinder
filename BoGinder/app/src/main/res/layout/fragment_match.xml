@@ -5,17 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <TextView
+        android:id="@+id/new_matches"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Matches"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+    </TextView>
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/matches_recycleView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:visibility="gone">
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_matches"
+        tools:visibility="visible">
     </androidx.recyclerview.widget.RecyclerView>
+
+    <TextView
+        android:id="@+id/messages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Messages"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/matches_recycleView"></TextView>
 
     <TextView
         android:id="@+id/No_Matches"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="No Matches"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="30sp"
@@ -23,8 +52,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:text="No Matches"
-        tools:visibility="visible">
-    </TextView>
+        tools:visibility="invisible"></TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

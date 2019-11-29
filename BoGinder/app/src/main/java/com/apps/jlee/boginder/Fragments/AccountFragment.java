@@ -1,4 +1,4 @@
-package com.apps.jlee.boginder;
+package com.apps.jlee.boginder.Fragments;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -25,6 +25,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;

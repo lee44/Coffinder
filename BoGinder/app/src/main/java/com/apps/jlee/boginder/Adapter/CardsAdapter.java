@@ -8,7 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.apps.jlee.boginder.Cards;
+import com.apps.jlee.boginder.Objects.Cards;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 

@@ -10,15 +10,12 @@ import butterknife.ButterKnife;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.apps.jlee.boginder.Adapter.ChatAdapter;
-import com.apps.jlee.boginder.Adapter.MatchesAdapter;
-import com.apps.jlee.boginder.Chat;
-import com.apps.jlee.boginder.Matches;
+import com.apps.jlee.boginder.Objects.Chat;
 import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;

@@ -11,9 +11,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
-import com.apps.jlee.boginder.AccountFragment;
-import com.apps.jlee.boginder.MatchFragment;
-import com.apps.jlee.boginder.DateFragment;
+import com.apps.jlee.boginder.Fragments.AccountFragment;
+import com.apps.jlee.boginder.Fragments.MatchFragment;
+import com.apps.jlee.boginder.Fragments.DateFragment;
 import com.apps.jlee.boginder.R;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 

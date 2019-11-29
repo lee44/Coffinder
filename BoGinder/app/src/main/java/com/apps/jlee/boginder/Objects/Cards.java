@@ -1,4 +1,4 @@
-package com.apps.jlee.boginder;
+package com.apps.jlee.boginder.Objects;
 
 public class Cards
 {
