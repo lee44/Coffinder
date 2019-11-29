@@ -6,7 +6,7 @@
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="skyblue_chat_textView">#2196F3</color>
+    <color name="skyblue">#2196F3</color>
     <color name="skyblue_faded">#37A1F3</color>
     <color name="grey_chat_textView">#E7E7E7</color>
     <color name="red_orange">#F44336</color>

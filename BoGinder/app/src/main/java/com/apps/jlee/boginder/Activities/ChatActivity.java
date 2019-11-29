@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -158,5 +159,12 @@ public class ChatActivity extends AppCompatActivity
     private List<Chat> getChats()
     {
         return resultChats;
+    }
+
+    @Override
+    public void onBackPressed()
+    {
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 }
