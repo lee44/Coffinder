@@ -26,6 +26,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.apps.jlee.boginder.Activities.LoginRegisterActivity;
+import com.apps.jlee.boginder.Activities.MainActivity;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -102,6 +103,8 @@ public class AccountFragment extends Fragment
             public void onClick(View view)
             {
                 saveUserInformation();
+                Intent intent = new Intent(context, MainActivity.class);
+                startActivity(intent);
             }
         });
 
