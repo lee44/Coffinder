@@ -42,7 +42,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
     @Override
     public void onBindViewHolder(MatchesAdapter.ViewHolder holder, int position)
     {
-        holder.matches_user_id.setText(matches.get(position).getUser_id());
         holder.matches_name.setText(matches.get(position).getName());
 
         if(!matches.get(position).getProfileImageUrl().equals("Default"))
@@ -69,7 +68,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             super(itemView);
 
             matches_imageView = itemView.findViewById(R.id.item_matches_imageView);
-            matches_user_id = itemView.findViewById(R.id.item_matches_user_id);
             matches_name = itemView.findViewById(R.id.item_matches_name);
 
             itemView.setOnClickListener(new View.OnClickListener()

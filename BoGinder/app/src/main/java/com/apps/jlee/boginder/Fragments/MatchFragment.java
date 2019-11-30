@@ -55,7 +55,7 @@ public class MatchFragment extends Fragment
         current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
         getMatchUserID();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(context));
+        recyclerView.setLayoutManager(new LinearLayoutManager(context,RecyclerView.HORIZONTAL,false));
         matchesAdapter = new MatchesAdapter(getMatches(),context);
         recyclerView.setAdapter(matchesAdapter);
 
