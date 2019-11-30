@@ -25,6 +25,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.apps.jlee.boginder.Activities.LoginRegisterActivity;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -55,9 +56,12 @@ public class AccountFragment extends Fragment
     EditText phone_et;
     @BindView(R.id.confirm_settings)
     Button confirm_settings;
+    @BindView(R.id.sign_out_settings)
+    Button sign_out;
     @BindView(R.id.gender_radio_group)
     RadioGroup radioGroup;
 
+    private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private String user_id, name, phone, profileImageURL;
     private Uri resultUri;
@@ -75,6 +79,7 @@ public class AccountFragment extends Fragment
 
         ButterKnife.bind(this,view);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+user_id);
 
@@ -97,6 +102,15 @@ public class AccountFragment extends Fragment
             public void onClick(View view)
             {
                 saveUserInformation();
+            }
+        });
+
+        sign_out.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                logoutUser(view);
             }
         });
 
@@ -216,5 +230,12 @@ public class AccountFragment extends Fragment
             resultUri = data.getData();
             profile_image.setImageURI(resultUri);
         }
+    }
+
+    public void logoutUser(View view)
+    {
+        firebaseAuth.signOut();
+        Intent intent = new Intent(context, LoginRegisterActivity.class);
+        startActivity(intent);
     }
 }
