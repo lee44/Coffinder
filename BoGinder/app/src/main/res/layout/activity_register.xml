@@ -21,7 +21,8 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:hint="Name"
-            android:textAlignment="viewStart"></EditText>
+            android:textAlignment="viewStart">
+        </EditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <RadioGroup
