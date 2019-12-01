@@ -87,20 +87,6 @@ public class RegistrationActivity extends AppCompatActivity
                                         finish();
                                     }
                                 });
-
-//                                currentUserDB.child(userId);
-//                                currentUserDB.child(userId+"/Name").setValue(name.getText().toString());
-//                                currentUserDB.child(userId+"/Gender").setValue(radioButton.getText().toString());
-//                                currentUserDB.child(userId+"/ProfileImageUrl").setValue("Default").addOnCompleteListener(new OnCompleteListener<Void>()
-//                                {
-//                                    @Override
-//                                    public void onComplete(@NonNull Task<Void> task)
-//                                    {
-//                                        Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
-//                                        startActivity(intent);
-//                                        finish();
-//                                    }
-//                                });
                             }
                         }
                     });
