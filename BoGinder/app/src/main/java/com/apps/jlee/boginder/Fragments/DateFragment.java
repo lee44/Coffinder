@@ -194,21 +194,21 @@ public class DateFragment extends Fragment
             {
                 if(dataSnapshot.exists())
                 {
-                    Map<String,Object> users = (Map<String,Object>)dataSnapshot.getValue();
-                    for (Map.Entry<String, Object> entry : users.entrySet())
+                    if(dataSnapshot.exists() && !dataSnapshot.child("Connections/Nope/").hasChild(currentUser_id) &&
+                            !dataSnapshot.child("Connections/Yes/").hasChild(currentUser_id) &&
+                            dataSnapshot.child("Gender").getValue().toString().equals(opposite_gender))
                     {
-                        //Get user map
-                        Map singleUser = (Map) entry.getValue();
-                        Log.v("Lakers",singleUser.toString());
-
+                        cardsList.add(new Cards(dataSnapshot.getKey(),dataSnapshot.child("Name").getValue().toString(),dataSnapshot.child("ProfileImageUrl").getValue().toString()));
+                        cardAdapter.notifyDataSetChanged();
                     }
-//                    if(dataSnapshot.exists() && !dataSnapshot.child("Connections/Nope/").hasChild(currentUser_id) &&
-//                            !dataSnapshot.child("Connections/Yes/").hasChild(currentUser_id) &&
-//                            dataSnapshot.child("Gender").getValue().toString().equals(opposite_gender))
+
+//                    Log.v("Lakers",dataSnapshot.child("Gender").getValue().toString());
+//                    for(DataSnapshot datashot : dataSnapshot.getChildren())
 //                    {
-//                        cardsList.add(new Cards(dataSnapshot.getKey(),dataSnapshot.child("Name").getValue().toString(),dataSnapshot.child("ProfileImageUrl").getValue().toString()));
-//                        cardAdapter.notifyDataSetChanged();
+//                        //if(datashot.getKey().equals("Gender"))
+//                            Log.v("Lakers",datashot.getValue().toString());
 //                    }
+                    //Log.v("Lakers",dataSnapshot.getChildrenCount()+"");
                 }
             }
 
