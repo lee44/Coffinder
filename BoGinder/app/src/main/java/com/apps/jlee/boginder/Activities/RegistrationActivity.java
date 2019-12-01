@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.apps.jlee.boginder.Models.Users;
 import com.apps.jlee.boginder.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,6 +42,9 @@ public class RegistrationActivity extends AppCompatActivity
         password = findViewById(R.id.password);
         register = findViewById(R.id.register);
         radioGroup = findViewById(R.id.gender_radio_group);
+
+        email.setText("@gmail.com");
+        password.setText("123456");
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -72,10 +76,8 @@ public class RegistrationActivity extends AppCompatActivity
                             {
                                 String userId = firebaseAuth.getCurrentUser().getUid();
                                 DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users");
-                                currentUserDB.child(userId);
-                                currentUserDB.child(userId+"/Name").setValue(name.getText().toString());
-                                currentUserDB.child(userId+"/Gender").setValue(radioButton.getText().toString());
-                                currentUserDB.child(userId+"/ProfileImageUrl").setValue("Default").addOnCompleteListener(new OnCompleteListener<Void>()
+
+                                currentUserDB.child(userId).setValue(new Users(name.getText().toString(),radioButton.getText().toString(),"Default")).addOnCompleteListener(new OnCompleteListener<Void>()
                                 {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task)
@@ -85,6 +87,20 @@ public class RegistrationActivity extends AppCompatActivity
                                         finish();
                                     }
                                 });
+
+//                                currentUserDB.child(userId);
+//                                currentUserDB.child(userId+"/Name").setValue(name.getText().toString());
+//                                currentUserDB.child(userId+"/Gender").setValue(radioButton.getText().toString());
+//                                currentUserDB.child(userId+"/ProfileImageUrl").setValue("Default").addOnCompleteListener(new OnCompleteListener<Void>()
+//                                {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<Void> task)
+//                                    {
+//                                        Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+//                                        startActivity(intent);
+//                                        finish();
+//                                    }
+//                                });
                             }
                         }
                     });

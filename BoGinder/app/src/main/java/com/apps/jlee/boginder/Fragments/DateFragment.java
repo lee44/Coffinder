@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.apps.jlee.boginder.Adapter.CardsAdapter;
 import com.apps.jlee.boginder.Models.Cards;
+import com.apps.jlee.boginder.Models.Users;
 import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -201,14 +202,6 @@ public class DateFragment extends Fragment
                         cardsList.add(new Cards(dataSnapshot.getKey(),dataSnapshot.child("Name").getValue().toString(),dataSnapshot.child("ProfileImageUrl").getValue().toString()));
                         cardAdapter.notifyDataSetChanged();
                     }
-
-//                    Log.v("Lakers",dataSnapshot.child("Gender").getValue().toString());
-//                    for(DataSnapshot datashot : dataSnapshot.getChildren())
-//                    {
-//                        //if(datashot.getKey().equals("Gender"))
-//                            Log.v("Lakers",datashot.getValue().toString());
-//                    }
-                    //Log.v("Lakers",dataSnapshot.getChildrenCount()+"");
                 }
             }
 

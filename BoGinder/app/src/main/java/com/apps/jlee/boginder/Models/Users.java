@@ -1,41 +1,63 @@
 package com.apps.jlee.boginder.Models;
 
+import com.google.firebase.database.PropertyName;
+import com.google.firebase.database.connection.RequestResultCallback;
 public class Users
 {
-    private String name, gender, profileImageUrl;
+    @PropertyName("Name")
+    private String Name;
+    @PropertyName("Gender")
+    private String Gender;
+    @PropertyName("ProfileImageUrl")
+    private String ProfileImageUrl;
 
-    public Users(String name)
+    public Users()
     {
-        this.name = name;
+
+    }
+    public Users(String Name, String Gender, String ProfileImageUrl)
+    {
+        this.Name = Name;
+        this.Gender = Gender;
+        this.ProfileImageUrl = ProfileImageUrl;
     }
 
-    public String getGender()
-    {
-        return gender;
-    }
-
-    public void setGender(String gender)
-    {
-        this.gender = gender;
-    }
-
+    @PropertyName("Name")
     public String getName()
     {
-        return name;
+        return Name;
     }
-
-    public void setName(String name)
+    @PropertyName("Name")
+    public void setName(String Name)
     {
-        this.name = name;
+        this.Name = Name;
     }
 
+    @PropertyName("Gender")
+    public String getGender()
+    {
+        return Gender;
+    }
+    @PropertyName("Gender")
+    public void setGender(String Gender)
+    {
+        this.Gender = Gender;
+    }
+
+    @PropertyName("ProfileImageUrl")
     public String getProfileImageUrl()
     {
-        return profileImageUrl;
+        return ProfileImageUrl;
+    }
+    @PropertyName("ProfileImageUrl")
+    public void setProfileImageUrl(String ProfileImageUrl)
+    {
+        this.ProfileImageUrl = ProfileImageUrl;
     }
 
-    public void setProfileImageUrl(String profileImageUrl)
+    @Override
+    public String toString()
     {
-        this.profileImageUrl = profileImageUrl;
+        return "Name: " + Name + " Gender: " + Gender + " ProfileImageUrl: " + ProfileImageUrl;
     }
 }
