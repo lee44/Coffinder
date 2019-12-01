@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.apps.jlee.boginder.Objects.Chat;
+import com.apps.jlee.boginder.Models.Chat;
 import com.apps.jlee.boginder.R;
 
 import java.util.List;

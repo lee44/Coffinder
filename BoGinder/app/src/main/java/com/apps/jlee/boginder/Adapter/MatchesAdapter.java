@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apps.jlee.boginder.Activities.ChatActivity;
-import com.apps.jlee.boginder.Objects.Matches;
+import com.apps.jlee.boginder.Models.Matches;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 

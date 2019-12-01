@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.jlee.boginder.Adapter.MatchesAdapter;
-import com.apps.jlee.boginder.Objects.Matches;
+import com.apps.jlee.boginder.Models.Matches;
 import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;

@@ -1,4 +1,4 @@
-package com.apps.jlee.boginder.Objects;
+package com.apps.jlee.boginder.Models;
 
 public class Chat
 {

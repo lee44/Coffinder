@@ -9,13 +9,14 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.apps.jlee.boginder.Adapter.CardsAdapter;
-import com.apps.jlee.boginder.Objects.Cards;
+import com.apps.jlee.boginder.Models.Cards;
 import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -28,6 +29,7 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class DateFragment extends Fragment
 {
@@ -190,12 +192,23 @@ public class DateFragment extends Fragment
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
             {
-                if(dataSnapshot.exists() && !dataSnapshot.child("Connections/Nope/").hasChild(currentUser_id) &&
-                   !dataSnapshot.child("Connections/Yes/").hasChild(currentUser_id) &&
-                   dataSnapshot.child("Gender").getValue().toString().equals(opposite_gender))
+                if(dataSnapshot.exists())
                 {
-                    cardsList.add(new Cards(dataSnapshot.getKey(),dataSnapshot.child("Name").getValue().toString(),dataSnapshot.child("ProfileImageUrl").getValue().toString()));
-                    cardAdapter.notifyDataSetChanged();
+                    Map<String,Object> users = (Map<String,Object>)dataSnapshot.getValue();
+                    for (Map.Entry<String, Object> entry : users.entrySet())
+                    {
+                        //Get user map
+                        Map singleUser = (Map) entry.getValue();
+                        Log.v("Lakers",singleUser.toString());
+
+                    }
+//                    if(dataSnapshot.exists() && !dataSnapshot.child("Connections/Nope/").hasChild(currentUser_id) &&
+//                            !dataSnapshot.child("Connections/Yes/").hasChild(currentUser_id) &&
+//                            dataSnapshot.child("Gender").getValue().toString().equals(opposite_gender))
+//                    {
+//                        cardsList.add(new Cards(dataSnapshot.getKey(),dataSnapshot.child("Name").getValue().toString(),dataSnapshot.child("ProfileImageUrl").getValue().toString()));
+//                        cardAdapter.notifyDataSetChanged();
+//                    }
                 }
             }
 

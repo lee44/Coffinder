@@ -15,7 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.apps.jlee.boginder.Adapter.ChatAdapter;
-import com.apps.jlee.boginder.Objects.Chat;
+import com.apps.jlee.boginder.Models.Chat;
 import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
