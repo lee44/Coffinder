@@ -17,10 +17,17 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class LoginActivity extends AppCompatActivity
 {
-    private EditText email, password;
-    private Button sign_in;
+    @BindView(R.id.email)
+    EditText email;
+    @BindView(R.id.password)
+    EditText password;
+    @BindView(R.id.sign_in)
+    Button sign_in;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -31,9 +38,8 @@ public class LoginActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
-        sign_in = findViewById(R.id.sign_in);
+        ButterKnife.bind(this);
+
         firebaseAuth = FirebaseAuth.getInstance();
 
         sign_in.setOnClickListener(new View.OnClickListener()
@@ -41,6 +47,10 @@ public class LoginActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+                if(email.getText().toString().trim().length() == 0)
+                    email.setError("This field can not be blank");
+                if(password.getText().toString().trim().length() == 0)
+                    password.setError("This field can not be blank");
                 if(email.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0)
                 {
                     firebaseAuth.signInWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>()

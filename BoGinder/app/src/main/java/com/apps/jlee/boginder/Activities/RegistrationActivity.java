@@ -22,11 +22,21 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class RegistrationActivity extends AppCompatActivity
 {
-    private EditText name, email, password;
-    private Button register;
-    private RadioGroup radioGroup;
+    @BindView(R.id.name)
+    EditText name;
+    @BindView(R.id.email)
+    EditText email;
+    @BindView(R.id.password)
+    EditText password;
+    @BindView(R.id.register)
+    Button register;
+    @BindView(R.id.gender_radio_group)
+    RadioGroup radioGroup;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -37,11 +47,7 @@ public class RegistrationActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
 
-        name = findViewById(R.id.name);
-        email = findViewById(R.id.email);
-        password = findViewById(R.id.password);
-        register = findViewById(R.id.register);
-        radioGroup = findViewById(R.id.gender_radio_group);
+        ButterKnife.bind(this);
 
         email.setText("@gmail.com");
         password.setText("123456");
@@ -53,16 +59,15 @@ public class RegistrationActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                if(email.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0)
+                if(name.getText().toString().trim().length() == 0)
+                    name.setError("This field can not be blank");
+                if(email.getText().toString().trim().length() == 0)
+                    email.setError("This field can not be blank");
+                if(password.getText().toString().trim().length() == 0)
+                    password.setError("This field can not be blank");
+
+                if(email.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0 && radioGroup.getCheckedRadioButtonId() != -1)
                 {
-                    int selectId = radioGroup.getCheckedRadioButtonId();
-                    final RadioButton radioButton = findViewById(selectId);
-
-                    if(radioButton.getText() == null)
-                    {
-                        return;
-                    }
-
                     firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>()
                     {
                         @Override
@@ -74,6 +79,9 @@ public class RegistrationActivity extends AppCompatActivity
                             }
                             else
                             {
+                                int selectId = radioGroup.getCheckedRadioButtonId();
+                                final RadioButton radioButton = findViewById(selectId);
+
                                 String userId = firebaseAuth.getCurrentUser().getUid();
                                 DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users");
 

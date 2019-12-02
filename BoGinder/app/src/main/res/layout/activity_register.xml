@@ -36,15 +36,19 @@
         app:layout_constraintStart_toStartOf="@+id/guideline2">
 
         <RadioButton
+            android:id="@+id/male_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="4dp"
+            android:checked="true"
             android:text="Male"></RadioButton>
 
         <RadioButton
+            android:id="@+id/female_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Female"></RadioButton>
+            android:text="Female">
+        </RadioButton>
 
     </RadioGroup>
 
