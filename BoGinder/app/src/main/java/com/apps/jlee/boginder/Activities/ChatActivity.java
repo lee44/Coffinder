@@ -59,9 +59,13 @@ public class ChatActivity extends AppCompatActivity
 
         getChatID();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
         chatAdapter = new ChatAdapter(getChats(),this);
         recyclerView.setAdapter(chatAdapter);
+
+        LinearLayoutManager mLinearLayoutManager = new LinearLayoutManager(getBaseContext());
+        mLinearLayoutManager.setStackFromEnd(true);
+        recyclerView.setLayoutManager(mLinearLayoutManager);
+        recyclerView.scrollToPosition(chatAdapter.getItemCount() - 1);
 
         button.setOnClickListener(new View.OnClickListener()
         {

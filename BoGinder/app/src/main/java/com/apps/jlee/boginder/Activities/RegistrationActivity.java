@@ -67,7 +67,7 @@ public class RegistrationActivity extends AppCompatActivity
                 if(password.getText().toString().trim().length() == 0)
                     password.setError("This field can not be blank");
 
-                if(email.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0 && radioGroup.getCheckedRadioButtonId() != -1)
+                if(name.getText().toString().trim().length() > 0 && email.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0 && radioGroup.getCheckedRadioButtonId() != -1)
                 {
                     firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>()
                     {

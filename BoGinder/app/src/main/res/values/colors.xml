@@ -6,11 +6,14 @@
 
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
-    <color name="skyblue">#2196F3</color>
-    <color name="skyblue_faded">#37A1F3</color>
-    <color name="grey_chat_textView">#E7E7E7</color>
-    <color name="red_orange">#F44336</color>
-    <color name="red_orange_faded">#F45A36</color>
+
+    <color name="button_skyblue">#2196F3</color>
+    <color name="button_skyblue_faded">#37A1F3</color>
+    <color name="button_red_orange">#F44336</color>
+    <color name="button_red_orange_faded">#F45A36</color>
+
+    <color name="receiver_message">#E7E7E7</color>
+    <color name="sender_message">#2196F3</color>
 
     <color name="colorGradientStart">#D9FF43</color>
     <color name="colorGradientCenter">#F67831</color>
