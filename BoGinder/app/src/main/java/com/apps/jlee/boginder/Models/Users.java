@@ -1,63 +1,81 @@
 package com.apps.jlee.boginder.Models;
 
 import com.google.firebase.database.PropertyName;
-import com.google.firebase.database.connection.RequestResultCallback;
+
 public class Users
 {
     @PropertyName("Name")
-    private String Name;
+    private String name;
     @PropertyName("Gender")
-    private String Gender;
+    private String gender;
     @PropertyName("ProfileImageUrl")
-    private String ProfileImageUrl;
+    private String profileImageUrl;
+    @PropertyName("DeviceToken")
+    private String device_token;
 
     public Users()
     {
 
     }
-    public Users(String Name, String Gender, String ProfileImageUrl)
+    public Users(String name, String gender, String profileImageUrl, String device_token)
     {
-        this.Name = Name;
-        this.Gender = Gender;
-        this.ProfileImageUrl = ProfileImageUrl;
+        this.name = name;
+        this.gender = gender;
+        this.profileImageUrl = profileImageUrl;
+        this.device_token = device_token;
     }
 
     @PropertyName("Name")
     public String getName()
     {
-        return Name;
+        return name;
     }
+
     @PropertyName("Name")
-    public void setName(String Name)
+    public void setName(String name)
     {
-        this.Name = Name;
+        this.name = name;
     }
 
     @PropertyName("Gender")
     public String getGender()
     {
-        return Gender;
+        return gender;
     }
+
     @PropertyName("Gender")
-    public void setGender(String Gender)
+    public void setGender(String gender)
     {
-        this.Gender = Gender;
+        this.gender = gender;
     }
 
     @PropertyName("ProfileImageUrl")
     public String getProfileImageUrl()
     {
-        return ProfileImageUrl;
+        return profileImageUrl;
     }
+
     @PropertyName("ProfileImageUrl")
-    public void setProfileImageUrl(String ProfileImageUrl)
+    public void setProfileImageUrl(String profileImageUrl)
     {
-        this.ProfileImageUrl = ProfileImageUrl;
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    @PropertyName("DeviceToken")
+    public String getDevice_token()
+    {
+        return device_token;
+    }
+
+    @PropertyName("DeviceToken")
+    public void setDevice_token(String device_token)
+    {
+        this.device_token = device_token;
     }
 
     @Override
     public String toString()
     {
-        return "Name: " + Name + " Gender: " + Gender + " ProfileImageUrl: " + ProfileImageUrl;
+        return "Name: " + name + " gender: " + gender + " profileImageUrl: " + profileImageUrl;
     }
 }

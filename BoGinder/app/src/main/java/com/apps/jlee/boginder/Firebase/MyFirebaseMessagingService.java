@@ -26,7 +26,14 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
     public void onNewToken(String s)
     {
         super.onNewToken(s);
+
+        getSharedPreferences("Device Token", MODE_PRIVATE).edit().putString("Token", s).apply();
         Log.d("NEW_TOKEN",s);
+    }
+
+    public static String getToken(Context context)
+    {
+        return context.getSharedPreferences("Device Token", MODE_PRIVATE).getString("Token", "None");
     }
 
     public void shownotification(RemoteMessage.Notification message)
@@ -39,7 +46,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
             NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Notification",
                     NotificationManager.IMPORTANCE_DEFAULT);
 
-            notificationChannel.setDescription("Techrush Channel");
+            notificationChannel.setDescription("Test Channel");
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.BLUE);
             notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});

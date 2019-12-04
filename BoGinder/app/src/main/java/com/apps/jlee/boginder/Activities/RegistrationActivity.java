@@ -12,6 +12,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.apps.jlee.boginder.Firebase.MyFirebaseMessagingService;
 import com.apps.jlee.boginder.Models.Users;
 import com.apps.jlee.boginder.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -85,7 +86,7 @@ public class RegistrationActivity extends AppCompatActivity
                                 String userId = firebaseAuth.getCurrentUser().getUid();
                                 DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
-                                currentUserDB.child(userId).setValue(new Users(name.getText().toString(),radioButton.getText().toString(),"Default")).addOnCompleteListener(new OnCompleteListener<Void>()
+                                currentUserDB.child(userId).setValue(new Users(name.getText().toString(),radioButton.getText().toString(),"Default", MyFirebaseMessagingService.getToken(getBaseContext()))).addOnCompleteListener(new OnCompleteListener<Void>()
                                 {
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task)
