@@ -18,7 +18,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage)
     {
-        Log.d("MSG",remoteMessage.getNotification().getBody());
+        Log.v("Lakers",remoteMessage.getNotification().getBody());
         shownotification(remoteMessage.getNotification());
     }
 
