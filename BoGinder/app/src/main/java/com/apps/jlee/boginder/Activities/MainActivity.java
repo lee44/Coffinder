@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity
 
         ButterKnife.bind(this);
 
-        final AccountFragment accountFragment = new AccountFragment(this);
+        final AccountFragment accountFragment = new AccountFragment();
         final MatchFragment matchFragment = new MatchFragment(this);
         final DateFragment dateFragment = new DateFragment(this);
 
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        Intent intent = new Intent(this,LoginRegisterActivity.class);
-        startActivity(intent);
+        //Intent intent = new Intent(this,LoginRegisterActivity.class);
+        //startActivity(intent);
     }
 }
