@@ -86,8 +86,9 @@ public class ChatActivity extends AppCompatActivity
             DatabaseReference newMessage = databaseChat.push();
 
             Map map = new HashMap<>();
-            map.put("created_by", current_user_id);
-            map.put("text",sendMessageText);
+            map.put("Sender_ID", current_user_id);
+            map.put("Message",sendMessageText);
+            map.put("Receiver_ID",match_id);
             newMessage.setValue(map);
         }
         editText.setText(null);
@@ -123,20 +124,25 @@ public class ChatActivity extends AppCompatActivity
                 if(dataSnapshot.exists())
                 {
                     String message = null;
-                    String created_by = null;
+                    String sender_id = null;
+                    String receiver_id = null;
 
-                    if(dataSnapshot.child("text").getValue().toString() != null)
+                    if(dataSnapshot.child("Message").getValue().toString() != null)
                     {
-                        message = dataSnapshot.child("text").getValue().toString();
+                        message = dataSnapshot.child("Message").getValue().toString();
                     }
-                    if(dataSnapshot.child("created_by").getValue().toString() != null)
+                    if(dataSnapshot.child("Sender_ID").getValue().toString() != null)
                     {
-                        created_by = dataSnapshot.child("created_by").getValue().toString();
+                        sender_id = dataSnapshot.child("Sender_ID").getValue().toString();
                     }
-                    if(message != null && created_by != null)
+                    if(dataSnapshot.child("Receiver_ID").getValue().toString() != null)
+                    {
+                        receiver_id = dataSnapshot.child("Receiver_ID").getValue().toString();
+                    }
+                    if(message != null && sender_id != null && receiver_id != null)
                     {
                         Boolean currentUserBoolean = false;
-                        if (created_by.equals(current_user_id))
+                        if (sender_id.equals(current_user_id))
                         {
                             currentUserBoolean = true;
                         }

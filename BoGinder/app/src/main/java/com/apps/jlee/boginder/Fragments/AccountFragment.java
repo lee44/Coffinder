@@ -60,9 +60,8 @@ public class AccountFragment extends Fragment
                     return new DetailsFragment(getContext());
                 case 2:
                     return new PreferencesFragment();
-                default:
-                    return new PhotosFragment();
             }
+            return null;
         }
         public CharSequence getPageTitle(int position)
         {
