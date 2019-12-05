@@ -80,6 +80,8 @@ public class PhotosFragment extends Fragment
         user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+user_id+"/ProfileImageUrl");
 
+        getUserPhotos();
+
         imageView0.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -214,9 +216,9 @@ public class PhotosFragment extends Fragment
     }
 
     /**
-     * Fetches user info from firebase database and binds it to the views
+     * Fetches user photos and binds it to the views
      */
-    private void getUserInfo()
+    private void getUserPhotos()
     {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -225,12 +227,19 @@ public class PhotosFragment extends Fragment
             {
                 if(dataSnapshot.exists() && dataSnapshot.getChildrenCount() > 0)
                 {
-                    Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
-
-                    if(map.get("ProfileImageUrl").equals("Default"))
-                        Glide.with(context).load(R.mipmap.ic_launcher).into(imageView0);
-                    else
-                        Glide.with(context).load(map.get("ProfileImageUrl").toString()).into(imageView0);
+                    for(DataSnapshot child : dataSnapshot.getChildren())
+                    {
+                        int imageSlot = Integer.valueOf(child.getKey().substring(child.getKey().length()-1));
+                        switch (imageSlot)
+                        {
+                            case 0: Glide.with(context).load(child.getValue()).into(imageView0); break;
+                            case 1: Glide.with(context).load(child.getValue()).into(imageView1); break;
+                            case 2: Glide.with(context).load(child.getValue()).into(imageView2); break;
+                            case 3: Glide.with(context).load(child.getValue()).into(imageView3); break;
+                            case 4: Glide.with(context).load(child.getValue()).into(imageView4); break;
+                            case 5: Glide.with(context).load(child.getValue()).into(imageView5); break;
+                        }
+                    }
                 }
             }
 
