@@ -28,7 +28,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService
         super.onNewToken(s);
 
         getSharedPreferences("Device Token", MODE_PRIVATE).edit().putString("Token", s).apply();
-        Log.d("NEW_TOKEN",s);
+        Log.v("NEW_TOKEN",s);
     }
 
     public static String getToken(Context context)
