@@ -55,7 +55,7 @@ public class AccountFragment extends Fragment
             switch(position)
             {
                 case 0:
-                    return new PhotosFragment();
+                    return new PhotosFragment(getContext());
                 case 1:
                     return new DetailsFragment(getContext());
                 case 2:
