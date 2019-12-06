@@ -50,14 +50,12 @@ import java.util.Map;
 
 public class DetailsFragment extends Fragment
 {
-    @BindView(R.id.profile_image)
-    ImageView profile_image;
     @BindView(R.id.name_et)
     EditText name_et;
     @BindView(R.id.phone_et)
     EditText phone_et;
-    @BindView(R.id.confirm_settings)
-    Button confirm_settings;
+    //@BindView(R.id.confirm_settings)
+    //Button confirm_settings;
     @BindView(R.id.sign_out_settings)
     Button sign_out;
     @BindView(R.id.gender_radio_group)
@@ -65,8 +63,7 @@ public class DetailsFragment extends Fragment
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
-    private String user_id, name, phone, profileImageURL;
-    private Uri resultUri;
+    private String user_id, name, phone;
     private Context context;
 
     public DetailsFragment(Context context)
@@ -87,27 +84,16 @@ public class DetailsFragment extends Fragment
 
         getUserInfo();
 
-        profile_image.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent,1);
-            }
-        });
-
-        confirm_settings.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                saveUserInformation();
-                Intent intent = new Intent(context, MainActivity.class);
-                startActivity(intent);
-            }
-        });
+        //confirm_settings.setOnClickListener(new View.OnClickListener()
+        //{
+        //    @Override
+        //    public void onClick(View view)
+        //    {
+        //        saveUserInformation();
+        //        Intent intent = new Intent(context, MainActivity.class);
+        //        startActivity(intent);
+        //    }
+        //});
 
         sign_out.setOnClickListener(new View.OnClickListener()
         {
@@ -131,66 +117,6 @@ public class DetailsFragment extends Fragment
         userInfo.put("Phone",phone);
 
         databaseReference.updateChildren(userInfo);
-
-        //resultUri is the path to the image inside the device
-        if(resultUri != null)
-        {
-            final ProgressDialog progressDialog = new ProgressDialog(context);
-            progressDialog.setTitle("Uploading...");
-            progressDialog.show();
-
-            //Creates a tree with Profile_Image at the top followed by user_id
-            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id);
-
-            Bitmap bitmap = null;
-            try
-            {
-                //Retrieves an image as a bitmap
-                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), resultUri);
-            }catch (IOException e){e.printStackTrace();}
-
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.JPEG,20,byteArrayOutputStream);
-            byte[] data = byteArrayOutputStream.toByteArray();
-
-            //Since putBytes() accepts a byte[], it requires your app to hold the entire contents of a file in memory at once.
-            UploadTask uploadTask = filepath.putBytes(data);
-            uploadTask.addOnFailureListener(new OnFailureListener()
-            {
-                @Override
-                public void onFailure(@NonNull Exception e)
-                {
-                    Toast.makeText(context,"Image Upload Failed", Toast.LENGTH_SHORT).show();
-                }
-            });
-            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>()
-            {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot)
-                {
-                    filepath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
-                    {
-                        @Override
-                        public void onSuccess(Uri uri)
-                        {
-                            //uri has the url and store it in the firebase database tree
-                            Map userInfo = new HashMap();
-                            userInfo.put("ProfileImageUrl",uri.toString());
-                            databaseReference.updateChildren(userInfo);
-                        }
-                    });
-                }
-            });
-            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>()
-            {
-                @Override
-                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot)
-                {
-                    double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                    progressDialog.setMessage("Uploaded "+(int)progress+"%");
-                }
-            });
-        }
     }
 
     /**
@@ -211,29 +137,12 @@ public class DetailsFragment extends Fragment
                     phone_et.setText(map.get("Phone") != null ? map.get("Phone").toString() : "");
                     if(map.get("Gender") != null)
                         ((RadioButton)radioGroup.findViewById(map.get("Gender").toString().equals("Male") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
-
-                    if(map.get("ProfileImageUrl").equals("Default"))
-                        Glide.with(context).load(R.mipmap.ic_launcher).into(profile_image);
-                    else
-                        Glide.with(context).load(map.get("ProfileImageUrl").toString()).into(profile_image);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError){}
         });
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
-    {
-        super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK)
-        {
-            /*URI is the location of the image in the phone*/
-            resultUri = data.getData();
-            profile_image.setImageURI(resultUri);
-        }
     }
 
     public void logoutUser(View view)

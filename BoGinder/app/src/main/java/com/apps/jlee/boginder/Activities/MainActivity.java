@@ -7,9 +7,12 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.inputmethod.InputMethodManager;
 
 import com.apps.jlee.boginder.Fragments.AccountFragment;
 import com.apps.jlee.boginder.Fragments.MatchFragment;
@@ -70,5 +73,14 @@ public class MainActivity extends AppCompatActivity
     {
         //Intent intent = new Intent(this,LoginRegisterActivity.class);
         //startActivity(intent);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (getCurrentFocus() != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 }
