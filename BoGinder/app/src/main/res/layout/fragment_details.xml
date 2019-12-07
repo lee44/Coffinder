@@ -9,7 +9,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:paddingBottom="200dp">
 
         <TextView
             android:id="@+id/textView2"
@@ -190,15 +191,14 @@
             android:id="@+id/school_textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text=""
+            android:maxLength="20"
+            android:text="School"
             android:textColor="@color/black"
             android:textSize="18sp"
-            android:maxLength="20"
             app:layout_constraintBottom_toBottomOf="@+id/school_et"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/occupation_et"
-            tools:text="School">
+            app:layout_constraintTop_toBottomOf="@+id/occupation_et">
         </TextView>
 
         <EditText
@@ -258,7 +258,7 @@
             android:id="@+id/textView3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="16dp"
             android:text="Description"
             android:textColor="@color/black"
             android:textSize="20sp"
@@ -268,35 +268,32 @@
             app:layout_constraintTop_toBottomOf="@+id/gender_radio_group"></TextView>
 
         <EditText
+            android:id="@+id/editText"
             android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_height="150dp"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
-            android:singleLine="false"
+            android:background="@drawable/desc_round"
             android:inputType="textMultiLine"
             android:lines="5"
             android:maxLines="5"
             android:minLines="1"
-            android:background="@drawable/desc_round"
-            app:layout_constraintBottom_toTopOf="@+id/sign_out_settings"
+            android:singleLine="false"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/textView3">
-        </EditText>
+            app:layout_constraintTop_toBottomOf="@+id/textView3"></EditText>
 
         <Button
             android:id="@+id/sign_out_settings"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/round_corner_logout"
             android:text="Sign Out"
             android:textColor="@color/black"
             android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
-            app:layout_constraintStart_toStartOf="@+id/guideline7">
-        </Button>
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toBottomOf="@+id/editText"></Button>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"

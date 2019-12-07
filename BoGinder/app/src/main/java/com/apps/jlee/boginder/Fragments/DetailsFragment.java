@@ -52,8 +52,6 @@ public class DetailsFragment extends Fragment
 {
     @BindView(R.id.name_et)
     EditText name_et;
-    @BindView(R.id.phone_et)
-    EditText phone_et;
     //@BindView(R.id.confirm_settings)
     //Button confirm_settings;
     @BindView(R.id.sign_out_settings)
@@ -110,7 +108,6 @@ public class DetailsFragment extends Fragment
     public void saveUserInformation()
     {
         name = name_et.getText().toString();
-        phone = phone_et.getText().toString();
 
         Map userInfo = new HashMap();
         userInfo.put("Name", name);
@@ -134,7 +131,6 @@ public class DetailsFragment extends Fragment
                     Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
 
                     name_et.setText(map.get("Name") != null ? map.get("Name").toString() : "");
-                    phone_et.setText(map.get("Phone") != null ? map.get("Phone").toString() : "");
                     if(map.get("Gender") != null)
                         ((RadioButton)radioGroup.findViewById(map.get("Gender").toString().equals("Male") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
                 }
