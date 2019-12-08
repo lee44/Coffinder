@@ -14,7 +14,8 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toTopOf="parent"></TextView>
+        app:layout_constraintTop_toTopOf="parent">
+    </TextView>
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -50,28 +51,114 @@
             android:layout_weight="1"
             android:text="Both"
             app:layout_constraintStart_toEndOf="@+id/button"
-            app:layout_constraintTop_toTopOf="parent"></Button>
+            app:layout_constraintTop_toTopOf="parent">
+        </Button>
 
     </LinearLayout>
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/age_header_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Age Range"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
+    </TextView>
+
+    <TextView
+        android:id="@+id/age_range_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="18-50"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/age_header_tv"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintTop_toTopOf="@+id/age_header_tv">
+    </TextView>
 
     <com.edmodo.rangebar.RangeBar
+        android:id="@+id/age_rangeBar"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/textView5"></com.edmodo.rangebar.RangeBar>
+        app:layout_constraintTop_toBottomOf="@+id/age_header_tv">
+    </com.edmodo.rangebar.RangeBar>
+
+    <TextView
+    android:id="@+id/height_header_tv"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="16dp"
+    android:text="Height Range"
+    android:textColor="@color/black"
+    android:textSize="18sp"
+    app:layout_constraintStart_toStartOf="@+id/guideline15"
+    app:layout_constraintTop_toBottomOf="@+id/age_rangeBar">
+</TextView>
+
+    <TextView
+        android:id="@+id/height_range_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="4'0-7'0"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/height_header_tv"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintTop_toTopOf="@+id/height_header_tv">
+    </TextView>
+
+    <com.edmodo.rangebar.RangeBar
+        android:id="@+id/height_rangeBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/height_header_tv">
+    </com.edmodo.rangebar.RangeBar>
+
+    <TextView
+        android:id="@+id/distance_header_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Distance"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/height_rangeBar">
+    </TextView>
+
+    <TextView
+        android:id="@+id/distance_range_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="15 miles"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="@+id/distance_header_tv"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintTop_toTopOf="@+id/distance_header_tv">
+    </TextView>
+
+    <SeekBar
+        android:id="@+id/distance_seekBar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:max="50"
+        app:layout_constraintEnd_toStartOf="@+id/guideline16"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/distance_header_tv"></SeekBar>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline15"
