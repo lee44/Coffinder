@@ -9,6 +9,7 @@ import android.util.Range;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -34,13 +35,19 @@ public class PreferencesFragment extends Fragment
     TextView height_range_tv;
     @BindView(R.id.distance_range_tv)
     TextView distance_range_tv;
+    @BindView(R.id.men_button)
+    Button men_button;
+    @BindView(R.id.women_button)
+    Button women_button;
+    @BindView(R.id.both_button)
+    Button both_button;
 
     final int startingHeight = 48;
     private int startingInches, endingInches, startingFeet, endingFeet;
 
     public PreferencesFragment()
     {
-        // Required empty public constructor
+
     }
 
     @Override
@@ -97,15 +104,11 @@ public class PreferencesFragment extends Fragment
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar)
-            {
-
-            }
+            {}
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar)
-            {
-
-            }
+            {}
         });
 
         return view;
