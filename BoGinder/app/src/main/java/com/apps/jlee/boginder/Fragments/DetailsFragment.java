@@ -89,6 +89,13 @@ public class DetailsFragment extends Fragment
     }
 
     @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);//Enables the toolbar menu
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_details, container, false);
@@ -116,7 +123,6 @@ public class DetailsFragment extends Fragment
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        // Inflate the menu; this adds items to the action bar.
         inflater.inflate(R.menu.menu_toolbar, menu);
     }
 
