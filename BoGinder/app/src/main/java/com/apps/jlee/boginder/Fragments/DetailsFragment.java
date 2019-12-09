@@ -17,6 +17,9 @@ import butterknife.ButterKnife;
 
 import android.provider.MediaStore;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -52,12 +55,28 @@ public class DetailsFragment extends Fragment
 {
     @BindView(R.id.name_et)
     EditText name_et;
-    //@BindView(R.id.confirm_settings)
-    //Button confirm_settings;
+    @BindView(R.id.email_et)
+    EditText email_et;
+    @BindView(R.id.age_et)
+    EditText age_et;
+    @BindView(R.id.height_et)
+    EditText height_et;
+    @BindView(R.id.ethnicity_et)
+    EditText ethnicity_et;
+    @BindView(R.id.religion_et)
+    EditText religion_et;
+    @BindView(R.id.city_et)
+    EditText city_et;
+    @BindView(R.id.occupation_et)
+    EditText occupation_et;
+    @BindView(R.id.school_et)
+    EditText school_et;
+    @BindView(R.id.gender_radio_group)
+    RadioGroup gender_radio_group;
+    @BindView(R.id.description_editText)
+    EditText description_editText;
     @BindView(R.id.sign_out_settings)
     Button sign_out;
-    @BindView(R.id.gender_radio_group)
-    RadioGroup radioGroup;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
@@ -82,17 +101,6 @@ public class DetailsFragment extends Fragment
 
         getUserInfo();
 
-        //confirm_settings.setOnClickListener(new View.OnClickListener()
-        //{
-        //    @Override
-        //    public void onClick(View view)
-        //    {
-        //        saveUserInformation();
-        //        Intent intent = new Intent(context, MainActivity.class);
-        //        startActivity(intent);
-        //    }
-        //});
-
         sign_out.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -105,13 +113,25 @@ public class DetailsFragment extends Fragment
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        // Inflate the menu; this adds items to the action bar.
+        inflater.inflate(R.menu.menu_toolbar, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        saveUserInformation();
+        return true;
+    }
+
     public void saveUserInformation()
     {
-        name = name_et.getText().toString();
-
         Map userInfo = new HashMap();
-        userInfo.put("Name", name);
-        userInfo.put("Phone",phone);
+        userInfo.put("Name", name_et.getText().toString());
+        userInfo.put("City",city_et.getText().toString());
 
         databaseReference.updateChildren(userInfo);
     }
@@ -132,7 +152,7 @@ public class DetailsFragment extends Fragment
 
                     name_et.setText(map.get("Name") != null ? map.get("Name").toString() : "");
                     if(map.get("Gender") != null)
-                        ((RadioButton)radioGroup.findViewById(map.get("Gender").toString().equals("Male") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
+                        ((RadioButton)gender_radio_group.findViewById(map.get("Gender").toString().equals("Male") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
                 }
             }
 

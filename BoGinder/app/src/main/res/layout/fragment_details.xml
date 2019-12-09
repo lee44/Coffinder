@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="Public Profile"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
@@ -50,6 +50,30 @@
         </EditText>
 
         <TextView
+            android:id="@+id/email_textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Email"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="@+id/email_et"
+            app:layout_constraintEnd_toStartOf="@+id/guideline8"
+            app:layout_constraintStart_toStartOf="@+id/guideline7"
+            app:layout_constraintTop_toTopOf="@+id/email_et"></TextView>
+
+        <EditText
+            android:id="@+id/email_et"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLength="20"
+            app:layout_constraintEnd_toStartOf="@+id/guideline4"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/guideline8"
+            app:layout_constraintTop_toBottomOf="@+id/name_et">
+        </EditText>
+
+        <TextView
             android:id="@+id/age_textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -72,7 +96,7 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
-            app:layout_constraintTop_toBottomOf="@+id/name_et">
+            app:layout_constraintTop_toBottomOf="@+id/email_et">
         </EditText>
 
         <TextView
@@ -128,7 +152,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/religion_et"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="@+id/religion_et"></TextView>
+            app:layout_constraintTop_toTopOf="@+id/religion_et">
+        </TextView>
 
         <EditText
             android:id="@+id/religion_et"
@@ -261,14 +286,15 @@
             android:layout_marginTop="16dp"
             android:text="Description"
             android:textColor="@color/black"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/gender_radio_group"></TextView>
+            app:layout_constraintTop_toBottomOf="@+id/gender_radio_group">
+        </TextView>
 
         <EditText
-            android:id="@+id/editText"
+            android:id="@+id/description_editText"
             android:layout_width="0dp"
             android:layout_height="150dp"
             android:layout_marginTop="8dp"
@@ -295,7 +321,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/editText"></Button>
+            app:layout_constraintTop_toBottomOf="@+id/description_editText"></Button>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"

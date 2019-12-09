@@ -17,48 +17,34 @@
         app:layout_constraintTop_toTopOf="parent">
     </TextView>
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <RadioGroup
+        android:id="@+id/gender_radio_group"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:gravity="center_horizontal|left"
         android:orientation="horizontal"
-        android:background="@drawable/msg_round_edit_text"
         app:layout_constraintEnd_toStartOf="@+id/guideline16"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
         app:layout_constraintTop_toBottomOf="@+id/textView4">
 
-        <Button
-            android:id="@+id/men_button"
+        <RadioButton
+            android:id="@+id/male_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Men"
-            android:background="@drawable/round_pref_btn_states"
-            android:layout_margin="5dp">
-        </Button>
+            android:layout_marginRight="8dp"
+            android:text="Male"
+            android:textSize="18sp"></RadioButton>
 
-        <Button
-            android:id="@+id/women_button"
+        <RadioButton
+            android:id="@+id/female_radio_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Women"
-            android:background="@drawable/round_pref_btn_states"
-            android:layout_margin="5dp">
-        </Button>
+            android:layout_marginRight="8dp"
+            android:text="Female"
+            android:textSize="18sp"></RadioButton>
 
-        <Button
-            android:id="@+id/both_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Both"
-            android:background="@drawable/round_pref_btn_states"
-            android:layout_margin="5dp">
-        </Button>
-
-    </LinearLayout>
+    </RadioGroup>
 
     <TextView
         android:id="@+id/age_header_tv"
@@ -69,8 +55,7 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout">
-    </TextView>
+        app:layout_constraintTop_toBottomOf="@+id/gender_radio_group"></TextView>
 
     <TextView
         android:id="@+id/age_range_tv"
