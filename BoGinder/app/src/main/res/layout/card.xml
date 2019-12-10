@@ -37,18 +37,31 @@
             <TextView
                 android:id="@+id/potential_match_name"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginBottom="2dp"
+                android:layout_height="wrap_content"
                 android:background="@color/white"
                 android:gravity="center|left"
                 android:paddingLeft="10dp"
-                android:text="hello_world"
+                android:text="Name"
                 android:textColor="@color/black"
                 android:textSize="30sp"
-                card_view:layout_constraintBottom_toBottomOf="parent"
                 card_view:layout_constraintEnd_toEndOf="parent"
                 card_view:layout_constraintStart_toStartOf="parent"
                 card_view:layout_constraintTop_toTopOf="@+id/guideline11" />
+
+            <TextView
+                android:id="@+id/potential_match_distance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:gravity="center|left"
+                android:paddingLeft="10dp"
+                android:text="10 miles"
+                android:textColor="@color/black"
+                android:textSize="25sp"
+                card_view:layout_constraintEnd_toEndOf="parent"
+                card_view:layout_constraintHorizontal_bias="0.0"
+                card_view:layout_constraintStart_toStartOf="parent"
+                card_view:layout_constraintTop_toBottomOf="@+id/potential_match_name" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline11"

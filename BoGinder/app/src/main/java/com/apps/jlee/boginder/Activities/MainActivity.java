@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import com.apps.jlee.boginder.Fragments.AccountFragment;
 import com.apps.jlee.boginder.Fragments.MatchFragment;
@@ -55,9 +56,11 @@ public class MainActivity extends AppCompatActivity
                         setFragment(accountFragment);
                         break;
                     case R.id.dates:
+                        hideToolbarItems(true);
                         setFragment(dateFragment);
                         break;
                     case R.id.chat:
+                        hideToolbarItems(true);
                         setFragment(matchFragment);
                         break;
                 }
@@ -87,5 +90,19 @@ public class MainActivity extends AppCompatActivity
             imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    public void hideToolbarItems(boolean hide)
+    {
+        if(hide)
+            for(int i = 0; i < toolbar.getMenu().size(); i++)
+            {
+                toolbar.getMenu().getItem(i).setVisible(false);
+            }
+        else
+            for(int i = 0; i < toolbar.getMenu().size(); i++)
+            {
+                toolbar.getMenu().getItem(i).setVisible(true);
+            }
     }
 }
