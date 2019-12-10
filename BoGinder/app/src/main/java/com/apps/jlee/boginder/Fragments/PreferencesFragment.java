@@ -140,14 +140,9 @@ public class PreferencesFragment extends Fragment
                 {
                     Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
 
-                    if(map.get("Orientation").toString().equals("Male"))
-                    {
-                        male_radio_button.setChecked(true);
-                    }
-                    else
-                    {
-                        female_radio_button.setChecked(true);
-                    }
+                    if(map.get("Orientation") != null)
+                        ((RadioButton)radioGroup.findViewById(map.get("Orientation").toString().equals("Male") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
+
                 }
             }
 
