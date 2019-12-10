@@ -8,19 +8,22 @@ public class Users
     private String name;
     @PropertyName("Gender")
     private String gender;
+    @PropertyName("Orientation")
+    private String orientation;
+    @PropertyName("City")
+    private String city;
     @PropertyName("ProfileImageUrl")
     private String profileImageUrl;
     @PropertyName("DeviceToken")
     private String device_token;
 
-    public Users()
-    {
-
-    }
-    public Users(String name, String gender, String profileImageUrl, String device_token)
+    public Users(){}
+    public Users(String name, String gender, String orientation, String city, String profileImageUrl, String device_token)
     {
         this.name = name;
         this.gender = gender;
+        this.orientation = orientation;
+        this.city = city;
         this.profileImageUrl = profileImageUrl;
         this.device_token = device_token;
     }
@@ -47,6 +50,30 @@ public class Users
     public void setGender(String gender)
     {
         this.gender = gender;
+    }
+
+    @PropertyName("Orientation")
+    public String getOrientation()
+    {
+        return orientation;
+    }
+
+    @PropertyName("Orientation")
+    public void setOrientation(String orientation)
+    {
+        this.orientation = orientation;
+    }
+
+    @PropertyName("City")
+    public String getCity()
+    {
+        return city;
+    }
+
+    @PropertyName("City")
+    public void setCity(String city)
+    {
+        this.city = city;
     }
 
     @PropertyName("ProfileImageUrl")

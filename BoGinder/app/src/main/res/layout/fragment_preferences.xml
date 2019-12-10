@@ -18,7 +18,7 @@
     </TextView>
 
     <RadioGroup
-        android:id="@+id/gender_radio_group"
+        android:id="@+id/radio_group"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -55,7 +55,7 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline15"
-        app:layout_constraintTop_toBottomOf="@+id/gender_radio_group"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/radio_group"></TextView>
 
     <TextView
         android:id="@+id/age_range_tv"
@@ -81,16 +81,16 @@
     </com.edmodo.rangebar.RangeBar>
 
     <TextView
-    android:id="@+id/height_header_tv"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="16dp"
-    android:text="Height Range"
-    android:textColor="@color/black"
-    android:textSize="18sp"
-    app:layout_constraintStart_toStartOf="@+id/guideline15"
-    app:layout_constraintTop_toBottomOf="@+id/age_rangeBar">
-</TextView>
+        android:id="@+id/height_header_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Height Range"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline15"
+        app:layout_constraintTop_toBottomOf="@+id/age_rangeBar">
+    </TextView>
 
     <TextView
         android:id="@+id/height_range_tv"

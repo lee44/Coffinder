@@ -34,6 +34,12 @@ import butterknife.ButterKnife;
 
 public class PreferencesFragment extends Fragment
 {
+    @BindView(R.id.radio_group)
+    RadioGroup radioGroup;
+    @BindView(R.id.male_radio_button)
+    RadioButton male_radio_button;
+    @BindView(R.id.female_radio_button)
+    RadioButton female_radio_button;
     @BindView(R.id.age_rangeBar)
     RangeBar ageBar;
     @BindView(R.id.height_rangeBar)
@@ -46,8 +52,6 @@ public class PreferencesFragment extends Fragment
     TextView height_range_tv;
     @BindView(R.id.distance_range_tv)
     TextView distance_range_tv;
-    @BindView(R.id.gender_radio_group)
-    RadioGroup radioGroup;
 
     private DatabaseReference databaseReference;
     final int startingHeight = 48;
@@ -66,6 +70,8 @@ public class PreferencesFragment extends Fragment
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+user_id);
 
         ButterKnife.bind(this,view);
+
+        getUserPreferences();
 
         ageBar.setTickCount(33);
         ageBar.setTickHeight(0);
@@ -123,7 +129,7 @@ public class PreferencesFragment extends Fragment
         return view;
     }
 
-    private void getUserInfo()
+    private void getUserPreferences()
     {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -134,8 +140,14 @@ public class PreferencesFragment extends Fragment
                 {
                     Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
 
-//                    if(map.get("Gender") != null)
-//                        ((RadioButton)radioGroup.findViewById(map.get("Gender").toString().equals("Male") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
+                    if(map.get("Orientation").toString().equals("Male"))
+                    {
+                        male_radio_button.setChecked(true);
+                    }
+                    else
+                    {
+                        female_radio_button.setChecked(true);
+                    }
                 }
             }
 

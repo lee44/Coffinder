@@ -16,6 +16,7 @@ import com.apps.jlee.boginder.Firebase.MyFirebaseMessagingService;
 import com.apps.jlee.boginder.Models.Users;
 import com.apps.jlee.boginder.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,14 +31,18 @@ public class RegistrationActivity extends AppCompatActivity
 {
     @BindView(R.id.name)
     EditText name;
+    @BindView(R.id.gender_radio_group)
+    RadioGroup gender_radioGroup;
+    @BindView(R.id.orientation_radio_group)
+    RadioGroup orientation_radioGroup;
+    @BindView(R.id.city)
+    EditText city;
     @BindView(R.id.email)
     EditText email;
     @BindView(R.id.password)
     EditText password;
     @BindView(R.id.register)
     Button register;
-    @BindView(R.id.gender_radio_group)
-    RadioGroup radioGroup;
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
@@ -51,6 +56,7 @@ public class RegistrationActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         email.setText("@gmail.com");
+        city.setText("Los Angeles");
         password.setText("123456");
 
         firebaseAuth = FirebaseAuth.getInstance();
@@ -67,7 +73,7 @@ public class RegistrationActivity extends AppCompatActivity
                 if(password.getText().toString().trim().length() == 0)
                     password.setError("This field can not be blank");
 
-                if(name.getText().toString().trim().length() > 0 && email.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0 && radioGroup.getCheckedRadioButtonId() != -1)
+                if(name.getText().toString().trim().length() > 0 && email.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0 && gender_radioGroup.getCheckedRadioButtonId() != -1)
                 {
                     firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>()
                     {
@@ -80,20 +86,21 @@ public class RegistrationActivity extends AppCompatActivity
                             }
                             else
                             {
-                                int selectId = radioGroup.getCheckedRadioButtonId();
-                                final RadioButton radioButton = findViewById(selectId);
+                                int selectId = gender_radioGroup.getCheckedRadioButtonId();
+                                RadioButton gender_radioButton = findViewById(selectId);
+                                selectId = orientation_radioGroup.getCheckedRadioButtonId();
+                                RadioButton orientation_radioButton = findViewById(selectId);
 
                                 String userId = firebaseAuth.getCurrentUser().getUid();
                                 DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
-                                currentUserDB.child(userId).setValue(new Users(name.getText().toString(),radioButton.getText().toString(),"Default", MyFirebaseMessagingService.getToken(getBaseContext()))).addOnCompleteListener(new OnCompleteListener<Void>()
+                                currentUserDB.child(userId).setValue(new Users(name.getText().toString(),gender_radioButton.getText().toString(),orientation_radioButton.getText().toString(),city.getText().toString(),"Default", MyFirebaseMessagingService.getToken(getBaseContext()))).addOnSuccessListener(new OnSuccessListener<Void>()
                                 {
                                     @Override
-                                    public void onComplete(@NonNull Task<Void> task)
+                                    public void onSuccess(Void aVoid)
                                     {
                                         Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
                                         startActivity(intent);
-                                        finish();
                                     }
                                 });
                             }
@@ -108,17 +115,26 @@ public class RegistrationActivity extends AppCompatActivity
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth)
             {
-//                final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//
-//                if(user != null)
-//                {
-//                    Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
-//                    startActivity(intent);
-//                    finish();
-//                    return;
-//                }
+                //final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                //
+                //if(user != null)
+                //{
+                //    Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+                //    startActivity(intent);
+                //    finish();
+                //    return;
+                //}
             }
         };
+
+        city.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+
+            }
+        });
     }
 
     @Override

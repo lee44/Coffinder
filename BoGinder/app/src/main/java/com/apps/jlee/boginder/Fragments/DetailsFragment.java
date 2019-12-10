@@ -74,13 +74,13 @@ public class DetailsFragment extends Fragment
     @BindView(R.id.gender_radio_group)
     RadioGroup gender_radio_group;
     @BindView(R.id.description_editText)
-    EditText description_editText;
+    EditText description_et;
     @BindView(R.id.sign_out_settings)
     Button sign_out;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
-    private String user_id, name, phone;
+    private String user_id;
     private Context context;
 
     public DetailsFragment(Context context)
@@ -137,9 +137,32 @@ public class DetailsFragment extends Fragment
     {
         Map userInfo = new HashMap();
         userInfo.put("Name", name_et.getText().toString());
+        userInfo.put("Email",email_et.getText().toString());
+        userInfo.put("Age",age_et.getText().toString());
+        userInfo.put("Height",height_et.getText().toString());
+        userInfo.put("Ethnicity",ethnicity_et.getText().toString());
+        userInfo.put("Religion",religion_et.getText().toString());
         userInfo.put("City",city_et.getText().toString());
+        userInfo.put("Occupation",occupation_et.getText().toString());
+        userInfo.put("School",school_et.getText().toString());
 
-        databaseReference.updateChildren(userInfo);
+        int selectId = gender_radio_group.getCheckedRadioButtonId();
+        if(selectId == R.id.male_radio_button)
+            userInfo.put("Gender","Male");
+        else
+            userInfo.put("Gender","Female");
+
+        userInfo.put("Description",description_et.getText().toString());
+
+        //updateChildren will either update existing child or create the child
+        databaseReference.updateChildren(userInfo).addOnSuccessListener(new OnSuccessListener()
+        {
+            @Override
+            public void onSuccess(Object o)
+            {
+                Toast.makeText(getContext(),"Saved",Toast.LENGTH_SHORT);
+            }
+        });
     }
 
     /**
@@ -157,8 +180,17 @@ public class DetailsFragment extends Fragment
                     Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
 
                     name_et.setText(map.get("Name") != null ? map.get("Name").toString() : "");
+                    email_et.setText(map.get("Email") != null ? map.get("Email").toString() : "");
+                    age_et.setText(map.get("Age") != null ? map.get("Age").toString() : "");
+                    height_et.setText(map.get("Height") != null ? map.get("Height").toString() : "");
+                    ethnicity_et.setText(map.get("Ethnicity") != null ? map.get("Ethnicity").toString() : "");
+                    religion_et.setText(map.get("Religion") != null ? map.get("Religion").toString() : "");
+                    city_et.setText(map.get("City") != null ? map.get("City").toString() : "");
+                    occupation_et.setText(map.get("Occupation") != null ? map.get("Occupation").toString() : "");
+                    school_et.setText(map.get("School") != null ? map.get("School").toString() : "");
                     if(map.get("Gender") != null)
                         ((RadioButton)gender_radio_group.findViewById(map.get("Gender").toString().equals("Male") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
+                    description_et.setText(map.get("Description") != null ? map.get("Description").toString() : "");
                 }
             }
 
