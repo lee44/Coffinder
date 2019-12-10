@@ -44,8 +44,8 @@ public class PreferencesFragment extends Fragment
     RangeBar ageBar;
     @BindView(R.id.height_rangeBar)
     RangeBar heightBar;
-    @BindView(R.id.distance_seekBar)
-    SeekBar distanceBar;
+    @BindView(R.id.distance_rangeBar)
+    RangeBar distanceBar;
     @BindView(R.id.age_range_tv)
     TextView age_range_tv;
     @BindView(R.id.height_range_tv)
@@ -81,6 +81,10 @@ public class PreferencesFragment extends Fragment
         heightBar.setTickHeight(0);
         heightBar.setBarWeight(6);
 
+        distanceBar.setTickCount(50);
+        distanceBar.setTickHeight(0);
+        distanceBar.setBarWeight(6);
+
         ageBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener()
         {
             @Override
@@ -109,21 +113,13 @@ public class PreferencesFragment extends Fragment
             }
         });
 
-        distanceBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        distanceBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener()
         {
             @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser)
+            public void onIndexChangeListener(RangeBar rangeBar, int i, int i1)
             {
-                distance_range_tv.setText(progress+"");
+                distance_range_tv.setText(i+"-"+i1+" mi");
             }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar)
-            {}
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar)
-            {}
         });
 
         return view;
