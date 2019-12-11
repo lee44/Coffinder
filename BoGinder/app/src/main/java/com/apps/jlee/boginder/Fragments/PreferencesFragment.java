@@ -1,5 +1,7 @@
 package com.apps.jlee.boginder.Fragments;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -8,6 +10,9 @@ import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.util.Range;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -55,11 +60,17 @@ public class PreferencesFragment extends Fragment
 
     private DatabaseReference databaseReference;
     final int startingHeight = 48;
-    private int startingInches, endingInches, startingFeet, endingFeet;
-    private String user_id;
+    private int startingInches, endingInches, startingFeet, endingFeet, age_low, age_high;
+    private String user_id, height_low, height_high;
 
     public PreferencesFragment(){}
 
+    @Override
+    public void onCreate(Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);//Enables the toolbar menu
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
     {
@@ -90,6 +101,8 @@ public class PreferencesFragment extends Fragment
             @Override
             public void onIndexChangeListener(RangeBar rangeBar, int i, int i1)
             {
+                age_low = i;
+                age_high = i1;
                 age_range_tv.setText((i+18)+"-"+(i1+18));
             }
         });
@@ -109,6 +122,8 @@ public class PreferencesFragment extends Fragment
                 endingInches = endingInches % 12;
 
                 String height = startingFeet+"'"+startingInches+'"'+"-"+endingFeet+"'"+endingInches+'"';
+                height_low = startingFeet+"'"+startingInches+'"';
+                height_high = endingFeet+"'"+endingInches+'"';
                 height_range_tv.setText(height);
             }
         });
@@ -125,6 +140,19 @@ public class PreferencesFragment extends Fragment
         return view;
     }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.menu_toolbar, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        saveUserPreferences();
+        return true;
+    }
+
     private void getUserPreferences()
     {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
@@ -138,13 +166,32 @@ public class PreferencesFragment extends Fragment
 
                     if(map.get("Orientation") != null)
                         ((RadioButton)radioGroup.findViewById(map.get("Orientation").toString().equals("Male") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
-
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError){}
         });
+
     }
 
+    private void saveUserPreferences()
+    {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        editor.putString("Age_Low",age_low+"");
+        editor.putString("Age_High",age_high+"");
+
+        editor.putString("Height_Low",height_low);
+        editor.putString("Height_High",height_high);
+
+        editor.apply();
+    }
+
+    private void getUserSharedPreferences()
+    {
+        SharedPreferences sharedPreferences = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+
+    }
 }

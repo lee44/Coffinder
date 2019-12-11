@@ -24,6 +24,43 @@
         </EditText>
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_age"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_name">
+
+        <EditText
+            android:id="@+id/age"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:hint="Age"
+            android:inputType="number"
+            android:textAlignment="viewStart">
+        </EditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/input_layout_height"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toStartOf="@+id/guideline3"
+        app:layout_constraintStart_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_age">
+
+        <EditText
+            android:id="@+id/height"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:hint="Height"
+            android:textAlignment="viewStart">
+        </EditText>
+    </com.google.android.material.textfield.TextInputLayout>
+
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
@@ -33,13 +70,14 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/input_layout_name"></TextView>
+        app:layout_constraintTop_toBottomOf="@+id/input_layout_height"></TextView>
 
     <RadioGroup
         android:id="@+id/gender_radio_group"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -47,17 +85,35 @@
 
         <RadioButton
             android:id="@+id/male_radio_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="4dp"
-            android:checked="true"
-            android:text="Male"></RadioButton>
+            android:layout_weight="1"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingTop="3dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="3dp"
+            android:text="Male"
+            android:textColor="@color/radio_flat_text_selector"
+            android:textSize="18sp" />
 
         <RadioButton
             android:id="@+id/female_radio_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Female"></RadioButton>
+            android:layout_weight="1"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingTop="3dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="3dp"
+            android:text="Female"
+            android:textColor="@color/radio_flat_text_selector"
+            android:textSize="18sp" />
 
     </RadioGroup>
 
@@ -77,6 +133,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
@@ -84,17 +141,35 @@
 
         <RadioButton
             android:id="@+id/orientation_male_radio_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginRight="4dp"
-            android:checked="true"
-            android:text="Male"></RadioButton>
+            android:layout_weight="1"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingTop="3dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="3dp"
+            android:text="Men"
+            android:textColor="@color/radio_flat_text_selector"
+            android:textSize="18sp" />
 
         <RadioButton
             android:id="@+id/orientation_female_radio_button"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Female"></RadioButton>
+            android:layout_weight="1"
+            android:background="@drawable/radio_flat_selector"
+            android:button="@android:color/transparent"
+            android:gravity="center"
+            android:paddingLeft="16dp"
+            android:paddingTop="3dp"
+            android:paddingRight="16dp"
+            android:paddingBottom="3dp"
+            android:text="Women"
+            android:textColor="@color/radio_flat_text_selector"
+            android:textSize="18sp" />
 
     </RadioGroup>
 
@@ -102,12 +177,12 @@
         android:id="@+id/city"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
         android:hint="City"
         android:textAlignment="viewStart"
         app:layout_constraintEnd_toStartOf="@+id/guideline3"
         app:layout_constraintStart_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toBottomOf="@+id/orientation_radio_group">
-    </EditText>
+        app:layout_constraintTop_toBottomOf="@+id/orientation_radio_group"></EditText>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_email"

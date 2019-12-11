@@ -34,9 +34,15 @@ public class CardsAdapter extends ArrayAdapter
         }
 
         TextView name = convertView.findViewById(R.id.potential_match_name);
+        TextView age = convertView.findViewById(R.id.potential_match_age);
+        TextView height = convertView.findViewById(R.id.potential_match_height);
+        TextView distance = convertView.findViewById(R.id.potential_match_distance);
         ImageView image = convertView.findViewById(R.id.potential_match_pic);
 
         name.setText(card.getName());
+        age.setText(card.getAge());
+        height.setText(card.getHeight());
+        distance.setText(card.getDistance());
 
         if(card.getProfileImageUrl().equals("Default"))
         {

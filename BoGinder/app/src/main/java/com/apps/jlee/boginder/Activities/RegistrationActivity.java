@@ -31,6 +31,10 @@ public class RegistrationActivity extends AppCompatActivity
 {
     @BindView(R.id.name)
     EditText name;
+    @BindView(R.id.age)
+    EditText age;
+    @BindView(R.id.height)
+    EditText height;
     @BindView(R.id.gender_radio_group)
     RadioGroup gender_radioGroup;
     @BindView(R.id.orientation_radio_group)
@@ -94,7 +98,7 @@ public class RegistrationActivity extends AppCompatActivity
                                 String userId = firebaseAuth.getCurrentUser().getUid();
                                 DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
-                                currentUserDB.child(userId).setValue(new Users(name.getText().toString(),gender_radioButton.getText().toString(),orientation_radioButton.getText().toString(),city.getText().toString(),"Default", MyFirebaseMessagingService.getToken(getBaseContext()))).addOnSuccessListener(new OnSuccessListener<Void>()
+                                currentUserDB.child(userId).setValue(new Users(name.getText().toString(),age.getText().toString(),height.getText().toString(),gender_radioButton.getText().toString(),orientation_radioButton.getText().toString(),city.getText().toString(),"Default", MyFirebaseMessagingService.getToken(getBaseContext()))).addOnSuccessListener(new OnSuccessListener<Void>()
                                 {
                                     @Override
                                     public void onSuccess(Void aVoid)

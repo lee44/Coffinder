@@ -1,6 +1,7 @@
 package com.apps.jlee.boginder.Fragments;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -9,7 +10,6 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 import com.apps.jlee.boginder.Adapter.CardsAdapter;
 import com.apps.jlee.boginder.Models.Cards;
-import com.apps.jlee.boginder.Models.Users;
 import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -30,7 +29,6 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class DateFragment extends Fragment
 {
@@ -38,7 +36,7 @@ public class DateFragment extends Fragment
     private CardsAdapter cardAdapter;
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
-    private String user_gender, opposite_gender, currentUser_id;
+    private String user_gender, orientation, currentUser_id;
 
     @BindView(R.id.frame)
     SwipeFlingAdapterView flingContainer;
@@ -63,7 +61,7 @@ public class DateFragment extends Fragment
         cardsList = new ArrayList<Cards>();
         cardAdapter = new CardsAdapter(context,R.layout.card,cardsList);
 
-        checkUserGender();
+        checkUserOrientation();
 
         flingContainer.setAdapter(cardAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener()
@@ -153,7 +151,7 @@ public class DateFragment extends Fragment
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
 
-    public void checkUserGender()
+    public void checkUserOrientation()
     {
         DatabaseReference userDB = databaseReference.child(currentUser_id);
 
@@ -165,18 +163,8 @@ public class DateFragment extends Fragment
             {
                 if(dataSnapshot.getKey().equals(currentUser_id))
                 {
-                    if(dataSnapshot.child("Gender").getValue().toString().equals("Male"))
-                    {
-                        user_gender = "Male";
-                        opposite_gender = "Female";
-                    }
-                    else
-                    {
-                        user_gender = "Female";
-                        opposite_gender = "Male";
-                    }
-
-                    getOppositeGender();
+                    orientation = dataSnapshot.child("Orientation").getValue().toString();
+                    getPotentialMatches();
                 }
             }
             @Override
@@ -184,7 +172,7 @@ public class DateFragment extends Fragment
         });
     }
 
-    public void getOppositeGender()
+    public void getPotentialMatches()
     {
         DatabaseReference oppositeGenderDB = databaseReference;
 
@@ -194,15 +182,27 @@ public class DateFragment extends Fragment
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
             {
                 if(dataSnapshot.exists())
-                {
-                    if(dataSnapshot.exists() && !dataSnapshot.child("Connections/Nope/").hasChild(currentUser_id) &&
-                            !dataSnapshot.child("Connections/Yes/").hasChild(currentUser_id) &&
-                            dataSnapshot.child("Gender").getValue().toString().equals(opposite_gender))
+                    if(!dataSnapshot.child("Connections/Nope/").hasChild(currentUser_id) && !dataSnapshot.child("Connections/Yes/").hasChild(currentUser_id))
                     {
-                        cardsList.add(new Cards(dataSnapshot.getKey(),dataSnapshot.child("Name").getValue().toString(),dataSnapshot.child("ProfileImageUrl").getValue().toString()));
-                        cardAdapter.notifyDataSetChanged();
+                        SharedPreferences sp = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+                        if (sp.getString("Age_Low","18").compareTo(dataSnapshot.child("Age").getValue().toString()) <= 0 && sp.getString("Age_High","50").compareTo(dataSnapshot.child("Age").getValue().toString()) >= 0 &&
+                            sp.getString("Height_Low","4'0\"").compareTo(dataSnapshot.child("Height").getValue().toString()) <= 0 && sp.getString("Height_High","7'0\"").compareTo(dataSnapshot.child("Height").getValue().toString()) >= 0)
+                        {
+                            if (orientation.equals("Men") && dataSnapshot.child("Gender").getValue().toString().equals("Male"))
+                            {
+                                cardsList.add(new Cards(dataSnapshot.getKey(), dataSnapshot.child("Name").getValue().toString(), dataSnapshot.child("Age").getValue().toString(),
+                                        dataSnapshot.child("Height").getValue().toString(), dataSnapshot.child("City").getValue().toString(),
+                                        dataSnapshot.child("ProfileImageUrl").getValue().toString()));
+                            }
+                            else if (orientation.equals("Women") && dataSnapshot.child("Gender").getValue().toString().equals("Female"))
+                            {
+                                cardsList.add(new Cards(dataSnapshot.getKey(), dataSnapshot.child("Name").getValue().toString(), dataSnapshot.child("Age").getValue().toString(),
+                                        dataSnapshot.child("Height").getValue().toString(), dataSnapshot.child("City").getValue().toString(),
+                                        dataSnapshot.child("ProfileImageUrl").getValue().toString()));
+                            }
+                            cardAdapter.notifyDataSetChanged();
+                        }
                     }
-                }
             }
 
             @Override
