@@ -60,8 +60,8 @@ public class PreferencesFragment extends Fragment
 
     private DatabaseReference databaseReference;
     final int startingHeight = 48;
-    private int startingInches, endingInches, startingFeet, endingFeet, age_low, age_high;
-    private String user_id, height_low, height_high;
+    private int startingInches, endingInches, startingFeet, endingFeet, age_low, age_high, height_low, height_high;;
+    private String user_id;
 
     public PreferencesFragment(){}
 
@@ -82,8 +82,6 @@ public class PreferencesFragment extends Fragment
 
         ButterKnife.bind(this,view);
 
-        getUserPreferences();
-
         ageBar.setTickCount(33);
         ageBar.setTickHeight(0);
         ageBar.setBarWeight(6);
@@ -96,14 +94,17 @@ public class PreferencesFragment extends Fragment
         distanceBar.setTickHeight(0);
         distanceBar.setBarWeight(6);
 
+        getUserOrientation();
+        getUserSharedPreferences();
+
         ageBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener()
         {
             @Override
             public void onIndexChangeListener(RangeBar rangeBar, int i, int i1)
             {
-                age_low = i;
-                age_high = i1;
-                age_range_tv.setText((i+18)+"-"+(i1+18));
+                age_low = i+18;
+                age_high = i1+18;
+                age_range_tv.setText(age_low+"-"+age_high);
             }
         });
 
@@ -115,6 +116,9 @@ public class PreferencesFragment extends Fragment
                 startingInches = startingHeight + i;
                 endingInches = startingHeight + i1;
 
+                height_low = startingInches;
+                height_high = endingInches;
+
                 startingFeet = startingInches/12;
                 endingFeet = endingInches/12;
 
@@ -122,8 +126,7 @@ public class PreferencesFragment extends Fragment
                 endingInches = endingInches % 12;
 
                 String height = startingFeet+"'"+startingInches+'"'+"-"+endingFeet+"'"+endingInches+'"';
-                height_low = startingFeet+"'"+startingInches+'"';
-                height_high = endingFeet+"'"+endingInches+'"';
+
                 height_range_tv.setText(height);
             }
         });
@@ -153,7 +156,7 @@ public class PreferencesFragment extends Fragment
         return true;
     }
 
-    private void getUserPreferences()
+    private void getUserOrientation()
     {
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -165,14 +168,13 @@ public class PreferencesFragment extends Fragment
                     Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
 
                     if(map.get("Orientation") != null)
-                        ((RadioButton)radioGroup.findViewById(map.get("Orientation").toString().equals("Male") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
+                        ((RadioButton)radioGroup.findViewById(map.get("Orientation").toString().equals("Men") ? R.id.male_radio_button : R.id.female_radio_button)).setChecked(true);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError){}
         });
-
     }
 
     private void saveUserPreferences()
@@ -180,11 +182,11 @@ public class PreferencesFragment extends Fragment
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        editor.putString("Age_Low",age_low+"");
-        editor.putString("Age_High",age_high+"");
+        editor.putInt("Age_Low",age_low);
+        editor.putInt("Age_High",age_high);
 
-        editor.putString("Height_Low",height_low);
-        editor.putString("Height_High",height_high);
+        editor.putInt("Height_Low",height_low);
+        editor.putInt("Height_High",height_high);
 
         editor.apply();
     }
@@ -192,6 +194,25 @@ public class PreferencesFragment extends Fragment
     private void getUserSharedPreferences()
     {
         SharedPreferences sharedPreferences = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
+        age_low = sharedPreferences.getInt("Age_Low",18);
+        age_high = sharedPreferences.getInt("Age_High",50);
+        age_range_tv.setText(age_low+"-"+age_high);
+        ageBar.setThumbIndices(age_low-18,age_high-18);
 
+        height_low = sharedPreferences.getInt("Height_Low",48);
+        height_high = sharedPreferences.getInt("Height_High",84);
+
+        heightBar.setThumbIndices(height_low-48,height_high-48);
+
+        String height = getHeight(height_low)+"-"+getHeight(height_high);
+        height_range_tv.setText(height);
+    }
+
+    public String getHeight(int inches)
+    {
+        int feet = inches/12;
+        inches = inches%12;
+
+        return feet+"'"+inches+'"';
     }
 }

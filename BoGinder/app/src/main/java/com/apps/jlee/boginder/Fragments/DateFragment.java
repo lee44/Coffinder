@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -185,8 +186,10 @@ public class DateFragment extends Fragment
                     if(!dataSnapshot.child("Connections/Nope/").hasChild(currentUser_id) && !dataSnapshot.child("Connections/Yes/").hasChild(currentUser_id))
                     {
                         SharedPreferences sp = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-                        if (sp.getString("Age_Low","18").compareTo(dataSnapshot.child("Age").getValue().toString()) <= 0 && sp.getString("Age_High","50").compareTo(dataSnapshot.child("Age").getValue().toString()) >= 0 &&
-                            sp.getString("Height_Low","4'0\"").compareTo(dataSnapshot.child("Height").getValue().toString()) <= 0 && sp.getString("Height_High","7'0\"").compareTo(dataSnapshot.child("Height").getValue().toString()) >= 0)
+                        if (sp.getInt("Age_Low",18) <= Integer.valueOf(dataSnapshot.child("Age").getValue().toString()) &&
+                            sp.getInt("Age_High",50) >= Integer.valueOf(dataSnapshot.child("Age").getValue().toString()) &&
+                            getHeight(sp.getInt("Height_Low",48)).compareTo(dataSnapshot.child("Height").getValue().toString()) <= 0 &&
+                            getHeight(sp.getInt("Height_High",84)).compareTo(dataSnapshot.child("Height").getValue().toString()) >= 0)
                         {
                             if (orientation.equals("Men") && dataSnapshot.child("Gender").getValue().toString().equals("Male"))
                             {
@@ -217,5 +220,41 @@ public class DateFragment extends Fragment
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError){}
         });
+    }
+
+    public String getHeight(int inches)
+    {
+        int feet = inches/12;
+        inches = inches%12;
+
+        return feet+"'"+inches+'"';
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        //Log.v("Lakers","DateFragment started");
+
+    }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        //Log.v("Lakers","DateFragment resume");
+
+    }
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        //Log.v("Lakers","DateFragment paused");
+
+    }
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        //Log.v("Lakers","DateFragment destroyed");
     }
 }
