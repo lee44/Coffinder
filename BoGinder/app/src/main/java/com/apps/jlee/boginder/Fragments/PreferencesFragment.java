@@ -90,7 +90,7 @@ public class PreferencesFragment extends Fragment
         heightBar.setTickHeight(0);
         heightBar.setBarWeight(6);
 
-        distanceBar.setTickCount(50);
+        distanceBar.setTickCount(51);
         distanceBar.setTickHeight(0);
         distanceBar.setBarWeight(6);
 

@@ -19,6 +19,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Looper;
 import android.provider.Settings;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -117,6 +118,7 @@ public class MainActivity extends AppCompatActivity
                                 }
                                 else
                                 {
+                                    Log.v("Lakers","RequestNewLocationData not called");
                                     Bundle bundle = new Bundle();
                                     bundle.putDouble("Latitude",location.getLatitude());
                                     bundle.putDouble("Longitude",location.getLongitude());
@@ -129,9 +131,8 @@ public class MainActivity extends AppCompatActivity
             }
             else
             {
-                Toast.makeText(this, "Turn on location", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
+                startActivityForResult(intent,44);
             }
         }
         else
@@ -140,10 +141,19 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        // Check which request we're responding to
+        if (requestCode == 44)
+        {
+            getLastLocation();
+        }
+    }
 
     @SuppressLint("MissingPermission")
     private void requestNewLocationData()
-    {
+    {   Log.v("Lakers","RequestNewLocationData");
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(0);
