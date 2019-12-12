@@ -106,7 +106,6 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    @SuppressLint("MissingPermission")
     private void getLastLocation()
     {
         if (checkPermissions())
@@ -150,17 +149,22 @@ public class MainActivity extends AppCompatActivity
 
     private void enableLocationServices()
     {
+        //Define the paramters of our request
         LocationRequest mLocationRequest = new LocationRequest();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         mLocationRequest.setInterval(0);
         mLocationRequest.setFastestInterval(0);
         mLocationRequest.setNumUpdates(1);
 
+        //Build a location settings request
         LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(mLocationRequest);
 
+        //Check if the location settings request is fulfilled
         Task<LocationSettingsResponse> task = LocationServices.getSettingsClient(this).checkLocationSettings(builder.build());
 
-        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>() {
+        //A listener that is called when location settings request are fulfilled
+        task.addOnSuccessListener(this, new OnSuccessListener<LocationSettingsResponse>()
+        {
             @Override
             public void onSuccess(LocationSettingsResponse locationSettingsResponse)
             {
@@ -169,18 +173,23 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        task.addOnFailureListener(this, new OnFailureListener() {
+        //A listener that is called when location settings request is not fulfilled
+        task.addOnFailureListener(this, new OnFailureListener()
+        {
             @Override
-            public void onFailure(@NonNull Exception e) {
-                if (e instanceof ResolvableApiException) {
-                    // Location settings are not satisfied, but this can be fixed
-                    // by showing the user a dialog.
-                    try {
-                        // Show the dialog by calling startResolutionForResult(),
-                        // and check the result in onActivityResult().
+            public void onFailure(@NonNull Exception e)
+            {
+                if (e instanceof ResolvableApiException)
+                {
+                    // Location settings are not satisfied
+                    try
+                    {
+                        // Show a dialog by calling startResolutionForResult() and check the result in onActivityResult().
                         ResolvableApiException resolvable = (ResolvableApiException) e;
                         resolvable.startResolutionForResult(MainActivity.this,44);
-                    } catch (IntentSender.SendIntentException sendEx) {
+                    }
+                    catch (IntentSender.SendIntentException sendEx)
+                    {
                         // Ignore the error.
                     }
                 }
@@ -188,13 +197,20 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    /*If user did not allow location services, it will keep asking it before proceeding to dateFragment*/
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         getLastLocation();
     }
 
-    /*In some device, if you turn off the location and again turn on, the previous recorded location information will be cleared*/
+    private boolean isLocationEnabled()
+    {
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+    }
+
+    /*In some devices, if you turn off the location and again turn on, the previous recorded location information will be cleared*/
     private void requestNewLocationData()
     {
         LocationRequest mLocationRequest = new LocationRequest();
@@ -207,6 +223,7 @@ public class MainActivity extends AppCompatActivity
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback,Looper.myLooper());
     }
 
+    /*LocationCallback is a class with empty methods. We are overriding the onLocationResult method which will be used in requestNewLocationData*/
     private LocationCallback mLocationCallback = new LocationCallback()
     {
         @Override
@@ -231,17 +248,13 @@ public class MainActivity extends AppCompatActivity
         return false;
     }
 
+    /*Opens a dialog box requesting user to grant permission*/
     private void requestPermissions()
     {
         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_ID);
     }
 
-    private boolean isLocationEnabled()
-    {
-        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) || locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-    }
-
+    /*Called after user responds to the dialog box*/
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
     {
