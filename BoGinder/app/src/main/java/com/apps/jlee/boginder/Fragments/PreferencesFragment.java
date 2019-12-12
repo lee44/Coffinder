@@ -60,7 +60,7 @@ public class PreferencesFragment extends Fragment
 
     private DatabaseReference databaseReference;
     final int startingHeight = 48;
-    private int startingInches, endingInches, startingFeet, endingFeet, age_low, age_high, height_low, height_high;;
+    private int startingInches, endingInches, startingFeet, endingFeet, age_low, age_high, height_low, height_high, distance_low, distance_high;
     private String user_id;
 
     public PreferencesFragment(){}
@@ -136,7 +136,10 @@ public class PreferencesFragment extends Fragment
             @Override
             public void onIndexChangeListener(RangeBar rangeBar, int i, int i1)
             {
-                distance_range_tv.setText(i+"-"+i1+" mi");
+                distance_low = i;
+                distance_high = i1;
+
+                distance_range_tv.setText(distance_low+"-"+distance_high+" mi");
             }
         });
 
@@ -188,6 +191,9 @@ public class PreferencesFragment extends Fragment
         editor.putInt("Height_Low",height_low);
         editor.putInt("Height_High",height_high);
 
+        editor.putInt("Distance_Low",distance_low);
+        editor.putInt("Distance_High",distance_high);
+
         editor.apply();
     }
 
@@ -206,6 +212,11 @@ public class PreferencesFragment extends Fragment
 
         String height = getHeight(height_low)+"-"+getHeight(height_high);
         height_range_tv.setText(height);
+
+        distance_low = sharedPreferences.getInt("Distance_Low",0);
+        distance_high = sharedPreferences.getInt("Distance_High",50);
+        distance_range_tv.setText(distance_low+"-"+distance_high);
+        distanceBar.setThumbIndices(distance_low,distance_high);
     }
 
     public String getHeight(int inches)
