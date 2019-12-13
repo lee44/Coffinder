@@ -127,10 +127,13 @@ public class MainActivity extends AppCompatActivity
                                 lastLocation = task.getResult();
                                 if (lastLocation == null)
                                 {
+                                    Log.v("Lakers","requestNewLocationData started");
+                                    startIntentService();
                                     requestNewLocationData();
                                 }
                                 else
                                 {
+                                    Log.v("Lakers","IntentService started");
                                     startIntentService();
                                     Bundle bundle = new Bundle();
                                     bundle.putDouble("Latitude",lastLocation.getLatitude());
@@ -229,7 +232,7 @@ public class MainActivity extends AppCompatActivity
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback,Looper.myLooper());
     }
 
-    /*LocationCallback is a class with empty methods. We are overriding the onLocationResult method which will be used in requestNewLocationData*/
+    /*LocationCallback is a class with empty methods. As the name implies, we are defining a callback method. We are overriding onLocationResult which will be used in requestNewLocationData()*/
     private LocationCallback mLocationCallback = new LocationCallback()
     {
         @Override
@@ -354,7 +357,7 @@ public class MainActivity extends AppCompatActivity
             if (resultCode == Constants.SUCCESS_RESULT)
             {
                 Toast.makeText(getBaseContext(),"Address Found",Toast.LENGTH_LONG).show();
-                Log.v("Lakers", addressOutput);
+                //Log.v("Lakers", addressOutput);
             }
         }
     }

@@ -10,14 +10,25 @@ import android.os.ResultReceiver;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import androidx.annotation.NonNull;
+
 public class FetchAddressIntentService extends IntentService
 {
     protected ResultReceiver receiver;
+    protected DatabaseReference databaseReference;
+    private String currentUser_id;
 
     public FetchAddressIntentService()
     {
@@ -78,8 +89,18 @@ public class FetchAddressIntentService extends IntentService
             {
                 addressFragments.add(address.getAddressLine(i));
             }
-            Log.v("Lakers", "Address Found");
             deliverResultToReceiver(Constants.SUCCESS_RESULT,TextUtils.join(System.getProperty("line.separator"),addressFragments));
+
+            currentUser_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser_id);
+
+            String [] split = addresses.get(0).getAddressLine(0).split(",");
+            String streetName = split[0];
+            String cityName = split[1];
+            String stateName = split[2];
+            String countryName = split[3];
+
+           databaseReference.child("City").setValue(cityName);
         }
     }
 
