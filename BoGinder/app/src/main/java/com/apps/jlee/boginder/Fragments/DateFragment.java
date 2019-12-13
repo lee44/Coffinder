@@ -64,7 +64,8 @@ public class DateFragment extends Fragment
 
         checkUserOrientation();
 
-        Log.v("Lakers",getArguments().getDouble("Latitude")+", "+getArguments().getDouble("Longitude"));
+        //Log.v("Lakers",getArguments().getDouble("Latitude")+", "+getArguments().getDouble("Longitude"));
+
         flingContainer.setAdapter(cardAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener()
         {

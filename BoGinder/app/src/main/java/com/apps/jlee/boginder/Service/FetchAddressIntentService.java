@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.ResultReceiver;
 import android.text.TextUtils;
 import android.util.Log;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +17,6 @@ import java.util.Locale;
 
 public class FetchAddressIntentService extends IntentService
 {
-    public static final int SUCCESS_RESULT = 0;
-    public static final int FAILURE_RESULT = 1;
-    public static final String PACKAGE_NAME = "com.google.android.gms.location.sample.locationaddress";
-    public static final String RECEIVER = PACKAGE_NAME + ".RECEIVER";
-    public static final String RESULT_DATA_KEY = PACKAGE_NAME + ".RESULT_DATA_KEY";
-    public static final String LOCATION_DATA_EXTRA = PACKAGE_NAME + ".LOCATION_DATA_EXTRA";
-
     protected ResultReceiver receiver;
 
     public FetchAddressIntentService()
@@ -41,25 +35,25 @@ public class FetchAddressIntentService extends IntentService
         }
         String errorMessage = "";
 
-        // Get the location passed to this service through an extra.
-        Location location = intent.getParcelableExtra(LOCATION_DATA_EXTRA);
-
-        // ...
+        // Get the location passed to this service through an extra since a Location Object was passed instead of a normal string or int
+        Location location = intent.getParcelableExtra(Constants.LOCATION_DATA_EXTRA);
+        receiver = intent.getParcelableExtra(Constants.RECEIVER);
 
         List<Address> addresses = null;
 
         try
         {
-            addresses = geocoder.getFromLocation(location.getLatitude(),location.getLongitude(),1);
-        } catch (IOException ioException)
+            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+        }
+        catch (IOException ioException)
         {
             // Catch network or other I/O problems.
-            errorMessage = "service_not_available";
+            errorMessage = "Service not available";
             Log.v("Lakers", errorMessage, ioException);
         } catch (IllegalArgumentException illegalArgumentException)
         {
             // Catch invalid latitude or longitude values.
-            errorMessage = "invalid_lat_long_used";
+            errorMessage = "Invalid latitude and longitude";
             Log.v("Lakers", errorMessage + ". " + "Latitude = " + location.getLatitude() + ", Longitude = " + location.getLongitude(), illegalArgumentException);
         }
 
@@ -68,10 +62,10 @@ public class FetchAddressIntentService extends IntentService
         {
             if (errorMessage.isEmpty())
             {
-                errorMessage = "No address found";
+                errorMessage = "No Address found";
                 Log.v("Lakers", errorMessage);
             }
-            deliverResultToReceiver(FAILURE_RESULT, errorMessage);
+            deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage);
         }
         else
         {
@@ -84,14 +78,15 @@ public class FetchAddressIntentService extends IntentService
             {
                 addressFragments.add(address.getAddressLine(i));
             }
-            Log.v("Lakers", "Address found");
-            deliverResultToReceiver(SUCCESS_RESULT, TextUtils.join(System.getProperty("line.separator"),addressFragments));
+            Log.v("Lakers", "Address Found");
+            deliverResultToReceiver(Constants.SUCCESS_RESULT,TextUtils.join(System.getProperty("line.separator"),addressFragments));
         }
     }
+
     private void deliverResultToReceiver(int resultCode, String message)
     {
         Bundle bundle = new Bundle();
-        bundle.putString(RESULT_DATA_KEY, message);
+        bundle.putString(Constants.RESULT_DATA_KEY, message);
         receiver.send(resultCode, bundle);
     }
 }

@@ -37,6 +37,7 @@ import com.apps.jlee.boginder.Fragments.MatchFragment;
 import com.apps.jlee.boginder.Fragments.DateFragment;
 import com.apps.jlee.boginder.R;
 import com.apps.jlee.boginder.Service.Constants;
+import com.apps.jlee.boginder.Service.FetchAddressIntentService;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -65,6 +66,8 @@ public class MainActivity extends AppCompatActivity
 
     private int PERMISSION_ID = 44;
     private FusedLocationProviderClient mFusedLocationClient;
+    protected Location lastLocation;
+    private AddressResultReceiver resultReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -121,16 +124,17 @@ public class MainActivity extends AppCompatActivity
                             @Override
                             public void onComplete(@NonNull Task<Location> task)
                             {
-                                Location location = task.getResult();
-                                if (location == null)
+                                lastLocation = task.getResult();
+                                if (lastLocation == null)
                                 {
                                     requestNewLocationData();
                                 }
                                 else
                                 {
+                                    startIntentService();
                                     Bundle bundle = new Bundle();
-                                    bundle.putDouble("Latitude",location.getLatitude());
-                                    bundle.putDouble("Longitude",location.getLongitude());
+                                    bundle.putDouble("Latitude",lastLocation.getLatitude());
+                                    bundle.putDouble("Longitude",lastLocation.getLongitude());
                                     dateFragment.setArguments(bundle);
                                     setFragment(dateFragment);
                                 }
@@ -270,38 +274,13 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    class AddressResultReceiver extends ResultReceiver
+    protected void startIntentService()
     {
-        public AddressResultReceiver(Handler handler)
-        {
-            super(handler);
-        }
-
-        @Override
-        protected void onReceiveResult(int resultCode, Bundle resultData)
-        {
-
-            if (resultData == null)
-            {
-                return;
-            }
-
-            // Display the address string
-            // or an error message sent from the intent service.
-            addressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
-            if (addressOutput == null)
-            {
-                addressOutput = "";
-            }
-            displayAddressOutput();
-
-            // Show a toast message if an address was found.
-            if (resultCode == Constants.SUCCESS_RESULT)
-            {
-                showToast(getString(R.string.address_found));
-            }
-
-        }
+        Intent intent = new Intent(this, FetchAddressIntentService.class);
+        resultReceiver = new AddressResultReceiver(new Handler());
+        intent.putExtra(Constants.RECEIVER, resultReceiver);
+        intent.putExtra(Constants.LOCATION_DATA_EXTRA, lastLocation);
+        startService(intent);
     }
 
     public void setFragment(Fragment fragment)
@@ -343,6 +322,39 @@ public class MainActivity extends AppCompatActivity
             for (int i = 0; i < toolbar.getMenu().size(); i++)
             {
                 toolbar.getMenu().getItem(i).setVisible(true);
+            }
+        }
+    }
+
+    /*This class is very much like an interface I used in CarCare where an interface method was listening in another class and called after user added a gas entry*/
+    class AddressResultReceiver extends ResultReceiver
+    {
+        public AddressResultReceiver(Handler handler)
+        {
+            super(handler);
+        }
+
+        @Override
+        protected void onReceiveResult(int resultCode, Bundle resultData)
+        {
+            if (resultData == null)
+            {
+                Log.v("Lakers", "ResultData is null");
+                return;
+            }
+
+            // Display the address string or an error message sent from the intent service.
+            String addressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
+            if (addressOutput == null)
+            {
+                addressOutput = "";
+            }
+
+            // Show a toast message if an address was found.
+            if (resultCode == Constants.SUCCESS_RESULT)
+            {
+                Toast.makeText(getBaseContext(),"Address Found",Toast.LENGTH_LONG).show();
+                Log.v("Lakers", addressOutput);
             }
         }
     }
