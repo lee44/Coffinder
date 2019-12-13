@@ -188,10 +188,19 @@ public class DateFragment extends Fragment
                     if(!dataSnapshot.child("Connections/Nope/").hasChild(currentUser_id) && !dataSnapshot.child("Connections/Yes/").hasChild(currentUser_id))
                     {
                         SharedPreferences sp = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-                        if (sp.getInt("Age_Low",18) <= Integer.valueOf(dataSnapshot.child("Age").getValue().toString()) &&
-                            sp.getInt("Age_High",50) >= Integer.valueOf(dataSnapshot.child("Age").getValue().toString()) &&
-                            getHeight(sp.getInt("Height_Low",48)).compareTo(dataSnapshot.child("Height").getValue().toString()) <= 0 &&
-                            getHeight(sp.getInt("Height_High",84)).compareTo(dataSnapshot.child("Height").getValue().toString()) >= 0)
+                        int ageLow = sp.getInt("Age_Low",18);
+                        int ageHigh = sp.getInt("Age_High",50);
+                        int userAge = Integer.valueOf(dataSnapshot.child("Age").getValue().toString());
+
+                        String heightLow = getHeight(sp.getInt("Height_Low",48));
+                        String heightHigh = getHeight(sp.getInt("Height_High",84));
+                        String userHeight = dataSnapshot.child("Height").getValue().toString();
+
+                        int distanceLow = sp.getInt("Distance_Low",0);
+                        int distanceHigh = sp.getInt("Distance_High",50);
+                        double distanceTo = calculateDistance(getArguments().getDouble("Latitude"),getArguments().getDouble("Longitude"),Double.valueOf(dataSnapshot.child("Latitude").getValue().toString()),Double.valueOf(dataSnapshot.child("Longitude").getValue().toString()),"M");
+
+                        if (ageLow <= userAge && ageHigh >= userAge && heightLow.compareTo(userHeight) <= 0 && heightHigh.compareTo(userHeight) >= 0 && distanceLow <= distanceTo && distanceHigh >= distanceTo)
                         {
                             if (orientation.equals("Men") && dataSnapshot.child("Gender").getValue().toString().equals("Male"))
                             {
@@ -230,6 +239,40 @@ public class DateFragment extends Fragment
         inches = inches%12;
 
         return feet+"'"+inches+'"';
+    }
+
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2, String unit)
+    {
+        double theta = lon1 - lon2;
+        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
+        dist = Math.acos(dist);
+        dist = rad2deg(dist);
+        dist = dist * 60 * 1.1515;
+        if (unit.equals("K"))
+        {
+            dist = dist * 1.609344;
+        }
+        else if (unit.equals("M"))
+        {
+            dist = dist * 0.8684;
+        }
+        return (dist);
+    }
+
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::  This function converts decimal degrees to radians             :*/
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    private double deg2rad(double deg)
+    {
+        return (deg * Math.PI / 180.0);
+    }
+
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    /*::  This function converts radians to decimal degrees             :*/
+    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
+    private double rad2deg(double rad)
+    {
+        return (rad * 180.0 / Math.PI);
     }
 
     @Override

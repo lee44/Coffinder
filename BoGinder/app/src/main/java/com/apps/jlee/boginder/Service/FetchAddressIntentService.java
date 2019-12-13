@@ -95,10 +95,10 @@ public class FetchAddressIntentService extends IntentService
             databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser_id);
 
             String [] split = addresses.get(0).getAddressLine(0).split(",");
-            String streetName = split[0];
-            String cityName = split[1];
-            String stateName = split[2];
-            String countryName = split[3];
+            String streetName = split[0].trim();
+            String cityName = split[1].trim();
+            String stateName = split[2].trim();
+            String countryName = split[3].trim();
 
            databaseReference.child("City").setValue(cityName);
            Location lastLocation = intent.getParcelableExtra(Constants.LOCATION_DATA_EXTRA);
