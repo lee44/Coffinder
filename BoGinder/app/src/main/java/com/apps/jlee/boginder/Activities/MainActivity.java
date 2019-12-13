@@ -238,11 +238,11 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onLocationResult(LocationResult locationResult)
         {
-            Location mLastLocation = locationResult.getLastLocation();
+            lastLocation = locationResult.getLastLocation();
 
             Bundle bundle = new Bundle();
-            bundle.putDouble("Latitude",mLastLocation.getLatitude());
-            bundle.putDouble("Longitude",mLastLocation.getLongitude());
+            bundle.putDouble("Latitude",lastLocation.getLatitude());
+            bundle.putDouble("Longitude",lastLocation.getLongitude());
             dateFragment.setArguments(bundle);
             setFragment(dateFragment);
         }

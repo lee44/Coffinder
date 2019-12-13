@@ -84,7 +84,7 @@ public class FetchAddressIntentService extends IntentService
             ArrayList<String> addressFragments = new ArrayList<String>();
 
             // Fetch the address lines using getAddressLine,
-            // join them, and send them to the thread.
+            // join them, and send them to the thread
             for (int i = 0; i <= address.getMaxAddressLineIndex(); i++)
             {
                 addressFragments.add(address.getAddressLine(i));
@@ -101,6 +101,9 @@ public class FetchAddressIntentService extends IntentService
             String countryName = split[3];
 
            databaseReference.child("City").setValue(cityName);
+           Location lastLocation = intent.getParcelableExtra(Constants.LOCATION_DATA_EXTRA);
+           databaseReference.child("Latitude").setValue(lastLocation.getLatitude());
+           databaseReference.child("Longitude").setValue(lastLocation.getLongitude());
         }
     }
 
