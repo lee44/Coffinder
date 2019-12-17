@@ -127,19 +127,15 @@ public class MainActivity extends AppCompatActivity
                                 lastLocation = task.getResult();
                                 if (lastLocation == null)
                                 {
-                                    Log.v("Lakers","requestNewLocationData started");
-                                    startIntentService();
                                     requestNewLocationData();
                                 }
                                 else
                                 {
-                                    Log.v("Lakers","IntentService started");
                                     startIntentService();
                                     Bundle bundle = new Bundle();
                                     bundle.putDouble("Latitude",lastLocation.getLatitude());
                                     bundle.putDouble("Longitude",lastLocation.getLongitude());
                                     dateFragment.setArguments(bundle);
-                                    setFragment(dateFragment);
                                 }
                             }
                         }
@@ -244,7 +240,7 @@ public class MainActivity extends AppCompatActivity
             bundle.putDouble("Latitude",lastLocation.getLatitude());
             bundle.putDouble("Longitude",lastLocation.getLongitude());
             dateFragment.setArguments(bundle);
-            setFragment(dateFragment);
+            startIntentService();
         }
     };
 
@@ -358,6 +354,7 @@ public class MainActivity extends AppCompatActivity
             {
                 Toast.makeText(getBaseContext(),"Address Found",Toast.LENGTH_LONG).show();
                 //Log.v("Lakers", addressOutput);
+                setFragment(dateFragment);
             }
         }
     }

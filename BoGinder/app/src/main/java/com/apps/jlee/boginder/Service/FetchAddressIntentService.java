@@ -54,18 +54,17 @@ public class FetchAddressIntentService extends IntentService
 
         try
         {
-            addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if(location != null)
+                addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
         }
         catch (IOException ioException)
         {
             // Catch network or other I/O problems.
             errorMessage = "Service not available";
-            Log.v("Lakers", errorMessage, ioException);
         } catch (IllegalArgumentException illegalArgumentException)
         {
             // Catch invalid latitude or longitude values.
             errorMessage = "Invalid latitude and longitude";
-            Log.v("Lakers", errorMessage + ". " + "Latitude = " + location.getLatitude() + ", Longitude = " + location.getLongitude(), illegalArgumentException);
         }
 
         // Handle case where no address was found.
@@ -74,7 +73,6 @@ public class FetchAddressIntentService extends IntentService
             if (errorMessage.isEmpty())
             {
                 errorMessage = "No Address found";
-                Log.v("Lakers", errorMessage);
             }
             deliverResultToReceiver(Constants.FAILURE_RESULT, errorMessage);
         }

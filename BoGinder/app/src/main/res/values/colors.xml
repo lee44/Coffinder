@@ -16,6 +16,8 @@
     <color name="receiver_message">#E7E7E7</color>
     <color name="sender_message">#2196F3</color>
 
+    <color name="bot_nav_bar">#F5F5F5</color>
+
     <color name="colorGradientStart">#D9FF43</color>
     <color name="colorGradientCenter">#F67831</color>
     <color name="colorGradientEnd">#FF1493</color>
