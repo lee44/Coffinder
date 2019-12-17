@@ -10,12 +10,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.apps.jlee.boginder.Firebase.MyFirebaseMessagingService;
 import com.apps.jlee.boginder.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +34,7 @@ public class LoginActivity extends AppCompatActivity
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
+    private DatabaseReference currentUserDB;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -41,6 +45,7 @@ public class LoginActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
         sign_in.setOnClickListener(new View.OnClickListener()
         {
@@ -78,6 +83,7 @@ public class LoginActivity extends AppCompatActivity
 
                 if(user != null)
                 {
+                    currentUserDB.child(user.getUid()).child("DeviceToken").setValue(MyFirebaseMessagingService.getToken(getBaseContext()));
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();

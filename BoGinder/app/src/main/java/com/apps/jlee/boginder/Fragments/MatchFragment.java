@@ -34,7 +34,9 @@ public class MatchFragment extends Fragment
     @BindView(R.id.matches_recycleView)
     RecyclerView recyclerView;
     @BindView(R.id.No_Matches)
-    TextView textView;
+    TextView No_Matches;
+    @BindView(R.id.No_Messages)
+    TextView No_Messages;
 
     private Context context;
     private ArrayList<Matches> resultMatches = new ArrayList<>();
@@ -122,12 +124,12 @@ public class MatchFragment extends Fragment
                     resultMatches.add(new Matches(user_id,name,profileImageUrl));
                     if(resultMatches.size() != 0)
                     {
-                        textView.setVisibility(View.GONE);
+                        No_Matches.setVisibility(View.GONE);
                         recyclerView.setVisibility(View.VISIBLE);
                     }
                     else
                     {
-                        textView.setVisibility(View.VISIBLE);
+                        No_Matches.setVisibility(View.VISIBLE);
                         recyclerView.setVisibility(View.GONE);
                     }
                     matchesAdapter.notifyDataSetChanged();

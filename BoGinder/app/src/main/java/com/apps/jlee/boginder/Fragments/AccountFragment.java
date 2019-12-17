@@ -25,6 +25,7 @@ public class AccountFragment extends Fragment
 
         MyTabPagerAdapter tabPager = new MyTabPagerAdapter(getChildFragmentManager());
 
+        /*ViewPager is the container for the pages*/
         ViewPager viewPager = getView().findViewById(R.id.viewpager);
         viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(tabPager);
@@ -34,6 +35,7 @@ public class AccountFragment extends Fragment
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    /*Handles which fragment is displayed inside the ViewPager*/
     class MyTabPagerAdapter extends FragmentPagerAdapter
     {
         private String tabTitles[] = new String[] { "PHOTOS", "DETAILS", "PREFERENCES"};
