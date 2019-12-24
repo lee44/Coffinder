@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.apps.jlee.boginder.Adapter.MatchesAdapter;
+import com.apps.jlee.boginder.Adapter.MessagesAdapter;
+import com.apps.jlee.boginder.Models.Chat;
 import com.apps.jlee.boginder.Models.Matches;
 import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,6 +26,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
@@ -32,20 +35,26 @@ import java.util.List;
 public class MatchFragment extends Fragment
 {
     @BindView(R.id.matches_recycleView)
-    RecyclerView recyclerView;
+    RecyclerView matches_recycleView;
+    @BindView(R.id.messages_recycleView)
+    RecyclerView messages_recycleView;
     @BindView(R.id.No_Matches)
     TextView No_Matches;
     @BindView(R.id.No_Messages)
     TextView No_Messages;
 
+    DatabaseReference databaseReference;
     private Context context;
-    private ArrayList<Matches> resultMatches = new ArrayList<>();
+    private ArrayList<Matches> matches_list;
     private MatchesAdapter matchesAdapter;
+    private MessagesAdapter messagesAdapter;
     private String current_user_id;
 
     public MatchFragment(Context context)
     {
         this.context = context;
+
+        matches_list = new ArrayList<>();
     }
 
     @Override
@@ -55,19 +64,24 @@ public class MatchFragment extends Fragment
 
         ButterKnife.bind(this,view);
 
-        current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
+        current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
         getMatchUserID();
 
-        recyclerView.setLayoutManager(new LinearLayoutManager(context,RecyclerView.HORIZONTAL,false));
+        matches_recycleView.setLayoutManager(new LinearLayoutManager(context,RecyclerView.HORIZONTAL,false));
         matchesAdapter = new MatchesAdapter(getMatches(),context);
-        recyclerView.setAdapter(matchesAdapter);
+        matches_recycleView.setAdapter(matchesAdapter);
+
+        messages_recycleView.setLayoutManager(new LinearLayoutManager(context,RecyclerView.VERTICAL,false));
+        messagesAdapter = new MessagesAdapter(getMatches(),context);
+        messages_recycleView.setAdapter(messagesAdapter);
 
         return view;
     }
 
     private List<Matches> getMatches()
     {
-        return resultMatches;
+        return matches_list;
     }
 
     /**
@@ -75,9 +89,9 @@ public class MatchFragment extends Fragment
      */
     private void getMatchUserID()
     {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+current_user_id+"/Connections/Matches");
+        DatabaseReference matchDB = databaseReference.child("Users/"+current_user_id+"/Connections/Matches");
         //Use ListenerForSingleValueEvent for grabbing a single value
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
+        matchDB.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -86,7 +100,7 @@ public class MatchFragment extends Fragment
                 {
                     for(DataSnapshot match : dataSnapshot.getChildren())
                     {
-                        fetchMatchInformation(match.getKey());
+                        fetchMatchInformation(match.getKey(),match.child("chat_id").getValue().toString());
                     }
                 }
             }
@@ -99,10 +113,10 @@ public class MatchFragment extends Fragment
      * Fetches the information for each match
      * @param key
      */
-    private void fetchMatchInformation(String key)
+    private void fetchMatchInformation(String key, final String chat_id)
     {
-        final DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+key);
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
+        DatabaseReference matchInfoDB = databaseReference.child("Users/"+key);
+        matchInfoDB.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -121,23 +135,54 @@ public class MatchFragment extends Fragment
                         profileImageUrl = dataSnapshot.child("ProfileImageUrl").getValue().toString();
                     }
 
-                    resultMatches.add(new Matches(user_id,name,profileImageUrl));
-                    if(resultMatches.size() != 0)
+                    matches_list.add(new Matches(user_id,name,profileImageUrl,chat_id,""));
+                    if(matches_list.size() != 0)
                     {
                         No_Matches.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
+                        matches_recycleView.setVisibility(View.VISIBLE);
+
+                        No_Messages.setVisibility(View.GONE);
+                        messages_recycleView.setVisibility(View.VISIBLE);
                     }
                     else
                     {
                         No_Matches.setVisibility(View.VISIBLE);
-                        recyclerView.setVisibility(View.GONE);
+                        matches_recycleView.setVisibility(View.GONE);
+
+                        No_Messages.setVisibility(View.VISIBLE);
+                        messages_recycleView.setVisibility(View.GONE);
                     }
                     matchesAdapter.notifyDataSetChanged();
+                    fetchLastMessage(chat_id,0);
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError){}
+        });
+    }
+
+    private void fetchLastMessage(final String chat_id, final int position)
+    {
+        Query lastQuery = databaseReference.child("Chat").child(chat_id).orderByKey().limitToLast(1);
+
+        lastQuery.addListenerForSingleValueEvent(new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if(dataSnapshot.exists())
+                {
+                    for (DataSnapshot m : dataSnapshot.getChildren())
+                    {
+                        matches_list.get(position).setMessage(m.child("Message").getValue().toString());
+                    }
+                    messagesAdapter.notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError){}
         });
     }
 }

@@ -18,30 +18,31 @@ import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder>
+public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder>
 {
-    List<Matches> matches;
+    private List<Matches> matches;
     private Context context;
 
-    public MatchesAdapter(List<Matches> matches, Context context)
+    public MessagesAdapter(List<Matches> matches, Context context)
     {
         this.matches = matches;
         this.context = context;
     }
 
     @Override
-    public MatchesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public MessagesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_match, parent, false);
+        View view = inflater.inflate(R.layout.item_match_message, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(view);
+        MessagesAdapter.ViewHolder viewHolder = new MessagesAdapter.ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MatchesAdapter.ViewHolder holder, int position)
+    public void onBindViewHolder(MessagesAdapter.ViewHolder holder, int position)
     {
+        holder.matches_message.setText(matches.get(position).getMessage());
         holder.matches_name.setText(matches.get(position).getName());
         if(!matches.get(position).getProfileImageUrl().equals("Default"))
             Glide.with(context).load(matches.get(position).getProfileImageUrl()).into(holder.matches_imageView);
@@ -57,9 +58,9 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-
         ImageView matches_imageView;
         TextView matches_name;
+        TextView matches_message;
 
         public ViewHolder(View itemView)
         {
@@ -67,6 +68,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
             matches_imageView = itemView.findViewById(R.id.item_matches_imageView);
             matches_name = itemView.findViewById(R.id.item_matches_name);
+            matches_message = itemView.findViewById(R.id.matches_message);
 
             itemView.setOnClickListener(new View.OnClickListener()
             {
@@ -84,3 +86,4 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         }
     }
 }
+

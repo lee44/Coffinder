@@ -141,12 +141,7 @@ public class ChatActivity extends AppCompatActivity
                     }
                     if(message != null && sender_id != null && receiver_id != null)
                     {
-                        Boolean currentUserBoolean = false;
-                        if (sender_id.equals(current_user_id))
-                        {
-                            currentUserBoolean = true;
-                        }
-                        Chat newMessage = new Chat(message, currentUserBoolean);
+                        Chat newMessage = new Chat(message, receiver_id, sender_id);
                         resultChats.add(newMessage);
                         chatAdapter.notifyDataSetChanged();
                     }

@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import com.apps.jlee.boginder.Models.Chat;
 import com.apps.jlee.boginder.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -19,11 +20,13 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
     private Context context;
     private static final int VIEW_TYPE_MESSAGE_SENT = 1;
     private static final int VIEW_TYPE_MESSAGE_RECEIVED = 2;
+    private String current_user_id;
 
     public ChatAdapter(List<Chat> chat, Context context)
     {
         this.chat = chat;
         this.context = context;
+        current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
     @Override
@@ -44,7 +47,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
     @Override
     public void onBindViewHolder(ChatAdapter.ViewHolder holder, int position)
     {
-        if(chat.get(position).getCurrentUser())
+        if(chat.get(position).getSender_ID().equals(current_user_id))
         {
             holder.senderTextView.setText(chat.get(position).getMessage());
         }
@@ -65,7 +68,7 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
     {
         Chat message = chat.get(position);
 
-        if (message.getCurrentUser())
+        if (message.getSender_ID().equals(current_user_id))
             return VIEW_TYPE_MESSAGE_SENT;
         else
             return VIEW_TYPE_MESSAGE_RECEIVED;

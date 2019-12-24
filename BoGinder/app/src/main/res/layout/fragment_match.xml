@@ -27,7 +27,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_matches"
-        tools:visibility="visible"></androidx.recyclerview.widget.RecyclerView>
+        tools:visibility="visible">
+    </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/No_Matches"
@@ -41,7 +42,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/matches_recycleView"
-        tools:visibility="gone"></TextView>
+        tools:visibility="gone">
+    </TextView>
 
     <TextView
         android:id="@+id/messages"
@@ -54,7 +56,20 @@
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline17"></TextView>
+        app:layout_constraintTop_toTopOf="@+id/guideline17">
+    </TextView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messages_recycleView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/messages"
+        tools:visibility="visible">
+    </androidx.recyclerview.widget.RecyclerView>
 
     <TextView
         android:id="@+id/No_Messages"
@@ -68,13 +83,14 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/messages"
-        tools:visibility="gone"></TextView>
+        tools:visibility="gone">
+    </TextView>
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent=".2" />
+        app:layout_constraintGuide_percent=".25" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
