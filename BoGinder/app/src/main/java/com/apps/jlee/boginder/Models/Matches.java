@@ -2,15 +2,16 @@ package com.apps.jlee.boginder.Models;
 
 public class Matches
 {
-    private String user_id, name, profileImageUrl, chat_id, message;
+    private String user_id, name, profileImageUrl, chat_id, message, message_direction;
 
-    public Matches(String user_id,String name, String profileImageUrl, String chat_id, String message)
+    public Matches(String user_id,String name, String profileImageUrl, String chat_id, String message, String message_direction)
     {
         this.user_id = user_id;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
         this.chat_id = chat_id;
         this.message = message;
+        this.message_direction = message_direction;
     }
 
     public String getUser_id()
@@ -61,5 +62,15 @@ public class Matches
     public void setMessage(String message)
     {
         this.message = message;
+    }
+
+    public String getMessage_direction()
+    {
+        return message_direction;
+    }
+
+    public void setMessage_direction(String message_direction)
+    {
+        this.message_direction = message_direction;
     }
 }

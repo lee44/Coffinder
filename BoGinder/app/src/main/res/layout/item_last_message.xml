@@ -37,7 +37,7 @@
         app:layout_constraintTop_toTopOf="@+id/cardView"></TextView>
 
     <ImageView
-        android:id="@+id/sent_direction_imageView"
+        android:id="@+id/message_direction"
         android:layout_width="18dp"
         android:layout_height="18dp"
         android:layout_marginStart="8dp"
@@ -60,7 +60,7 @@
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="@+id/cardView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sent_direction_imageView"
+        app:layout_constraintStart_toEndOf="@+id/message_direction"
         app:layout_constraintTop_toBottomOf="@+id/item_matches_name"></TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -135,7 +135,7 @@ public class MatchFragment extends Fragment
                         profileImageUrl = dataSnapshot.child("ProfileImageUrl").getValue().toString();
                     }
 
-                    matches_list.add(new Matches(user_id,name,profileImageUrl,chat_id,""));
+                    matches_list.add(new Matches(user_id,name,profileImageUrl,chat_id,"",""));
                     if(matches_list.size() != 0)
                     {
                         No_Matches.setVisibility(View.GONE);
@@ -176,6 +176,8 @@ public class MatchFragment extends Fragment
                     for (DataSnapshot m : dataSnapshot.getChildren())
                     {
                         matches_list.get(position).setMessage(m.child("Message").getValue().toString());
+                        if(m.child("Sender_ID").getValue().toString().equals(current_user_id))
+                            matches_list.get(position).setMessage_direction("Sent");
                     }
                     messagesAdapter.notifyDataSetChanged();
                 }

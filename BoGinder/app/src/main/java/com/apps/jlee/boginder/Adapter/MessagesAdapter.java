@@ -42,12 +42,18 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
     @Override
     public void onBindViewHolder(MessagesAdapter.ViewHolder holder, int position)
     {
-        holder.matches_message.setText(matches.get(position).getMessage());
-        holder.matches_name.setText(matches.get(position).getName());
-        if(!matches.get(position).getProfileImageUrl().equals("Default"))
-            Glide.with(context).load(matches.get(position).getProfileImageUrl()).into(holder.matches_imageView);
+        holder.message.setText(matches.get(position).getMessage());
+        holder.name.setText(matches.get(position).getName());
+
+        if(matches.get(position).getMessage_direction().equals("Sent"))
+            holder.message_direction.setImageResource(R.drawable.arrow_left);
         else
-            holder.matches_imageView.setImageResource(R.mipmap.ic_launcher);
+            holder.message_direction.setImageResource(R.drawable.arrow_right);
+
+        if(!matches.get(position).getProfileImageUrl().equals("Default"))
+            Glide.with(context).load(matches.get(position).getProfileImageUrl()).into(holder.profile_image);
+        else
+            holder.profile_image.setImageResource(R.mipmap.ic_launcher);
     }
 
     @Override
@@ -58,17 +64,17 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        ImageView matches_imageView;
-        TextView matches_name;
-        TextView matches_message;
+        ImageView profile_image, message_direction;
+        TextView name, message;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
 
-            matches_imageView = itemView.findViewById(R.id.item_matches_imageView);
-            matches_name = itemView.findViewById(R.id.item_matches_name);
-            matches_message = itemView.findViewById(R.id.matches_message);
+            profile_image = itemView.findViewById(R.id.item_matches_imageView);
+            message_direction = itemView.findViewById(R.id.message_direction);
+            name = itemView.findViewById(R.id.item_matches_name);
+            message = itemView.findViewById(R.id.matches_message);
 
             itemView.setOnClickListener(new View.OnClickListener()
             {
