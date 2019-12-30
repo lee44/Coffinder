@@ -44,7 +44,7 @@
         android:adjustViewBounds="false"
         android:cropToPadding="false"
         android:scaleType="centerInside"
-        android:src="@drawable/arrow_left"
+        android:src="@drawable/arrow_right"
         app:layout_constraintBottom_toBottomOf="@+id/cardView"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toBottomOf="@+id/item_matches_name"></ImageView>
