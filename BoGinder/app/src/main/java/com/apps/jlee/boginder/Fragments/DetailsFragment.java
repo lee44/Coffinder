@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.apps.jlee.boginder.Activities.LoginRegisterActivity;
 import com.apps.jlee.boginder.Activities.MainActivity;
+import com.apps.jlee.boginder.DialogFragment.ChoicesDialogFragment;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,7 +50,10 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class DetailsFragment extends Fragment
@@ -81,12 +85,16 @@ public class DetailsFragment extends Fragment
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
+    private ChoicesDialogFragment choicesDialogFragment;
     private String user_id;
     private Context context;
+    private List<String> choices;
 
     public DetailsFragment(Context context)
     {
         this.context = context;
+        choices = new ArrayList<>();
+        choicesDialogFragment = new ChoicesDialogFragment(choices);
     }
 
     @Override
@@ -109,6 +117,28 @@ public class DetailsFragment extends Fragment
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+user_id);
 
         getUserInfo();
+
+        ethnicity_et.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                choices.add("Asian");choices.add("Arab");choices.add("African American");choices.add("Hispanic/Latino");
+                choices.add("Native American");choices.add("Pacific Islander");choices.add("South Asian");choices.add("White");choices.add("Other");
+                choicesDialogFragment.show(getFragmentManager(),"choices_fragment");
+            }
+        });
+
+        religion_et.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                choices.add("Buddhist");choices.add("Christian");choices.add("Catholic");choices.add("Hindu");choices.add("Jewish");choices.add("Muslim");choices.add("Sikh");
+                choices.add("Shinto");choices.add("Spiritual but not religious");choices.add("Neither religious or spiritual");choices.add("Other");
+                choicesDialogFragment.show(getFragmentManager(),"choices_fragment");
+            }
+        });
 
         sign_out.setOnClickListener(new View.OnClickListener()
         {
@@ -206,5 +236,33 @@ public class DetailsFragment extends Fragment
         firebaseAuth.signOut();
         Intent intent = new Intent(context, LoginRegisterActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        //Log.v("Lakers","onStart");
+
+    }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        //Log.v("Lakers","onResume");
+
+    }
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        //Log.v("Lakers","onPause");
+
+    }
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        //Log.v("Lakers","onDestroy");
     }
 }
