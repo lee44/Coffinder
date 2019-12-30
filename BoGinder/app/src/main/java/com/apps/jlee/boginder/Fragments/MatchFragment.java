@@ -187,4 +187,33 @@ public class MatchFragment extends Fragment
             public void onCancelled(DatabaseError databaseError){}
         });
     }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        //Log.v("Lakers","onStart");
+
+    }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        //Log.v("Lakers","onResume");
+
+    }
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        //Log.v("Lakers","onPause");
+
+    }
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        //Log.v("Lakers","onDestroy");
+        matches_list.clear();
+    }
 }
