@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.apps.jlee.boginder.Activities.LoginRegisterActivity;
 import com.apps.jlee.boginder.Activities.MainActivity;
 import com.apps.jlee.boginder.DialogFragment.ChoicesDialogFragment;
+import com.apps.jlee.boginder.DialogFragment.HeightDialogFragment;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -86,6 +87,7 @@ public class DetailsFragment extends Fragment
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
     private ChoicesDialogFragment choicesDialogFragment;
+    private HeightDialogFragment heightDialogFragment;
     private String user_id;
     private Context context;
     private List<String> choices;
@@ -94,6 +96,7 @@ public class DetailsFragment extends Fragment
     {
         this.context = context;
         choices = new ArrayList<>();
+        heightDialogFragment = new HeightDialogFragment();
         choicesDialogFragment = new ChoicesDialogFragment(choices);
     }
 
@@ -117,6 +120,15 @@ public class DetailsFragment extends Fragment
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+user_id);
 
         getUserInfo();
+
+        height_et.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                heightDialogFragment.show(getFragmentManager(),"height_fragment");
+            }
+        });
 
         ethnicity_et.setOnClickListener(new View.OnClickListener()
         {
