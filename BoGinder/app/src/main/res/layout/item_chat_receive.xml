@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/msg_round_corner_receiver"
+        android:background="@drawable/msg_round_receiver"
         android:padding="10dp"
         android:elevation="2dp"
         android:textAlignment="viewStart"

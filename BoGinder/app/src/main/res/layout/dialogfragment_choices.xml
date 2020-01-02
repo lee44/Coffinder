@@ -1,23 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp"
-    android:orientation="vertical"
-    android:weightSum="5">
+    android:background="@drawable/dialogfragment_rounded">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/choices_rv"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="4" />
+        android:layout_height="wrap_content"/>
 
-    <Button
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Done"
-        android:textSize="18sp">
-    </Button>
+        android:layout_below="@+id/choices_rv"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-</LinearLayout>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="Done"
+            android:textSize="18sp"
+            android:background="@drawable/default_round_button">
+        </Button>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:textSize="18sp"
+            android:background="@drawable/default_round_button">
+        </Button>
+
+    </LinearLayout>
+
+</RelativeLayout>

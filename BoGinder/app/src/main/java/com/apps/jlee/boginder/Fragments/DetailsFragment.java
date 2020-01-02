@@ -135,6 +135,7 @@ public class DetailsFragment extends Fragment
             @Override
             public void onClick(View view)
             {
+                choices.clear();
                 choices.add("Asian");choices.add("Arab");choices.add("African American");choices.add("Hispanic/Latino");
                 choices.add("Native American");choices.add("Pacific Islander");choices.add("South Asian");choices.add("White");choices.add("Other");
                 choicesDialogFragment.show(getFragmentManager(),"choices_fragment");
@@ -146,8 +147,9 @@ public class DetailsFragment extends Fragment
             @Override
             public void onClick(View view)
             {
+                choices.clear();
                 choices.add("Buddhist");choices.add("Christian");choices.add("Catholic");choices.add("Hindu");choices.add("Jewish");choices.add("Muslim");choices.add("Sikh");
-                choices.add("Shinto");choices.add("Spiritual but not religious");choices.add("Neither religious or spiritual");choices.add("Other");
+                choices.add("Shinto");choices.add("Spiritual but not religious");choices.add("Neither religious nor spiritual");choices.add("Other");
                 choicesDialogFragment.show(getFragmentManager(),"choices_fragment");
             }
         });
