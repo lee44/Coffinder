@@ -6,10 +6,8 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -17,15 +15,11 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.apps.jlee.boginder.Adapter.ChoicesAdapter;
 import com.apps.jlee.boginder.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 public class ChoicesDialogFragment extends DialogFragment
 {
@@ -38,7 +32,7 @@ public class ChoicesDialogFragment extends DialogFragment
 
     public interface DialogFragmentClickListener
     {
-        void dialogFragmentClicked(String tag,String choice);
+        void choiceDialogFragmentClicked(String tag,String choice);
     }
 
     public ChoicesDialogFragment(List<String> choices, DialogFragmentClickListener dialogFragmentClickListener)
@@ -72,13 +66,17 @@ public class ChoicesDialogFragment extends DialogFragment
         ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, choices);
         listView.setAdapter(itemsAdapter);
 
+        builder.setView(dialogView);
+        dialog = builder.create();
+        dialog.show();
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
         {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
             {
                 Object o = listView.getItemAtPosition(i);
-                dialogFragmentClickListener.dialogFragmentClicked(tag,o.toString());
+                dialogFragmentClickListener.choiceDialogFragmentClicked(tag,o.toString());
                 dialog.dismiss();
             }
         });
@@ -91,10 +89,6 @@ public class ChoicesDialogFragment extends DialogFragment
                 dialog.dismiss();
             }
         });
-
-        builder.setView(dialogView);
-        dialog = builder.create();
-        dialog.show();
 
         return dialog;
     }

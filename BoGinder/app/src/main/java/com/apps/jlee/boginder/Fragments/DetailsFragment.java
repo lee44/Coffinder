@@ -57,7 +57,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DetailsFragment extends Fragment implements ChoicesDialogFragment.DialogFragmentClickListener
+public class DetailsFragment extends Fragment implements ChoicesDialogFragment.DialogFragmentClickListener, HeightDialogFragment.HeightDialogFragmentListener
 {
     @BindView(R.id.name_et)
     EditText name_et;
@@ -96,7 +96,7 @@ public class DetailsFragment extends Fragment implements ChoicesDialogFragment.D
     {
         this.context = context;
         choices = new ArrayList<>();
-        heightDialogFragment = new HeightDialogFragment();
+        heightDialogFragment = new HeightDialogFragment(this);
         choicesDialogFragment = new ChoicesDialogFragment(choices,this);
     }
 
@@ -253,12 +253,18 @@ public class DetailsFragment extends Fragment implements ChoicesDialogFragment.D
     }
 
     @Override
-    public void dialogFragmentClicked(String tag, String choice)
+    public void choiceDialogFragmentClicked(String tag, String choice)
     {
         if(tag.equals("ethnicity"))
             ethnicity_et.setText(choice);
         else if(tag.equals("religion"))
             religion_et.setText(choice);
+    }
+
+    @Override
+    public void heightDialogFragmentClicked(String feet, String inches)
+    {
+        height_et.setText(feet+inches);
     }
 
     @Override

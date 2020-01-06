@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.NumberPicker;
 
 import com.apps.jlee.boginder.R;
@@ -18,10 +19,19 @@ public class HeightDialogFragment extends DialogFragment
 {
     private AlertDialog dialog;
     private NumberPicker feet, inches;
+    private Button done;
+    private HeightDialogFragmentListener heightDialogFragmentListener;
+    private String[] feetArray = new String[]{"4'","5'","6'","7'"};
+    private String[] inchesArray = new String[]{"0\"","1\"","2\"","3\"","4\"","5\"","6\"","7\"","8\"","9\"","10\"","11\""};
 
-    public HeightDialogFragment()
+    public interface HeightDialogFragmentListener
     {
+        void heightDialogFragmentClicked(String feet,String inches);
+    }
 
+    public HeightDialogFragment(HeightDialogFragmentListener heightDialogFragmentListener)
+    {
+        this.heightDialogFragmentListener = heightDialogFragmentListener;
     }
 
     public void onResume()
@@ -39,20 +49,35 @@ public class HeightDialogFragment extends DialogFragment
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.ThemeOverlay_AppCompat_Dialog);
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialogfragment_height, null);
+        final View dialogView = inflater.inflate(R.layout.dialogfragment_height, null);
 
         feet = dialogView.findViewById(R.id.feet);
         inches = dialogView.findViewById(R.id.inches);
+        done = dialogView.findViewById(R.id.done);
 
-        feet.setMinValue(4);
-        feet.setMaxValue(8);
+        feet.setMinValue(0);
+        feet.setMaxValue(3);
+
+        feet.setDisplayedValues(feetArray);
 
         inches.setMinValue(0);
         inches.setMaxValue(11);
 
+        inches.setDisplayedValues(inchesArray);
+
         builder.setView(dialogView);
         dialog = builder.create();
         dialog.show();
+
+        done.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                heightDialogFragmentListener.heightDialogFragmentClicked(feetArray[feet.getValue()],inchesArray[inches.getValue()]);
+                dialog.dismiss();
+            }
+        });
 
         return dialog;
     }

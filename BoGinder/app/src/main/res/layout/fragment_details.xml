@@ -14,7 +14,7 @@
 
         <TextView
             android:id="@+id/textView2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Public Profile"
             android:textColor="@color/black"
@@ -22,8 +22,7 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="parent">
-        </TextView>
+            app:layout_constraintTop_toTopOf="parent"></TextView>
 
         <TextView
             android:id="@+id/textView"
@@ -183,6 +182,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:maxLength="20"
+            android:editable="false"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toBottomOf="@+id/religion_et">
@@ -312,6 +312,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:paddingBottom="8dp"
             android:background="@android:color/transparent"
             android:hint="Enter a description about yourself"
             android:inputType="textMultiLine"
