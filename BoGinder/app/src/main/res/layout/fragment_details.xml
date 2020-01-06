@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:inputType="number"
-            android:maxLength="2"
+            android:maxLength="3"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
@@ -116,7 +116,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:focusable="false"
-            android:maxLength="5"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toBottomOf="@+id/age_et"></EditText>
@@ -138,7 +137,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:focusable="false"
-            android:maxLength="10"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toBottomOf="@+id/height_et"></EditText>
@@ -161,7 +159,6 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:maxLength="15"
             android:focusable="false"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
@@ -185,7 +182,7 @@
             android:id="@+id/city_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxLength="15"
+            android:maxLength="20"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toBottomOf="@+id/religion_et">
@@ -208,7 +205,7 @@
             android:id="@+id/occupation_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxLength="15"
+            android:maxLength="20"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toBottomOf="@+id/city_et">
@@ -232,7 +229,7 @@
             android:id="@+id/school_et"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxLength="15"
+            android:maxLength="20"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
             app:layout_constraintTop_toBottomOf="@+id/occupation_et">

@@ -57,7 +57,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DetailsFragment extends Fragment
+public class DetailsFragment extends Fragment implements ChoicesDialogFragment.DialogFragmentClickListener
 {
     @BindView(R.id.name_et)
     EditText name_et;
@@ -97,7 +97,7 @@ public class DetailsFragment extends Fragment
         this.context = context;
         choices = new ArrayList<>();
         heightDialogFragment = new HeightDialogFragment();
-        choicesDialogFragment = new ChoicesDialogFragment(choices);
+        choicesDialogFragment = new ChoicesDialogFragment(choices,this);
     }
 
     @Override
@@ -138,7 +138,7 @@ public class DetailsFragment extends Fragment
                 choices.clear();
                 choices.add("Asian");choices.add("Arab");choices.add("African American");choices.add("Hispanic/Latino");
                 choices.add("Native American");choices.add("Pacific Islander");choices.add("South Asian");choices.add("White");choices.add("Other");
-                choicesDialogFragment.show(getFragmentManager(),"choices_fragment");
+                choicesDialogFragment.show(getFragmentManager(),"ethnicity");
             }
         });
 
@@ -150,7 +150,7 @@ public class DetailsFragment extends Fragment
                 choices.clear();
                 choices.add("Buddhist");choices.add("Christian");choices.add("Catholic");choices.add("Hindu");choices.add("Jewish");choices.add("Muslim");choices.add("Sikh");
                 choices.add("Shinto");choices.add("Spiritual but not religious");choices.add("Neither religious nor spiritual");choices.add("Other");
-                choicesDialogFragment.show(getFragmentManager(),"choices_fragment");
+                choicesDialogFragment.show(getFragmentManager(),"religion");
             }
         });
 
@@ -250,6 +250,15 @@ public class DetailsFragment extends Fragment
         firebaseAuth.signOut();
         Intent intent = new Intent(context, LoginRegisterActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void dialogFragmentClicked(String tag, String choice)
+    {
+        if(tag.equals("ethnicity"))
+            ethnicity_et.setText(choice);
+        else if(tag.equals("religion"))
+            religion_et.setText(choice);
     }
 
     @Override

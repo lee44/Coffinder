@@ -5,38 +5,21 @@
     android:layout_margin="5dp"
     android:background="@drawable/dialogfragment_rounded">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/choices_rv"
+    <ListView
+        android:id="@+id/choices_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <LinearLayout
+    <Button
+        android:id="@+id/cancel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/choices_rv"
-        android:orientation="horizontal"
-        android:weightSum="2">
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:text="Done"
-            android:textSize="18sp"
-            android:background="@drawable/default_round_button">
-        </Button>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            android:text="Cancel"
-            android:textSize="18sp"
-            android:background="@drawable/default_round_button">
-        </Button>
-
-    </LinearLayout>
+        android:layout_below="@id/choices_lv"
+        android:layout_margin="5dp"
+        android:layout_weight="1"
+        android:text="Cancel"
+        android:textSize="18sp"
+        android:background="@drawable/default_round_button">
+    </Button>
 
 </RelativeLayout>

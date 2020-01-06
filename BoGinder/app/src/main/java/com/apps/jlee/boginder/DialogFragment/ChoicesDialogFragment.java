@@ -12,6 +12,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 
 import com.apps.jlee.boginder.Adapter.ChoicesAdapter;
 import com.apps.jlee.boginder.R;
@@ -26,14 +30,21 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ChoicesDialogFragment extends DialogFragment
 {
     private AlertDialog dialog;
-    private RecyclerView rv;
-    private ChoicesAdapter choicesAdapter;
-
+    private ListView listView;
     private List<String> choices;
+    private DialogFragmentClickListener dialogFragmentClickListener;
+    private Button cancel;
+    private String tag;
 
-    public ChoicesDialogFragment(List<String> choices)
+    public interface DialogFragmentClickListener
+    {
+        void dialogFragmentClicked(String tag,String choice);
+    }
+
+    public ChoicesDialogFragment(List<String> choices, DialogFragmentClickListener dialogFragmentClickListener)
     {
         this.choices = choices;
+        this.dialogFragmentClickListener = dialogFragmentClickListener;
     }
 
     public void onResume()
@@ -52,22 +63,39 @@ public class ChoicesDialogFragment extends DialogFragment
     {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext(), R.style.ThemeOverlay_AppCompat_Dialog);
         LayoutInflater inflater = getActivity().getLayoutInflater();
-        View dialogView = inflater.inflate(R.layout.dialogfragment_choices, null);
+        final View dialogView = inflater.inflate(R.layout.dialogfragment_choices, null);
 
-        rv = dialogView.findViewById(R.id.choices_rv);
-        rv.setLayoutManager(new LinearLayoutManager(getContext(),RecyclerView.VERTICAL,false));
-        choicesAdapter = new ChoicesAdapter(getChoices(),getContext());
-        rv.setAdapter(choicesAdapter);
+        tag = getTag();
+        listView = dialogView.findViewById(R.id.choices_lv);
+        cancel = dialogView.findViewById(R.id.cancel);
+
+        ArrayAdapter<String> itemsAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, choices);
+        listView.setAdapter(itemsAdapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                Object o = listView.getItemAtPosition(i);
+                dialogFragmentClickListener.dialogFragmentClicked(tag,o.toString());
+                dialog.dismiss();
+            }
+        });
+
+        cancel.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                dialog.dismiss();
+            }
+        });
 
         builder.setView(dialogView);
         dialog = builder.create();
         dialog.show();
 
         return dialog;
-    }
-
-    private List<String> getChoices()
-    {
-        return choices;
     }
 }
