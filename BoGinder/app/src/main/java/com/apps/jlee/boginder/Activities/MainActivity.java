@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.apps.jlee.boginder.Fragments.AccountFragment;
 import com.apps.jlee.boginder.Fragments.MatchFragment;
 import com.apps.jlee.boginder.Fragments.DateFragment;
+import com.apps.jlee.boginder.Fragments.ProgressFragment;
 import com.apps.jlee.boginder.R;
 import com.apps.jlee.boginder.Service.Constants;
 import com.apps.jlee.boginder.Service.FetchAddressIntentService;
@@ -118,6 +119,7 @@ public class MainActivity extends AppCompatActivity
         {
             if (isLocationEnabled())
             {
+                setFragment(new ProgressFragment());
                 mFusedLocationClient.getLastLocation().addOnCompleteListener(
                         new OnCompleteListener<Location>()
                         {
@@ -352,7 +354,7 @@ public class MainActivity extends AppCompatActivity
             // Show a toast message if an address was found.
             if (resultCode == Constants.SUCCESS_RESULT)
             {
-                Toast.makeText(getBaseContext(),"Address Found",Toast.LENGTH_LONG).show();
+                //Toast.makeText(getBaseContext(),"Address Found",Toast.LENGTH_LONG).show();
                 //Log.v("Lakers", addressOutput);
                 setFragment(dateFragment);
             }
