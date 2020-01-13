@@ -24,7 +24,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -168,5 +170,42 @@ public class ChatActivity extends AppCompatActivity
     {
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        //Log.v("Lakers","DateFragment started");
+
+    }
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+
+        try
+        {
+            FirebaseInstanceId.getInstance().deleteInstanceId();
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        //Log.v("Lakers","DateFragment resume");
+
+    }
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        FirebaseInstanceId.getInstance().getToken();
+        //Log.v("Lakers","DateFragment paused");
+
+    }
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        //Log.v("Lakers","DateFragment destroyed");
     }
 }
