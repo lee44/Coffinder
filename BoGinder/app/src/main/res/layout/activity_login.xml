@@ -6,6 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".Activities.LoginActivity">
 
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Register"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="@dimen/title"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintStart_toStartOf="@+id/guideline5"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/input_layout_email">
+
+    </TextView>
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/input_layout_email"
         android:layout_width="0dp"

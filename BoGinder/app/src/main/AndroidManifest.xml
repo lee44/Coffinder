@@ -17,11 +17,11 @@
 
         <activity
             android:name=".Activities.LoginActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
         <activity
 
             android:name=".Activities.RegistrationActivity"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustPan" />
 
         <activity android:name=".Activities.LoginRegisterActivity">
             <intent-filter>

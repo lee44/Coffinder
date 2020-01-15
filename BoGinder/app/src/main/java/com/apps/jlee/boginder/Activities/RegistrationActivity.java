@@ -3,15 +3,19 @@ package com.apps.jlee.boginder.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import com.apps.jlee.boginder.DialogFragment.HeightDialogFragment;
 import com.apps.jlee.boginder.Firebase.MyFirebaseMessagingService;
 import com.apps.jlee.boginder.Models.Users;
 import com.apps.jlee.boginder.R;
@@ -27,7 +31,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RegistrationActivity extends AppCompatActivity
+public class RegistrationActivity extends AppCompatActivity implements HeightDialogFragment.HeightDialogFragmentListener
 {
     @BindView(R.id.name)
     EditText name;
@@ -39,8 +43,6 @@ public class RegistrationActivity extends AppCompatActivity
     RadioGroup gender_radioGroup;
     @BindView(R.id.orientation_radio_group)
     RadioGroup orientation_radioGroup;
-    @BindView(R.id.city)
-    EditText city;
     @BindView(R.id.email)
     EditText email;
     @BindView(R.id.password)
@@ -50,6 +52,7 @@ public class RegistrationActivity extends AppCompatActivity
 
     private FirebaseAuth firebaseAuth;
     private FirebaseAuth.AuthStateListener authStateListener;
+    private HeightDialogFragment heightDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -60,10 +63,13 @@ public class RegistrationActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         email.setText("@gmail.com");
-        city.setText("Los Angeles");
         password.setText("123456");
 
         firebaseAuth = FirebaseAuth.getInstance();
+        heightDialogFragment = new HeightDialogFragment(this);
+
+        ((RadioButton)(gender_radioGroup.findViewById(R.id.male_radio_button))).setChecked(true);
+        ((RadioButton)(orientation_radioGroup.findViewById(R.id.orientation_female_radio_button))).setChecked(true);
 
         register.setOnClickListener(new View.OnClickListener()
         {
@@ -72,12 +78,15 @@ public class RegistrationActivity extends AppCompatActivity
             {
                 if(name.getText().toString().trim().length() == 0)
                     name.setError("This field can not be blank");
-                if(email.getText().toString().trim().length() == 0)
+                else if(age.getText().toString().trim().length() == 0)
+                    age.setError("This field can not be blank");
+                else if(height.getText().toString().trim().length() == 0)
+                    height.setError("This field can not be blank");
+                else if(email.getText().toString().trim().length() == 0)
                     email.setError("This field can not be blank");
-                if(password.getText().toString().trim().length() == 0)
+                else if(password.getText().toString().trim().length() == 0)
                     password.setError("This field can not be blank");
-
-                if(name.getText().toString().trim().length() > 0 && email.getText().toString().trim().length() > 0 && password.getText().toString().trim().length() > 0 && gender_radioGroup.getCheckedRadioButtonId() != -1)
+                else
                 {
                     firebaseAuth.createUserWithEmailAndPassword(email.getText().toString(),password.getText().toString()).addOnCompleteListener(RegistrationActivity.this, new OnCompleteListener<AuthResult>()
                     {
@@ -98,7 +107,7 @@ public class RegistrationActivity extends AppCompatActivity
                                 String userId = firebaseAuth.getCurrentUser().getUid();
                                 DatabaseReference currentUserDB = FirebaseDatabase.getInstance().getReference().child("Users");
 
-                                currentUserDB.child(userId).setValue(new Users(name.getText().toString(),age.getText().toString(),height.getText().toString(),gender_radioButton.getText().toString(),orientation_radioButton.getText().toString(),city.getText().toString(),"Default", MyFirebaseMessagingService.getToken(getBaseContext()))).addOnSuccessListener(new OnSuccessListener<Void>()
+                                currentUserDB.child(userId).setValue(new Users(name.getText().toString(),age.getText().toString(),height.getText().toString(),gender_radioButton.getText().toString(),orientation_radioButton.getText().toString(),"","Default", MyFirebaseMessagingService.getToken(getBaseContext()))).addOnSuccessListener(new OnSuccessListener<Void>()
                                 {
                                     @Override
                                     public void onSuccess(Void aVoid)
@@ -131,14 +140,31 @@ public class RegistrationActivity extends AppCompatActivity
             }
         };
 
-        city.setOnClickListener(new View.OnClickListener()
+        height.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View view)
             {
-
+                heightDialogFragment.show(getSupportFragmentManager(),"height_fragment");
             }
         });
+    }
+
+    @Override
+    public void heightDialogFragmentClicked(String feet, String inches)
+    {
+        height.setText(feet+inches);
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev)
+    {
+        if (getCurrentFocus() != null)
+        {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
     @Override

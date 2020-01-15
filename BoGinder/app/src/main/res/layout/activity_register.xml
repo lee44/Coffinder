@@ -11,13 +11,29 @@
         android:layout_height="match_parent"
         android:paddingBottom="200dp">
 
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Register"
+            android:textAlignment="center"
+            android:textColor="@color/black"
+            android:textSize="@dimen/title"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/guideline3"
+            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintTop_toTopOf="parent">
+
+        </TextView>
+
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/title">
 
             <EditText
                 android:id="@+id/name"
@@ -46,22 +62,18 @@
                 android:textAlignment="viewStart"></EditText>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_height"
+        <EditText
+            android:id="@+id/height"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:hint="Height"
+            android:focusable="false"
+            android:textAlignment="viewStart"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_age">
-
-            <EditText
-                android:id="@+id/height"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
-                android:hint="Height"
-                android:textAlignment="viewStart"></EditText>
-        </com.google.android.material.textfield.TextInputLayout>
+        </EditText>
 
         <TextView
             android:id="@+id/textView5"
@@ -72,7 +84,8 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/input_layout_height"></TextView>
+            app:layout_constraintTop_toBottomOf="@+id/height">
+        </TextView>
 
         <RadioGroup
             android:id="@+id/gender_radio_group"
@@ -175,17 +188,6 @@
 
         </RadioGroup>
 
-        <EditText
-            android:id="@+id/city"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:hint="City"
-            android:textAlignment="viewStart"
-            app:layout_constraintEnd_toStartOf="@+id/guideline3"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/orientation_radio_group"></EditText>
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_email"
             android:layout_width="0dp"
@@ -193,14 +195,16 @@
             android:layout_marginTop="16dp"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/city">
+            app:layout_constraintTop_toBottomOf="@+id/orientation_radio_group">
 
             <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Email Address"
-                android:textAlignment="viewStart"></EditText>
+                android:textAlignment="viewStart">
+            </EditText>
+
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
