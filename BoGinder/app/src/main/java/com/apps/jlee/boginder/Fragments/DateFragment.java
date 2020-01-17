@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -14,11 +16,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apps.jlee.boginder.Adapter.CardsAdapter;
 import com.apps.jlee.boginder.Models.Cards;
 import com.apps.jlee.boginder.R;
+import com.bumptech.glide.Glide;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -29,20 +35,31 @@ import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class DateFragment extends Fragment
 {
-    private List<Cards> cardsList;
-    private CardsAdapter cardAdapter;
+    @BindView(R.id.potential_match_pic)
+    ImageView image;
+    @BindView(R.id.potential_match_name)
+    TextView name;
+    @BindView(R.id.potential_match_age)
+    TextView age;
+    @BindView(R.id.potential_match_height)
+    TextView height;
+    @BindView(R.id.potential_match_distance)
+    TextView distance;
+    @BindView(R.id.like_floatingActionButton)
+    FloatingActionButton likeButton;
+    @BindView(R.id.nope_floatingActionButton)
+    FloatingActionButton nopeButton;
+
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
-    private String user_gender, orientation, currentUser_id;
-
-    @BindView(R.id.frame)
-    SwipeFlingAdapterView flingContainer;
-
     private Context context;
+    private ArrayList<Cards> cardsList;
+    private String user_gender, orientation, currentUser_id;
 
     public DateFragment(Context context, ArrayList<Cards> cardsList)
     {
@@ -60,58 +77,44 @@ public class DateFragment extends Fragment
         firebaseAuth = FirebaseAuth.getInstance();
         currentUser_id = firebaseAuth.getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
-        cardsList = new ArrayList<Cards>();
-        cardAdapter = new CardsAdapter(context,R.layout.card,cardsList);
 
-        flingContainer.setAdapter(cardAdapter);
-        flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener()
+
+        if(cardsList.get(0).getProfileImageUrl().equals("Default"))
+        {
+            Glide.with(getContext()).load(R.mipmap.ic_launcher).into(image);
+        }
+        else
+            Glide.with(getContext()).load(cardsList.get(0).getProfileImageUrl()).into(image);
+
+        name.setText(cardsList.get(0).getName());
+        age.setText(cardsList.get(0).getAge());
+        height.setText(cardsList.get(0).getHeight());
+        distance.setText(cardsList.get(0).getDistance());
+
+        likeButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void removeFirstObjectInAdapter()
+            public void onClick(View view)
             {
-
-            }
-
-            @Override
-            public void onLeftCardExit(Object dataObject)
-            {
-                Cards card = (Cards) dataObject;
-                String user_id = card.getUser_id();
-                databaseReference.child("/"+user_id+"/Connections/Nope/").child(currentUser_id).setValue(true);
-                makeToast(context, "Left!");
-            }
-
-            @Override
-            public void onRightCardExit(Object dataObject)
-            {
-                Cards card = (Cards) dataObject;
-                String user_id = card.getUser_id();
+                String user_id = cardsList.get(0).getUser_id();
                 databaseReference.child("/"+user_id+"/Connections/Yes/").child(currentUser_id).setValue(true);
                 isConnectionMatch(user_id);
                 makeToast(context, "Right!");
-            }
 
-            @Override
-            public void onAdapterAboutToEmpty(int itemsInAdapter)
-            {
-
-            }
-
-            @Override
-            public void onScroll(float scrollProgressPercent)
-            {
-
+                refresh();
             }
         });
 
-
-        // Optionally add an OnItemClickListener
-        flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener()
+        nopeButton.setOnClickListener(new View.OnClickListener()
         {
             @Override
-            public void onItemClicked(int itemPosition, Object dataObject)
+            public void onClick(View view)
             {
-                makeToast(context, "Clicked!");
+                String user_id = cardsList.get(0).getUser_id();
+                databaseReference.child("/"+user_id+"/Connections/Nope/").child(currentUser_id).setValue(true);
+                makeToast(context, "Left!");
+
+                refresh();
             }
         });
 
@@ -146,12 +149,20 @@ public class DateFragment extends Fragment
         });
     }
 
+    public void refresh()
+    {
+        cardsList.remove(0);
+
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.detach(DateFragment.this);
+        ft.attach(DateFragment.this);
+        ft.commit();
+    }
+
     static void makeToast(Context ctx, String s)
     {
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
-
-
 
     @Override
     public void onStart()
