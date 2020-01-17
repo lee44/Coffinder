@@ -1,6 +1,9 @@
 package com.apps.jlee.boginder.Models;
 
-public class Cards
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Cards implements Parcelable
 {
     private String user_id, name, age, height, distance;
     private String profileImageUrl;
@@ -13,6 +16,16 @@ public class Cards
         this.height = height;
         this.distance = distance;
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public Cards(Parcel parcel)
+    {
+        user_id = parcel.readString();
+        name = parcel.readString();
+        age = parcel.readString();
+        height = parcel.readString();
+        distance = parcel.readString();
+        profileImageUrl = parcel.readString();
     }
 
     public String getUser_id()
@@ -73,5 +86,39 @@ public class Cards
     public void setDistance(String distance)
     {
         this.distance = distance;
+    }
+
+    public static final Parcelable.Creator<Cards> CREATOR =
+            new Parcelable.Creator<Cards>()
+            {
+
+                @Override
+                public Cards createFromParcel(Parcel source)
+                {
+                    return new Cards(source);
+                }
+
+                @Override
+                public Cards[] newArray(int size)
+                {
+                    return new Cards[size];
+                }
+            };
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i)
+    {
+        parcel.writeString(user_id);
+        parcel.writeString(name);
+        parcel.writeString(age);
+        parcel.writeString(height);
+        parcel.writeString(distance);
+        parcel.writeString(profileImageUrl);
     }
 }

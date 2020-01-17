@@ -40,7 +40,7 @@
         </service>
 
         <service
-            android:name=".Service.FetchAddressIntentService"
+            android:name=".Service.FetchIntentService"
             android:exported="false"/>
 
     </application>

@@ -44,9 +44,10 @@ public class DateFragment extends Fragment
 
     private Context context;
 
-    public DateFragment(Context context)
+    public DateFragment(Context context, ArrayList<Cards> cardsList)
     {
         this.context = context;
+        this.cardsList = cardsList;
     }
 
     @Override
@@ -61,10 +62,6 @@ public class DateFragment extends Fragment
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
         cardsList = new ArrayList<Cards>();
         cardAdapter = new CardsAdapter(context,R.layout.card,cardsList);
-
-        checkUserOrientation();
-
-        //Log.v("Lakers",getArguments().getDouble("Latitude")+", "+getArguments().getDouble("Longitude"));
 
         flingContainer.setAdapter(cardAdapter);
         flingContainer.setFlingListener(new SwipeFlingAdapterView.onFlingListener()
@@ -154,126 +151,7 @@ public class DateFragment extends Fragment
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
 
-    public void checkUserOrientation()
-    {
-        DatabaseReference userDB = databaseReference.child(currentUser_id);
 
-        userDB.addListenerForSingleValueEvent(new ValueEventListener()
-        {
-            @Override
-            /*Callback method onChildAdded is triggered once for each existing child and for every new child added*/
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if(dataSnapshot.getKey().equals(currentUser_id))
-                {
-                    orientation = dataSnapshot.child("Orientation").getValue().toString();
-                    getPotentialMatches();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError){}
-        });
-    }
-
-    public void getPotentialMatches()
-    {
-        DatabaseReference oppositeGenderDB = databaseReference;
-
-        oppositeGenderDB.addChildEventListener(new ChildEventListener()
-        {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s)
-            {
-                if(dataSnapshot.exists())
-                    if(!dataSnapshot.child("Connections/Nope/").hasChild(currentUser_id) && !dataSnapshot.child("Connections/Yes/").hasChild(currentUser_id))
-                    {
-                        SharedPreferences sp = getContext().getSharedPreferences("Preferences", Context.MODE_PRIVATE);
-                        int ageLow = sp.getInt("Age_Low",18);
-                        int ageHigh = sp.getInt("Age_High",50);
-                        int userAge = Integer.valueOf(dataSnapshot.child("Age").getValue().toString());
-
-                        String heightLow = getHeight(sp.getInt("Height_Low",48));
-                        String heightHigh = getHeight(sp.getInt("Height_High",84));
-                        String userHeight = dataSnapshot.child("Height").getValue().toString();
-
-                        int distanceLow = sp.getInt("Distance_Low",0);
-                        int distanceHigh = sp.getInt("Distance_High",50);
-                        double distanceTo = calculateDistance(getArguments().getDouble("Latitude"),getArguments().getDouble("Longitude"),Double.valueOf(dataSnapshot.child("Latitude").getValue().toString()),Double.valueOf(dataSnapshot.child("Longitude").getValue().toString()),"M");
-
-                        if (ageLow <= userAge && ageHigh >= userAge && heightLow.compareTo(userHeight) <= 0 && heightHigh.compareTo(userHeight) >= 0 && distanceLow <= distanceTo && distanceHigh >= distanceTo)
-                        {
-                            if (orientation.equals("Men") && dataSnapshot.child("Gender").getValue().toString().equals("Male"))
-                            {
-                                cardsList.add(new Cards(dataSnapshot.getKey(), dataSnapshot.child("Name").getValue().toString(), dataSnapshot.child("Age").getValue().toString(),
-                                        dataSnapshot.child("Height").getValue().toString(), dataSnapshot.child("City").getValue().toString(),
-                                        dataSnapshot.child("ProfileImageUrl").getValue().toString()));
-                            }
-                            else if (orientation.equals("Women") && dataSnapshot.child("Gender").getValue().toString().equals("Female"))
-                            {
-                                cardsList.add(new Cards(dataSnapshot.getKey(), dataSnapshot.child("Name").getValue().toString(), dataSnapshot.child("Age").getValue().toString(),
-                                        dataSnapshot.child("Height").getValue().toString(), dataSnapshot.child("City").getValue().toString(),
-                                        dataSnapshot.child("ProfileImageUrl").getValue().toString()));
-                            }
-                            cardAdapter.notifyDataSetChanged();
-                        }
-                    }
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s){}
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot){}
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s){}
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError){}
-        });
-    }
-
-    public String getHeight(int inches)
-    {
-        int feet = inches/12;
-        inches = inches%12;
-
-        return feet+"'"+inches+'"';
-    }
-
-    private double calculateDistance(double lat1, double lon1, double lat2, double lon2, String unit)
-    {
-        double theta = lon1 - lon2;
-        double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));
-        dist = Math.acos(dist);
-        dist = rad2deg(dist);
-        dist = dist * 60 * 1.1515;
-        if (unit.equals("K"))
-        {
-            dist = dist * 1.609344;
-        }
-        else if (unit.equals("M"))
-        {
-            dist = dist * 0.8684;
-        }
-        return (dist);
-    }
-
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    /*::  This function converts decimal degrees to radians             :*/
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    private double deg2rad(double deg)
-    {
-        return (deg * Math.PI / 180.0);
-    }
-
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    /*::  This function converts radians to decimal degrees             :*/
-    /*:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::*/
-    private double rad2deg(double rad)
-    {
-        return (rad * 180.0 / Math.PI);
-    }
 
     @Override
     public void onStart()

@@ -10,8 +10,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -21,16 +19,12 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.os.ResultReceiver;
-import android.provider.Settings;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Toast;
 
 import com.apps.jlee.boginder.Fragments.AccountFragment;
 import com.apps.jlee.boginder.Fragments.MatchFragment;
@@ -38,7 +32,7 @@ import com.apps.jlee.boginder.Fragments.DateFragment;
 import com.apps.jlee.boginder.Fragments.ProgressFragment;
 import com.apps.jlee.boginder.R;
 import com.apps.jlee.boginder.Service.Constants;
-import com.apps.jlee.boginder.Service.FetchAddressIntentService;
+import com.apps.jlee.boginder.Service.FetchIntentService;
 import com.google.android.gms.common.api.ResolvableApiException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
@@ -47,12 +41,13 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.LocationSettingsRequest;
 import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsStates;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
 {
@@ -82,7 +77,6 @@ public class MainActivity extends AppCompatActivity
 
         accountFragment = new AccountFragment();
         matchFragment = new MatchFragment(this);
-        dateFragment = new DateFragment(this);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -134,10 +128,6 @@ public class MainActivity extends AppCompatActivity
                                 else
                                 {
                                     startIntentService();
-                                    Bundle bundle = new Bundle();
-                                    bundle.putDouble("Latitude",lastLocation.getLatitude());
-                                    bundle.putDouble("Longitude",lastLocation.getLongitude());
-                                    dateFragment.setArguments(bundle);
                                 }
                             }
                         }
@@ -230,7 +220,8 @@ public class MainActivity extends AppCompatActivity
         mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback,Looper.myLooper());
     }
 
-    /*LocationCallback is a class with empty methods. As the name implies, we are defining a callback method. We are overriding onLocationResult which will be used in requestNewLocationData()*/
+    /* LocationCallback is an abstract class. This creates an instance of the abstract class where we override onLocationResult().
+       When FusedLocationProvider finds the location, the callback method, onLocationResult will be called */
     private LocationCallback mLocationCallback = new LocationCallback()
     {
         @Override
@@ -238,10 +229,6 @@ public class MainActivity extends AppCompatActivity
         {
             lastLocation = locationResult.getLastLocation();
 
-            Bundle bundle = new Bundle();
-            bundle.putDouble("Latitude",lastLocation.getLatitude());
-            bundle.putDouble("Longitude",lastLocation.getLongitude());
-            dateFragment.setArguments(bundle);
             startIntentService();
         }
     };
@@ -277,11 +264,19 @@ public class MainActivity extends AppCompatActivity
 
     protected void startIntentService()
     {
-        Intent intent = new Intent(this, FetchAddressIntentService.class);
         resultReceiver = new AddressResultReceiver(new Handler());
-        intent.putExtra(Constants.RECEIVER, resultReceiver);
-        intent.putExtra(Constants.LOCATION_DATA_EXTRA, lastLocation);
-        startService(intent);
+
+        Intent intentLocation = new Intent(this, FetchIntentService.class);
+        intentLocation.putExtra("intent_type","location");
+        intentLocation.putExtra(Constants.LOCATION_DATA_EXTRA, lastLocation);
+
+        Intent intentProfile = new Intent(this, FetchIntentService.class);
+        intentProfile.putExtra("intent_type","profile");
+        intentProfile.putExtra(Constants.LOCATION_DATA_EXTRA, lastLocation);
+        intentProfile.putExtra(Constants.RECEIVER, resultReceiver);
+
+        startService(intentLocation);
+        startService(intentProfile);
     }
 
     public void setFragment(Fragment fragment)
@@ -338,24 +333,12 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onReceiveResult(int resultCode, Bundle resultData)
         {
-            if (resultData == null)
-            {
-                Log.v("Lakers", "ResultData is null");
-                return;
-            }
-
-            // Display the address string or an error message sent from the intent service.
-            String addressOutput = resultData.getString(Constants.RESULT_DATA_KEY);
-            if (addressOutput == null)
-            {
-                addressOutput = "";
-            }
-
             // Show a toast message if an address was found.
             if (resultCode == Constants.SUCCESS_RESULT)
             {
-                //Toast.makeText(getBaseContext(),"Address Found",Toast.LENGTH_LONG).show();
-                //Log.v("Lakers", addressOutput);
+                ArrayList parcelable = resultData.getParcelableArrayList("Profiles");
+                //Log.v("Lakers", parcelable.toString());
+                dateFragment = new DateFragment(MainActivity.this,parcelable);
                 setFragment(dateFragment);
             }
         }
