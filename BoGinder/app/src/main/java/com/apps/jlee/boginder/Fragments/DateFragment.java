@@ -78,45 +78,47 @@ public class DateFragment extends Fragment
         currentUser_id = firebaseAuth.getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
 
-
-        if(cardsList.get(0).getProfileImageUrl().equals("Default"))
+        if(cardsList.size() > 0)
         {
-            Glide.with(getContext()).load(R.mipmap.ic_launcher).into(image);
+            if (cardsList.get(0).getProfileImageUrl().equals("Default"))
+            {
+                Glide.with(getContext()).load(R.mipmap.ic_launcher).into(image);
+            }
+            else
+                Glide.with(getContext()).load(cardsList.get(0).getProfileImageUrl()).into(image);
+
+            name.setText(cardsList.get(0).getName());
+            age.setText(cardsList.get(0).getAge());
+            height.setText(cardsList.get(0).getHeight());
+            distance.setText(cardsList.get(0).getDistance());
+
+            likeButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    String user_id = cardsList.get(0).getUser_id();
+                    databaseReference.child("/" + user_id + "/Connections/Yes/").child(currentUser_id).setValue(true);
+                    isConnectionMatch(user_id);
+                    makeToast(context, "Right!");
+
+                    refresh();
+                }
+            });
+
+            nopeButton.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    String user_id = cardsList.get(0).getUser_id();
+                    databaseReference.child("/" + user_id + "/Connections/Nope/").child(currentUser_id).setValue(true);
+                    makeToast(context, "Left!");
+
+                    refresh();
+                }
+            });
         }
-        else
-            Glide.with(getContext()).load(cardsList.get(0).getProfileImageUrl()).into(image);
-
-        name.setText(cardsList.get(0).getName());
-        age.setText(cardsList.get(0).getAge());
-        height.setText(cardsList.get(0).getHeight());
-        distance.setText(cardsList.get(0).getDistance());
-
-        likeButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                String user_id = cardsList.get(0).getUser_id();
-                databaseReference.child("/"+user_id+"/Connections/Yes/").child(currentUser_id).setValue(true);
-                isConnectionMatch(user_id);
-                makeToast(context, "Right!");
-
-                refresh();
-            }
-        });
-
-        nopeButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                String user_id = cardsList.get(0).getUser_id();
-                databaseReference.child("/"+user_id+"/Connections/Nope/").child(currentUser_id).setValue(true);
-                makeToast(context, "Left!");
-
-                refresh();
-            }
-        });
 
         return view;
     }
@@ -171,6 +173,7 @@ public class DateFragment extends Fragment
         //Log.v("Lakers","DateFragment started");
 
     }
+
     @Override
     public void onResume()
     {
@@ -178,6 +181,7 @@ public class DateFragment extends Fragment
         //Log.v("Lakers","DateFragment resume");
 
     }
+
     @Override
     public void onPause()
     {
@@ -185,6 +189,7 @@ public class DateFragment extends Fragment
         //Log.v("Lakers","DateFragment paused");
 
     }
+
     @Override
     public void onDestroy()
     {
