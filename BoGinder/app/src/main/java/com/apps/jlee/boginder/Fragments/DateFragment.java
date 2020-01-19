@@ -40,10 +40,10 @@ import java.util.ArrayList;
 
 public class DateFragment extends Fragment
 {
-    @BindView(R.id.potential_match_pic) ImageView image;
-    @BindView(R.id.potential_match_name) TextView name;
-    @BindView(R.id.potential_match_age) TextView age;
-    @BindView(R.id.potential_match_height) TextView height;
+    @BindView(R.id.pic) ImageView image;
+    @BindView(R.id.name) TextView name;
+    @BindView(R.id.age_city) TextView age;
+    @BindView(R.id.height) TextView height;
     @BindView(R.id.potential_match_distance) TextView distance;
     @BindView(R.id.like_floatingActionButton) FloatingActionButton likeButton;
     @BindView(R.id.nope_floatingActionButton) FloatingActionButton nopeButton;
