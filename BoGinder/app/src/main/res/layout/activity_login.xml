@@ -10,15 +10,15 @@
         android:id="@+id/title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Register"
+        android:text="Login"
         android:textAlignment="center"
         android:textColor="@color/black"
         android:textSize="@dimen/title"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/input_layout_email"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/input_layout_email">
+        app:layout_constraintTop_toTopOf="parent">
 
     </TextView>
 
@@ -49,15 +49,15 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35000002">
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Password"
-            android:text="123456">
-        </EditText>
+            android:text="123456"></EditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button

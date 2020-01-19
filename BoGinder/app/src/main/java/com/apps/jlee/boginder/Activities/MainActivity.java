@@ -24,6 +24,7 @@ import android.os.ResultReceiver;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.apps.jlee.boginder.Fragments.AccountFragment;
@@ -82,7 +83,7 @@ public class MainActivity extends AppCompatActivity
 
         getLastLocation();
 
-        bottomNavigationView.setSelectedItemId(R.id.dates);
+        bottomNavigationView.setVisibility(View.INVISIBLE);
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
         {
             @Override
@@ -338,8 +339,9 @@ public class MainActivity extends AppCompatActivity
             {
                 ArrayList parcelable = resultData.getParcelableArrayList("Profiles");
                 //Log.v("Lakers", parcelable.toString());
-                dateFragment = new DateFragment(MainActivity.this,parcelable);
-                setFragment(dateFragment);
+                dateFragment = new DateFragment(MainActivity.this,parcelable,lastLocation);
+                bottomNavigationView.setSelectedItemId(R.id.dates);
+                bottomNavigationView.setVisibility(View.VISIBLE);
             }
         }
     }

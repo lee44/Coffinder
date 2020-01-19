@@ -5,11 +5,15 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.apps.jlee.boginder"
-        minSdkVersion 26
+        minSdkVersion 24
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
     buildTypes {
         release {
