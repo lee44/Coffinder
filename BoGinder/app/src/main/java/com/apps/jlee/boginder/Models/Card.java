@@ -3,12 +3,12 @@ package com.apps.jlee.boginder.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Cards implements Parcelable
+public class Card implements Parcelable
 {
     private String user_id, name, age, height, city;
     private String profileImageUrl;
 
-    public Cards(String user_id, String name, String age, String height, String city, String profileImageUrl)
+    public Card(String user_id, String name, String age, String height, String city, String profileImageUrl)
     {
         this.user_id = user_id;
         this.name = name;
@@ -18,7 +18,7 @@ public class Cards implements Parcelable
         this.profileImageUrl = profileImageUrl;
     }
 
-    public Cards(Parcel parcel)
+    public Card(Parcel parcel)
     {
         user_id = parcel.readString();
         name = parcel.readString();
@@ -88,20 +88,20 @@ public class Cards implements Parcelable
         this.city = city;
     }
 
-    public static final Parcelable.Creator<Cards> CREATOR =
-            new Parcelable.Creator<Cards>()
+    public static final Parcelable.Creator<Card> CREATOR =
+            new Parcelable.Creator<Card>()
             {
 
                 @Override
-                public Cards createFromParcel(Parcel source)
+                public Card createFromParcel(Parcel source)
                 {
-                    return new Cards(source);
+                    return new Card(source);
                 }
 
                 @Override
-                public Cards[] newArray(int size)
+                public Card[] newArray(int size)
                 {
-                    return new Cards[size];
+                    return new Card[size];
                 }
             };
 

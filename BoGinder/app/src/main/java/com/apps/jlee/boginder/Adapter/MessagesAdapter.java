@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apps.jlee.boginder.Activities.ChatActivity;
-import com.apps.jlee.boginder.Models.Matches;
+import com.apps.jlee.boginder.Models.Match;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 
@@ -20,10 +20,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder>
 {
-    private List<Matches> matches;
+    private List<Match> matches;
     private Context context;
 
-    public MessagesAdapter(List<Matches> matches, Context context)
+    public MessagesAdapter(List<Match> matches, Context context)
     {
         this.matches = matches;
         this.context = context;

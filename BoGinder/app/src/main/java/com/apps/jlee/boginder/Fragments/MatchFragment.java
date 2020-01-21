@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,8 +17,7 @@ import android.widget.TextView;
 
 import com.apps.jlee.boginder.Adapter.MatchesAdapter;
 import com.apps.jlee.boginder.Adapter.MessagesAdapter;
-import com.apps.jlee.boginder.Models.Chat;
-import com.apps.jlee.boginder.Models.Matches;
+import com.apps.jlee.boginder.Models.Match;
 import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -45,7 +43,7 @@ public class MatchFragment extends Fragment
 
     DatabaseReference databaseReference;
     private Context context;
-    private ArrayList<Matches> matches_list;
+    private ArrayList<Match> matches_list;
     private MatchesAdapter matchesAdapter;
     private MessagesAdapter messagesAdapter;
     private String current_user_id;
@@ -79,7 +77,7 @@ public class MatchFragment extends Fragment
         return view;
     }
 
-    private List<Matches> getMatches()
+    private List<Match> getMatches()
     {
         return matches_list;
     }
@@ -89,7 +87,7 @@ public class MatchFragment extends Fragment
      */
     private void getMatchUserID()
     {
-        DatabaseReference matchDB = databaseReference.child("Users/"+current_user_id+"/Connections/Matches");
+        DatabaseReference matchDB = databaseReference.child("Users/"+current_user_id+"/Connections/Match");
         //Use ListenerForSingleValueEvent for grabbing a single value
         matchDB.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -135,7 +133,7 @@ public class MatchFragment extends Fragment
                         profileImageUrl = dataSnapshot.child("ProfileImageUrl").getValue().toString();
                     }
 
-                    matches_list.add(new Matches(user_id,name,profileImageUrl,chat_id,"",""));
+                    matches_list.add(new Match(user_id,name,profileImageUrl,chat_id,"",""));
                     if(matches_list.size() != 0)
                     {
                         No_Matches.setVisibility(View.GONE);

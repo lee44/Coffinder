@@ -9,11 +9,8 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.ResultReceiver;
-import android.text.TextUtils;
-import android.util.Log;
 
-import com.apps.jlee.boginder.Models.Cards;
-import com.google.android.material.internal.ParcelableSparseArray;
+import com.apps.jlee.boginder.Models.Card;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -37,7 +34,7 @@ public class FetchIntentService extends IntentService
     protected ChildEventListener oppositeGenderDB;
     protected ValueEventListener valueEventListener;
     protected Location location;
-    protected ArrayList<Cards> cardsList;
+    protected ArrayList<Card> cardsList;
     protected String currentUser_id, orientation;
     protected int count = 0;
 
@@ -174,13 +171,13 @@ public class FetchIntentService extends IntentService
                         {
                             if (orientation.equals("Men") && dataSnapshot.child("Gender").getValue().toString().equals("Male"))
                             {
-                                cardsList.add(new Cards(dataSnapshot.getKey(), dataSnapshot.child("Name").getValue().toString(), dataSnapshot.child("Age").getValue().toString(),
+                                cardsList.add(new Card(dataSnapshot.getKey(), dataSnapshot.child("Name").getValue().toString(), dataSnapshot.child("Age").getValue().toString(),
                                         dataSnapshot.child("Height").getValue().toString(), dataSnapshot.child("City").getValue().toString(),
                                         dataSnapshot.child("ProfileImageUrl").getValue().toString()));
                             }
                             else if (orientation.equals("Women") && dataSnapshot.child("Gender").getValue().toString().equals("Female"))
                             {
-                                cardsList.add(new Cards(dataSnapshot.getKey(), dataSnapshot.child("Name").getValue().toString(), dataSnapshot.child("Age").getValue().toString(),
+                                cardsList.add(new Card(dataSnapshot.getKey(), dataSnapshot.child("Name").getValue().toString(), dataSnapshot.child("Age").getValue().toString(),
                                         dataSnapshot.child("Height").getValue().toString(), dataSnapshot.child("City").getValue().toString(),
                                         dataSnapshot.child("ProfileImageUrl").getValue().toString()));
                             }

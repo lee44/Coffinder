@@ -1,10 +1,10 @@
 package com.apps.jlee.boginder.Models;
 
-public class Matches
+public class Match
 {
     private String user_id, name, profileImageUrl, chat_id, message, message_direction;
 
-    public Matches(String user_id,String name, String profileImageUrl, String chat_id, String message, String message_direction)
+    public Match(String user_id, String name, String profileImageUrl, String chat_id, String message, String message_direction)
     {
         this.user_id = user_id;
         this.name = name;

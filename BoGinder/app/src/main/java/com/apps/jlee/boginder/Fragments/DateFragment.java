@@ -23,7 +23,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.apps.jlee.boginder.Models.Cards;
+import com.apps.jlee.boginder.Models.Card;
 import com.apps.jlee.boginder.R;
 import com.apps.jlee.boginder.Service.Constants;
 import com.apps.jlee.boginder.Service.FetchIntentService;
@@ -56,12 +56,12 @@ public class DateFragment extends Fragment
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
     private Context context;
-    private ArrayList<Cards> cardsList;
+    private ArrayList<Card> cardsList;
     private ProfileResultReceiver resultReceiver;
     private Location lastLocation;
     private String currentUser_id;
 
-    public DateFragment(Context context, ArrayList<Cards> cardsList, Location lastLocation)
+    public DateFragment(Context context, ArrayList<Card> cardsList, Location lastLocation)
     {
         this.context = context;
         this.cardsList = cardsList;
@@ -156,8 +156,8 @@ public class DateFragment extends Fragment
                     String key = FirebaseDatabase.getInstance().getReference().child("Chat").push().getKey();
 
                     //dataSnapshot is pointing to the profile's user_id stored under current user's tree since the variable df was assigned the path to the profile's user_id
-                    databaseReference.child(dataSnapshot.getKey()).child("Connections/Matches/"+currentUser_id+"/chat_id").setValue(key);
-                    databaseReference.child(currentUser_id).child("Connections/Matches/"+dataSnapshot.getKey()+"/chat_id").setValue(key);
+                    databaseReference.child(dataSnapshot.getKey()).child("Connections/Match/"+currentUser_id+"/chat_id").setValue(key);
+                    databaseReference.child(currentUser_id).child("Connections/Match/"+dataSnapshot.getKey()+"/chat_id").setValue(key);
                 }
             }
 
