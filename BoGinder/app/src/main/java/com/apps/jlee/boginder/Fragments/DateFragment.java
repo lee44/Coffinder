@@ -41,10 +41,12 @@ import java.util.ArrayList;
 public class DateFragment extends Fragment
 {
     @BindView(R.id.pic) ImageView image;
+    @BindView(R.id.age_city) TextView age_city;
     @BindView(R.id.name) TextView name;
-    @BindView(R.id.age_city) TextView age;
     @BindView(R.id.height) TextView height;
-    @BindView(R.id.potential_match_distance) TextView distance;
+    @BindView(R.id.job) TextView job;
+    @BindView(R.id.school) TextView school;
+    @BindView(R.id.description) TextView description;
     @BindView(R.id.like_floatingActionButton) FloatingActionButton likeButton;
     @BindView(R.id.nope_floatingActionButton) FloatingActionButton nopeButton;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -57,7 +59,7 @@ public class DateFragment extends Fragment
     private ArrayList<Cards> cardsList;
     private ProfileResultReceiver resultReceiver;
     private Location lastLocation;
-    private String user_gender, orientation, currentUser_id;
+    private String currentUser_id;
 
     public DateFragment(Context context, ArrayList<Cards> cardsList, Location lastLocation)
     {
@@ -99,9 +101,8 @@ public class DateFragment extends Fragment
                 Glide.with(getContext()).load(cardsList.get(0).getProfileImageUrl()).into(image);
 
             name.setText(cardsList.get(0).getName());
-            age.setText(cardsList.get(0).getAge());
+            age_city.setText(cardsList.get(0).getAge()+", "+cardsList.get(0).getCity());
             height.setText(cardsList.get(0).getHeight());
-            distance.setText(cardsList.get(0).getDistance());
 
             likeButton.setOnClickListener(new View.OnClickListener()
             {
@@ -231,9 +232,8 @@ public class DateFragment extends Fragment
             progressBar.setVisibility(View.VISIBLE);
             image.setVisibility(View.GONE);
             name.setVisibility(View.GONE);
-            age.setVisibility(View.GONE);
+            age_city.setVisibility(View.GONE);
             height.setVisibility(View.GONE);
-            distance.setVisibility(View.GONE);
             likeButton.hide();
             nopeButton.hide();
         }
@@ -242,9 +242,8 @@ public class DateFragment extends Fragment
             progressBar.setVisibility(View.INVISIBLE);
             image.setVisibility(View.VISIBLE);
             name.setVisibility(View.VISIBLE);
-            age.setVisibility(View.VISIBLE);
+            age_city.setVisibility(View.VISIBLE);
             height.setVisibility(View.VISIBLE);
-            distance.setVisibility(View.VISIBLE);
             likeButton.show();
             nopeButton.show();
         }

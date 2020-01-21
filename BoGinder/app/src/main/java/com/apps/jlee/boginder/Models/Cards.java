@@ -5,16 +5,16 @@ import android.os.Parcelable;
 
 public class Cards implements Parcelable
 {
-    private String user_id, name, age, height, distance;
+    private String user_id, name, age, height, city;
     private String profileImageUrl;
 
-    public Cards(String user_id, String name, String age, String height, String distance, String profileImageUrl)
+    public Cards(String user_id, String name, String age, String height, String city, String profileImageUrl)
     {
         this.user_id = user_id;
         this.name = name;
         this.age = age;
         this.height = height;
-        this.distance = distance;
+        this.city = city;
         this.profileImageUrl = profileImageUrl;
     }
 
@@ -24,7 +24,7 @@ public class Cards implements Parcelable
         name = parcel.readString();
         age = parcel.readString();
         height = parcel.readString();
-        distance = parcel.readString();
+        city = parcel.readString();
         profileImageUrl = parcel.readString();
     }
 
@@ -78,14 +78,14 @@ public class Cards implements Parcelable
         this.height = height;
     }
 
-    public String getDistance()
+    public String getCity()
     {
-        return distance;
+        return city;
     }
 
-    public void setDistance(String distance)
+    public void setCity(String city)
     {
-        this.distance = distance;
+        this.city = city;
     }
 
     public static final Parcelable.Creator<Cards> CREATOR =
@@ -118,7 +118,7 @@ public class Cards implements Parcelable
         parcel.writeString(name);
         parcel.writeString(age);
         parcel.writeString(height);
-        parcel.writeString(distance);
+        parcel.writeString(city);
         parcel.writeString(profileImageUrl);
     }
 }
