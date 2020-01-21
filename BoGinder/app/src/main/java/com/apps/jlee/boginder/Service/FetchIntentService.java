@@ -171,14 +171,24 @@ public class FetchIntentService extends IntentService
                         {
                             if (orientation.equals("Men") && dataSnapshot.child("Gender").getValue().toString().equals("Male"))
                             {
-                                cardsList.add(new Card(dataSnapshot.getKey(), dataSnapshot.child("Name").getValue().toString(), dataSnapshot.child("Age").getValue().toString(),
-                                        dataSnapshot.child("Height").getValue().toString(), dataSnapshot.child("City").getValue().toString(),
+                                cardsList.add(new Card(
+                                        dataSnapshot.getKey(),
+                                        dataSnapshot.child("Name").getValue().toString(),
+                                        dataSnapshot.child("Age").getValue().toString(),
+                                        dataSnapshot.child("Height").getValue().toString(),
+                                        dataSnapshot.child("City").getValue().toString(),
+                                        dataSnapshot.child("Description").exists() ? dataSnapshot.child("Description").getValue().toString() : "",
                                         dataSnapshot.child("ProfileImageUrl").getValue().toString()));
                             }
                             else if (orientation.equals("Women") && dataSnapshot.child("Gender").getValue().toString().equals("Female"))
                             {
-                                cardsList.add(new Card(dataSnapshot.getKey(), dataSnapshot.child("Name").getValue().toString(), dataSnapshot.child("Age").getValue().toString(),
-                                        dataSnapshot.child("Height").getValue().toString(), dataSnapshot.child("City").getValue().toString(),
+                                cardsList.add(new Card(
+                                        dataSnapshot.getKey(),
+                                        dataSnapshot.child("Name").getValue().toString(),
+                                        dataSnapshot.child("Age").getValue().toString(),
+                                        dataSnapshot.child("Height").getValue().toString(),
+                                        dataSnapshot.child("City").getValue().toString(),
+                                        dataSnapshot.child("Description").exists() ? dataSnapshot.child("Description").getValue().toString() : "",
                                         dataSnapshot.child("ProfileImageUrl").getValue().toString()));
                             }
                         }

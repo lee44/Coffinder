@@ -6,6 +6,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -17,6 +19,7 @@ import butterknife.ButterKnife;
 
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,6 +31,8 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.apps.jlee.boginder.Activities.LoginRegisterActivity;
@@ -38,6 +43,7 @@ import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -59,30 +65,19 @@ import java.util.Map;
 
 public class DetailsFragment extends Fragment implements ChoicesDialogFragment.DialogFragmentClickListener, HeightDialogFragment.HeightDialogFragmentListener
 {
-    @BindView(R.id.name_et)
-    EditText name_et;
-    @BindView(R.id.email_et)
-    EditText email_et;
-    @BindView(R.id.age_et)
-    EditText age_et;
-    @BindView(R.id.height_et)
-    EditText height_et;
-    @BindView(R.id.ethnicity_et)
-    EditText ethnicity_et;
-    @BindView(R.id.religion_et)
-    EditText religion_et;
-    @BindView(R.id.city_et)
-    EditText city_et;
-    @BindView(R.id.occupation_et)
-    EditText occupation_et;
-    @BindView(R.id.school_et)
-    EditText school_et;
-    @BindView(R.id.gender_radio_group)
-    RadioGroup gender_radio_group;
-    @BindView(R.id.description_editText)
-    EditText description_et;
-    @BindView(R.id.sign_out_settings)
-    Button sign_out;
+    @BindView(R.id.name_et) EditText name_et;
+    @BindView(R.id.email_et) EditText email_et;
+    @BindView(R.id.age_et) EditText age_et;
+    @BindView(R.id.height_et) EditText height_et;
+    @BindView(R.id.ethnicity_et) EditText ethnicity_et;
+    @BindView(R.id.religion_et) EditText religion_et;
+    @BindView(R.id.city_et) EditText city_et;
+    @BindView(R.id.occupation_et) EditText occupation_et;
+    @BindView(R.id.school_et) EditText school_et;
+    @BindView(R.id.gender_radio_group) RadioGroup gender_radio_group;
+    @BindView(R.id.description_editText) EditText description_et;
+    @BindView(R.id.sign_out_settings) Button sign_out;
+    @BindView(R.id.scrollview) ScrollView scrollView;
 
     private FirebaseAuth firebaseAuth;
     private DatabaseReference databaseReference;
@@ -206,7 +201,14 @@ public class DetailsFragment extends Fragment implements ChoicesDialogFragment.D
             @Override
             public void onSuccess(Object o)
             {
-                Toast.makeText(getContext(),"Saved",Toast.LENGTH_SHORT);
+                Snackbar snackbar = Snackbar.make(scrollView, "Saved", Snackbar.LENGTH_LONG);
+                View sbView = snackbar.getView();
+                TextView textView = sbView.findViewById(com.google.android.material.R.id.snackbar_text);
+                textView.setTextColor(Color.RED);
+                textView.setTextSize(22);
+                textView.setTypeface(null, Typeface.BOLD);
+                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                snackbar.show();
             }
         });
     }

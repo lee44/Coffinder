@@ -5,16 +5,16 @@ import android.os.Parcelable;
 
 public class Card implements Parcelable
 {
-    private String user_id, name, age, height, city;
-    private String profileImageUrl;
+    private String user_id, name, age, height, city, description, profileImageUrl;
 
-    public Card(String user_id, String name, String age, String height, String city, String profileImageUrl)
+    public Card(String user_id, String name, String age, String height, String city, String description, String profileImageUrl)
     {
         this.user_id = user_id;
         this.name = name;
         this.age = age;
         this.height = height;
         this.city = city;
+        this.description = description;
         this.profileImageUrl = profileImageUrl;
     }
 
@@ -120,5 +120,15 @@ public class Card implements Parcelable
         parcel.writeString(height);
         parcel.writeString(city);
         parcel.writeString(profileImageUrl);
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 }
