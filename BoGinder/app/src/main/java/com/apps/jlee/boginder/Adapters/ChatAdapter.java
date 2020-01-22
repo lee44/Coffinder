@@ -1,4 +1,4 @@
-package com.apps.jlee.boginder.Adapter;
+package com.apps.jlee.boginder.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;

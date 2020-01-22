@@ -15,7 +15,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.apps.jlee.boginder.DialogFragment.HeightDialogFragment;
+import com.apps.jlee.boginder.DialogFragments.HeightDialogFragment;
 import com.apps.jlee.boginder.Firebase.MyFirebaseMessagingService;
 import com.apps.jlee.boginder.Models.Users;
 import com.apps.jlee.boginder.R;
@@ -24,7 +24,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

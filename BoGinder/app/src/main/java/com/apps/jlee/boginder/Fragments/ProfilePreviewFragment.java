@@ -1,9 +1,7 @@
 package com.apps.jlee.boginder.Fragments;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +10,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.apps.jlee.boginder.Models.Card;
+import com.apps.jlee.boginder.Interfaces.ProfileInterface;
 import com.apps.jlee.boginder.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,7 +26,7 @@ import androidx.fragment.app.FragmentTransaction;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProfilePreviewFragment extends Fragment
+public class ProfilePreviewFragment extends Fragment implements ProfileInterface.ProfileCallback
 {
     @BindView(R.id.pic) ImageView image;
     @BindView(R.id.age_city) TextView age_city;
@@ -49,7 +48,6 @@ public class ProfilePreviewFragment extends Fragment
     @BindView(R.id.no_data) TextView no_data;
 
     private Context context;
-    private Card card;
 
     public ProfilePreviewFragment(Context context)
     {
@@ -62,7 +60,41 @@ public class ProfilePreviewFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_profile_preview, container, false);
         ButterKnife.bind(this, view);
 
-        new CardAsyncTask().execute();
+        toggleUI(true);
+
+        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+        String currentUser_id = firebaseAuth.getCurrentUser().getUid();
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser_id);
+
+        ValueEventListener valueEventListener = new ValueEventListener()
+        {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot)
+            {
+                Card card = new Card(
+                        "",
+                        dataSnapshot.child("Name").getValue().toString(),
+                        dataSnapshot.child("Age").getValue().toString(),
+                        dataSnapshot.child("Height").getValue().toString(),
+                        dataSnapshot.child("City").getValue().toString(),
+                        dataSnapshot.child("Occupation").exists() ? dataSnapshot.child("Occupation").getValue().toString() : "N/A",
+                        dataSnapshot.child("School").exists() ? dataSnapshot.child("School").getValue().toString() : "N/A",
+                        dataSnapshot.child("Ethnicity").exists() ? dataSnapshot.child("Ethnicity").getValue().toString() : "N/A",
+                        dataSnapshot.child("Religion").exists() ? dataSnapshot.child("Religion").getValue().toString() : "N/A",
+                        dataSnapshot.child("Description").exists() ? dataSnapshot.child("Description").getValue().toString() : "N/A",
+                        dataSnapshot.child("ProfileImageUrl").getValue().toString());
+
+                loadUI(card);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError)
+            {
+
+            }
+        };
+
+        databaseReference.addValueEventListener(valueEventListener);
 
         editButton.setOnClickListener(new View.OnClickListener()
         {
@@ -76,65 +108,8 @@ public class ProfilePreviewFragment extends Fragment
         return view;
     }
 
-    private class CardAsyncTask extends AsyncTask<String, String, Card>
-    {
-        @Override
-        protected void onPreExecute()
-        {
-            super.onPreExecute();
-            progressBar.setVisibility(View.VISIBLE);
-        }
-
-        @Override
-        protected Card doInBackground(String... strings)
-        {
-            FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-            String currentUser_id = firebaseAuth.getCurrentUser().getUid();
-            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser_id);
-
-            ValueEventListener valueEventListener = new ValueEventListener()
-            {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot)
-                {
-                     card = new Card(
-                            "",
-                            dataSnapshot.child("Name").getValue().toString(),
-                            dataSnapshot.child("Age").getValue().toString(),
-                            dataSnapshot.child("Height").getValue().toString(),
-                            dataSnapshot.child("City").getValue().toString(),
-                            dataSnapshot.child("Occupation").exists() ? dataSnapshot.child("Occupation").getValue().toString() : "N/A",
-                            dataSnapshot.child("School").exists() ? dataSnapshot.child("School").getValue().toString() : "N/A",
-                            dataSnapshot.child("Ethnicity").exists() ? dataSnapshot.child("Ethnicity").getValue().toString() : "N/A",
-                            dataSnapshot.child("Religion").exists() ? dataSnapshot.child("Religion").getValue().toString() : "N/A",
-                            dataSnapshot.child("Description").exists() ? dataSnapshot.child("Description").getValue().toString() : "N/A",
-                            dataSnapshot.child("ProfileImageUrl").getValue().toString());
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError databaseError)
-                {
-
-                }
-            };
-
-            databaseReference.addValueEventListener(valueEventListener);
-
-            return card;
-        }
-
-        @Override
-        protected void onPostExecute(Card card)
-        {
-            super.onPostExecute(card);
-
-            progressBar.setVisibility(View.GONE);
-            Log.v("Lakers",card.toString());
-            //loadUI(card);
-        }
-    }
-
-    private void loadUI(Card card)
+    @Override
+    public void loadUI(Card card)
     {
         //if (card.getProfileImageUrl().equals("Default"))
         //{
@@ -151,6 +126,50 @@ public class ProfilePreviewFragment extends Fragment
         description.setText(card.getDescription().length() != 0 ? card.getDescription() : "N/A");
         ethnicity.setText(card.getEthnicity().length() != 0 ? card.getEthnicity() : "N/A");
         religion.setText(card.getReligion().length() != 0 ? card.getReligion() : "N/A");
+
+        toggleUI(false);
+    }
+
+    public void toggleUI(boolean isToggle)
+    {
+        if(isToggle)
+        {
+            progressBar.setVisibility(View.VISIBLE);
+            image.setVisibility(View.GONE);
+            name.setVisibility(View.GONE);
+            age_city.setVisibility(View.GONE);
+            job_image.setVisibility(View.GONE);
+            job.setVisibility(View.GONE);
+            school_image.setVisibility(View.GONE);
+            school.setVisibility(View.GONE);
+            height.setVisibility(View.GONE);
+            height_header.setVisibility(View.GONE);
+            description_header.setVisibility(View.GONE);
+            description.setVisibility(View.GONE);
+            religion_header.setVisibility(View.GONE);
+            religion.setVisibility(View.GONE);
+            ethnicity_header.setVisibility(View.GONE);
+            ethnicity.setVisibility(View.GONE);
+        }
+        else
+        {
+            progressBar.setVisibility(View.INVISIBLE);
+            image.setVisibility(View.VISIBLE);
+            name.setVisibility(View.VISIBLE);
+            age_city.setVisibility(View.VISIBLE);
+            job_image.setVisibility(View.VISIBLE);
+            job.setVisibility(View.VISIBLE);
+            school_image.setVisibility(View.VISIBLE);
+            school.setVisibility(View.VISIBLE);
+            height.setVisibility(View.VISIBLE);
+            height_header.setVisibility(View.VISIBLE);
+            description_header.setVisibility(View.VISIBLE);
+            description.setVisibility(View.VISIBLE);
+            religion_header.setVisibility(View.VISIBLE);
+            religion.setVisibility(View.VISIBLE);
+            ethnicity_header.setVisibility(View.VISIBLE);
+            ethnicity.setVisibility(View.VISIBLE);
+        }
     }
 
     public void setFragment(Fragment fragment)

@@ -1,4 +1,4 @@
-package com.apps.jlee.boginder.Adapter;
+package com.apps.jlee.boginder.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,35 +18,42 @@ import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHolder>
+public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder>
 {
-    List<Match> matches;
+    private List<Match> matches;
     private Context context;
 
-    public MatchesAdapter(List<Match> matches, Context context)
+    public MessagesAdapter(List<Match> matches, Context context)
     {
         this.matches = matches;
         this.context = context;
     }
 
     @Override
-    public MatchesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public MessagesAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.item_match, parent, false);
+        View view = inflater.inflate(R.layout.item_last_message, parent, false);
 
-        ViewHolder viewHolder = new ViewHolder(view);
+        MessagesAdapter.ViewHolder viewHolder = new MessagesAdapter.ViewHolder(view);
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(MatchesAdapter.ViewHolder holder, int position)
+    public void onBindViewHolder(MessagesAdapter.ViewHolder holder, int position)
     {
-        holder.matches_name.setText(matches.get(position).getName());
-        if(!matches.get(position).getProfileImageUrl().equals("Default"))
-            Glide.with(context).load(matches.get(position).getProfileImageUrl()).into(holder.matches_imageView);
+        holder.message.setText(matches.get(position).getMessage());
+        holder.name.setText(matches.get(position).getName());
+
+        if(matches.get(position).getMessage_direction().equals("Sent"))
+            holder.message_direction.setImageResource(R.drawable.arrow_left);
         else
-            holder.matches_imageView.setImageResource(R.mipmap.ic_launcher);
+            holder.message_direction.setImageResource(R.drawable.arrow_right);
+
+        if(!matches.get(position).getProfileImageUrl().equals("Default"))
+            Glide.with(context).load(matches.get(position).getProfileImageUrl()).into(holder.profile_image);
+        else
+            holder.profile_image.setImageResource(R.mipmap.ic_launcher);
     }
 
     @Override
@@ -57,16 +64,17 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-
-        ImageView matches_imageView;
-        TextView matches_name;
+        ImageView profile_image, message_direction;
+        TextView name, message;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
 
-            matches_imageView = itemView.findViewById(R.id.item_matches_imageView);
-            matches_name = itemView.findViewById(R.id.item_matches_name);
+            profile_image = itemView.findViewById(R.id.item_matches_imageView);
+            message_direction = itemView.findViewById(R.id.message_direction);
+            name = itemView.findViewById(R.id.item_matches_name);
+            message = itemView.findViewById(R.id.matches_message);
 
             itemView.setOnClickListener(new View.OnClickListener()
             {
@@ -84,3 +92,4 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
         }
     }
 }
+

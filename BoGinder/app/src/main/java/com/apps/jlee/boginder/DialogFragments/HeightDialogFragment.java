@@ -1,4 +1,4 @@
-package com.apps.jlee.boginder.DialogFragment;
+package com.apps.jlee.boginder.DialogFragments;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
