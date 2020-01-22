@@ -43,10 +43,18 @@ public class DateFragment extends Fragment
     @BindView(R.id.pic) ImageView image;
     @BindView(R.id.age_city) TextView age_city;
     @BindView(R.id.name) TextView name;
+    @BindView(R.id.height_header) TextView height_header;
     @BindView(R.id.height) TextView height;
+    @BindView(R.id.imageView1) ImageView job_image;
     @BindView(R.id.job) TextView job;
+    @BindView(R.id.imageView2) ImageView school_image;
     @BindView(R.id.school) TextView school;
+    @BindView(R.id.description_header) TextView description_header;
     @BindView(R.id.description) TextView description;
+    @BindView(R.id.religion_header) TextView religion_header;
+    @BindView(R.id.religion) TextView religion;
+    @BindView(R.id.ethnicity_header) TextView ethnicity_header;
+    @BindView(R.id.ethnicity) TextView ethnicity;
     @BindView(R.id.like_floatingActionButton) FloatingActionButton likeButton;
     @BindView(R.id.nope_floatingActionButton) FloatingActionButton nopeButton;
     @BindView(R.id.progressBar) ProgressBar progressBar;
@@ -103,6 +111,11 @@ public class DateFragment extends Fragment
             name.setText(cardsList.get(0).getName());
             age_city.setText(cardsList.get(0).getAge()+", "+cardsList.get(0).getCity());
             height.setText(cardsList.get(0).getHeight());
+            job.setText(cardsList.get(0).getJob().length() != 0 ? cardsList.get(0).getJob() : "N/A");
+            school.setText(cardsList.get(0).getSchool().length() != 0 ? cardsList.get(0).getSchool() : "N/A");
+            description.setText(cardsList.get(0).getDescription().length() != 0 ? cardsList.get(0).getDescription() : "N/A");
+            ethnicity.setText(cardsList.get(0).getEthnicity().length() != 0 ? cardsList.get(0).getEthnicity() : "N/A");
+            religion.setText(cardsList.get(0).getReligion().length() != 0 ? cardsList.get(0).getReligion() : "N/A");
 
             likeButton.setOnClickListener(new View.OnClickListener()
             {
@@ -233,7 +246,18 @@ public class DateFragment extends Fragment
             image.setVisibility(View.GONE);
             name.setVisibility(View.GONE);
             age_city.setVisibility(View.GONE);
+            job_image.setVisibility(View.GONE);
+            job.setVisibility(View.GONE);
+            school_image.setVisibility(View.GONE);
+            school.setVisibility(View.GONE);
             height.setVisibility(View.GONE);
+            height_header.setVisibility(View.GONE);
+            description_header.setVisibility(View.GONE);
+            description.setVisibility(View.GONE);
+            religion_header.setVisibility(View.GONE);
+            religion.setVisibility(View.GONE);
+            ethnicity_header.setVisibility(View.GONE);
+            ethnicity.setVisibility(View.GONE);
             likeButton.hide();
             nopeButton.hide();
         }
@@ -243,7 +267,18 @@ public class DateFragment extends Fragment
             image.setVisibility(View.VISIBLE);
             name.setVisibility(View.VISIBLE);
             age_city.setVisibility(View.VISIBLE);
+            job_image.setVisibility(View.VISIBLE);
+            job.setVisibility(View.VISIBLE);
+            school_image.setVisibility(View.VISIBLE);
+            school.setVisibility(View.VISIBLE);
             height.setVisibility(View.VISIBLE);
+            height_header.setVisibility(View.VISIBLE);
+            description_header.setVisibility(View.VISIBLE);
+            description.setVisibility(View.VISIBLE);
+            religion_header.setVisibility(View.VISIBLE);
+            religion.setVisibility(View.VISIBLE);
+            ethnicity_header.setVisibility(View.VISIBLE);
+            ethnicity.setVisibility(View.VISIBLE);
             likeButton.show();
             nopeButton.show();
         }

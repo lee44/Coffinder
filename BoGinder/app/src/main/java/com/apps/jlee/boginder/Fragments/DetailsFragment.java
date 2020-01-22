@@ -66,7 +66,6 @@ import java.util.Map;
 public class DetailsFragment extends Fragment implements ChoicesDialogFragment.DialogFragmentClickListener, HeightDialogFragment.HeightDialogFragmentListener
 {
     @BindView(R.id.name_et) EditText name_et;
-    @BindView(R.id.email_et) EditText email_et;
     @BindView(R.id.age_et) EditText age_et;
     @BindView(R.id.height_et) EditText height_et;
     @BindView(R.id.ethnicity_et) EditText ethnicity_et;
@@ -178,7 +177,6 @@ public class DetailsFragment extends Fragment implements ChoicesDialogFragment.D
     {
         Map userInfo = new HashMap();
         userInfo.put("Name", name_et.getText().toString());
-        userInfo.put("Email",email_et.getText().toString());
         userInfo.put("Age",age_et.getText().toString());
         userInfo.put("Height",height_et.getText().toString());
         userInfo.put("Ethnicity",ethnicity_et.getText().toString());
@@ -228,7 +226,6 @@ public class DetailsFragment extends Fragment implements ChoicesDialogFragment.D
                     Map<String, Object> map = (Map<String, Object>)dataSnapshot.getValue();
 
                     name_et.setText(map.get("Name") != null ? map.get("Name").toString() : "");
-                    email_et.setText(map.get("Email") != null ? map.get("Email").toString() : "");
                     age_et.setText(map.get("Age") != null ? map.get("Age").toString() : "");
                     height_et.setText(map.get("Height") != null ? map.get("Height").toString() : "");
                     ethnicity_et.setText(map.get("Ethnicity") != null ? map.get("Ethnicity").toString() : "");

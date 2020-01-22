@@ -171,25 +171,11 @@ public class FetchIntentService extends IntentService
                         {
                             if (orientation.equals("Men") && dataSnapshot.child("Gender").getValue().toString().equals("Male"))
                             {
-                                cardsList.add(new Card(
-                                        dataSnapshot.getKey(),
-                                        dataSnapshot.child("Name").getValue().toString(),
-                                        dataSnapshot.child("Age").getValue().toString(),
-                                        dataSnapshot.child("Height").getValue().toString(),
-                                        dataSnapshot.child("City").getValue().toString(),
-                                        dataSnapshot.child("Description").exists() ? dataSnapshot.child("Description").getValue().toString() : "",
-                                        dataSnapshot.child("ProfileImageUrl").getValue().toString()));
+                                addCards(dataSnapshot);
                             }
                             else if (orientation.equals("Women") && dataSnapshot.child("Gender").getValue().toString().equals("Female"))
                             {
-                                cardsList.add(new Card(
-                                        dataSnapshot.getKey(),
-                                        dataSnapshot.child("Name").getValue().toString(),
-                                        dataSnapshot.child("Age").getValue().toString(),
-                                        dataSnapshot.child("Height").getValue().toString(),
-                                        dataSnapshot.child("City").getValue().toString(),
-                                        dataSnapshot.child("Description").exists() ? dataSnapshot.child("Description").getValue().toString() : "",
-                                        dataSnapshot.child("ProfileImageUrl").getValue().toString()));
+                                addCards(dataSnapshot);
                             }
                         }
                     }
@@ -225,6 +211,33 @@ public class FetchIntentService extends IntentService
 
         databaseReference.addChildEventListener(oppositeGenderDB);
         databaseReference.addListenerForSingleValueEvent(valueEventListener);
+    }
+
+    private void addCards(DataSnapshot dataSnapshot)
+    {
+        cardsList.add(new Card(
+                dataSnapshot.getKey(),
+                dataSnapshot.child("Name").getValue().toString(),
+                dataSnapshot.child("Age").getValue().toString(),
+                dataSnapshot.child("Height").getValue().toString(),
+                dataSnapshot.child("City").getValue().toString(),
+                dataSnapshot.child("Occupation").exists() ? dataSnapshot.child("Occupation").getValue().toString() : "N/A",
+                dataSnapshot.child("School").exists() ? dataSnapshot.child("School").getValue().toString() : "N/A",
+                dataSnapshot.child("Ethnicity").exists() ? dataSnapshot.child("Ethnicity").getValue().toString() : "N/A",
+                dataSnapshot.child("Religion").exists() ? dataSnapshot.child("Religion").getValue().toString() : "N/A",
+                dataSnapshot.child("Description").exists() ? dataSnapshot.child("Description").getValue().toString() : "N/A",
+                dataSnapshot.child("ProfileImageUrl").getValue().toString()));
+    }
+
+    private void deliverResultToReceiver(int resultCode, String message)
+    {
+        databaseReference.removeEventListener(oppositeGenderDB);
+        databaseReference.removeEventListener(valueEventListener);
+
+        Bundle bundle = new Bundle();
+        bundle.putString(Constants.RESULT_DATA_KEY, message);
+        bundle.putParcelableArrayList("Profiles",cardsList);
+        receiver.send(resultCode, bundle);
     }
 
     public String getHeight(int inches)
@@ -267,16 +280,5 @@ public class FetchIntentService extends IntentService
     private double rad2deg(double rad)
     {
         return (rad * 180.0 / Math.PI);
-    }
-
-    private void deliverResultToReceiver(int resultCode, String message)
-    {
-        databaseReference.removeEventListener(oppositeGenderDB);
-        databaseReference.removeEventListener(valueEventListener);
-
-        Bundle bundle = new Bundle();
-        bundle.putString(Constants.RESULT_DATA_KEY, message);
-        bundle.putParcelableArrayList("Profiles",cardsList);
-        receiver.send(resultCode, bundle);
     }
 }

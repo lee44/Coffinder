@@ -23,7 +23,7 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingBottom="200dp">
+                android:paddingBottom="100dp">
 
                 <ImageView
                     android:id="@+id/pic"
@@ -163,12 +163,62 @@
                     app:layout_constraintStart_toStartOf="@+id/guideline11"
                     app:layout_constraintTop_toBottomOf="@+id/description_header" />
 
+                <TextView
+                    android:id="@+id/ethnicity_header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Ethnicity"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline19"
+                    app:layout_constraintStart_toStartOf="@+id/guideline11"
+                    app:layout_constraintTop_toBottomOf="@+id/description" />
+
+                <TextView
+                    android:id="@+id/ethnicity"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Asian"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline19"
+                    app:layout_constraintStart_toStartOf="@+id/guideline11"
+                    app:layout_constraintTop_toBottomOf="@+id/ethnicity_header" />
+
+                <TextView
+                    android:id="@+id/religion_header"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Religion"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline19"
+                    app:layout_constraintStart_toStartOf="@+id/guideline11"
+                    app:layout_constraintTop_toBottomOf="@+id/ethnicity" />
+
+                <TextView
+                    android:id="@+id/religion"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="Christian"
+                    android:textColor="@color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toStartOf="@+id/guideline19"
+                    app:layout_constraintStart_toStartOf="@+id/guideline11"
+                    app:layout_constraintTop_toBottomOf="@+id/religion_header" />
+
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline10"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    app:layout_constraintGuide_percent=".5" />
+                    app:layout_constraintGuide_percent=".4" />
 
                 <androidx.constraintlayout.widget.Guideline
                     android:id="@+id/guideline11"

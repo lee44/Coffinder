@@ -30,6 +30,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.apps.jlee.boginder.Fragments.AccountFragment;
 import com.apps.jlee.boginder.Fragments.MatchFragment;
 import com.apps.jlee.boginder.Fragments.DateFragment;
+import com.apps.jlee.boginder.Fragments.ProfilePreviewFragment;
 import com.apps.jlee.boginder.Fragments.ProgressFragment;
 import com.apps.jlee.boginder.R;
 import com.apps.jlee.boginder.Service.Constants;
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    private AccountFragment accountFragment;
+    private ProfilePreviewFragment profilePreviewFragment;
     private MatchFragment matchFragment;
     private DateFragment dateFragment;
 
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
 
-        accountFragment = new AccountFragment();
+        profilePreviewFragment = new ProfilePreviewFragment(this);
         matchFragment = new MatchFragment(this);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -92,7 +93,7 @@ public class MainActivity extends AppCompatActivity
                 switch (menuItem.getItemId())
                 {
                     case R.id.account:
-                        setFragment(accountFragment);
+                        setFragment(profilePreviewFragment);
                         break;
                     case R.id.dates:
                         hideToolbarItems(true);
