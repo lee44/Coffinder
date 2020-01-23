@@ -48,6 +48,8 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     @BindView(R.id.no_data) TextView no_data;
 
     private Context context;
+    private DatabaseReference databaseReference;
+    private ValueEventListener valueEventListener;
 
     public ProfilePreviewFragment(Context context)
     {
@@ -64,9 +66,9 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         String currentUser_id = firebaseAuth.getCurrentUser().getUid();
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser_id);
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser_id);
 
-        ValueEventListener valueEventListener = new ValueEventListener()
+        valueEventListener = new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
@@ -90,7 +92,8 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError)
             {
-
+                progressBar.setVisibility(View.GONE);
+                no_data.setVisibility(View.VISIBLE);
             }
         };
 
@@ -130,9 +133,9 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
         toggleUI(false);
     }
 
-    public void toggleUI(boolean isToggle)
+    public void toggleUI(boolean toggle)
     {
-        if(isToggle)
+        if(toggle)
         {
             progressBar.setVisibility(View.VISIBLE);
             image.setVisibility(View.GONE);
@@ -150,6 +153,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
             religion.setVisibility(View.GONE);
             ethnicity_header.setVisibility(View.GONE);
             ethnicity.setVisibility(View.GONE);
+            editButton.hide();
         }
         else
         {
@@ -169,6 +173,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
             religion.setVisibility(View.VISIBLE);
             ethnicity_header.setVisibility(View.VISIBLE);
             ethnicity.setVisibility(View.VISIBLE);
+            editButton.show();
         }
     }
 
@@ -177,6 +182,38 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_frame, fragment);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        //Log.v("Lakers","DateFragment started");
+
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        //Log.v("Lakers","DateFragment resume");
+
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        //Log.v("Lakers","DateFragment paused");
+
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        //Log.v("Lakers","DateFragment destroyed");
+        databaseReference.removeEventListener(valueEventListener);
     }
 }
 

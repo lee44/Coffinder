@@ -13,10 +13,12 @@ import butterknife.ButterKnife;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.apps.jlee.boginder.Adapters.MatchesAdapter;
 import com.apps.jlee.boginder.Adapters.MessagesAdapter;
+import com.apps.jlee.boginder.Interfaces.MatchInterface;
 import com.apps.jlee.boginder.Models.Match;
 import com.apps.jlee.boginder.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,28 +32,27 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatchFragment extends Fragment
+public class MatchFragment extends Fragment implements MatchInterface.MatchCallback
 {
-    @BindView(R.id.matches_recycleView)
-    RecyclerView matches_recycleView;
-    @BindView(R.id.messages_recycleView)
-    RecyclerView messages_recycleView;
-    @BindView(R.id.No_Matches)
-    TextView No_Matches;
-    @BindView(R.id.No_Messages)
-    TextView No_Messages;
+    @BindView(R.id.matches_recycleView) RecyclerView matches_recycleView;
+    @BindView(R.id.messages_recycleView) RecyclerView messages_recycleView;
+    @BindView(R.id.new_matches) TextView new_matches;
+    @BindView(R.id.no_matches) TextView no_matches;
+    @BindView(R.id.messages) TextView messages;
+    @BindView(R.id.no_messages) TextView no_messages;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
 
-    DatabaseReference databaseReference;
+    private DatabaseReference databaseReference;
     private Context context;
     private ArrayList<Match> matches_list;
     private MatchesAdapter matchesAdapter;
     private MessagesAdapter messagesAdapter;
     private String current_user_id;
+    private long childrencount;
 
     public MatchFragment(Context context)
     {
         this.context = context;
-
         matches_list = new ArrayList<>();
     }
 
@@ -61,6 +62,8 @@ public class MatchFragment extends Fragment
         View view = inflater.inflate(R.layout.fragment_match, container, false);
 
         ButterKnife.bind(this,view);
+
+        toggleUI(true);
 
         current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -96,6 +99,7 @@ public class MatchFragment extends Fragment
             {
                 if(dataSnapshot.exists())
                 {
+                    childrencount = dataSnapshot.getChildrenCount();
                     for(DataSnapshot match : dataSnapshot.getChildren())
                     {
                         fetchMatchInformation(match.getKey(),match.child("chat_id").getValue().toString());
@@ -136,18 +140,18 @@ public class MatchFragment extends Fragment
                     matches_list.add(new Match(user_id,name,profileImageUrl,chat_id,"",""));
                     if(matches_list.size() != 0)
                     {
-                        No_Matches.setVisibility(View.GONE);
+                        no_matches.setVisibility(View.GONE);
                         matches_recycleView.setVisibility(View.VISIBLE);
 
-                        No_Messages.setVisibility(View.GONE);
+                        no_messages.setVisibility(View.GONE);
                         messages_recycleView.setVisibility(View.VISIBLE);
                     }
                     else
                     {
-                        No_Matches.setVisibility(View.VISIBLE);
+                        no_matches.setVisibility(View.VISIBLE);
                         matches_recycleView.setVisibility(View.GONE);
 
-                        No_Messages.setVisibility(View.VISIBLE);
+                        no_messages.setVisibility(View.VISIBLE);
                         messages_recycleView.setVisibility(View.GONE);
                     }
                     matchesAdapter.notifyDataSetChanged();
@@ -178,12 +182,48 @@ public class MatchFragment extends Fragment
                             matches_list.get(position).setMessage_direction("Sent");
                     }
                     messagesAdapter.notifyDataSetChanged();
+                    if(--childrencount == 0)
+                    {
+                        loadUI();
+                    }
+                }
+                else if(--childrencount == 0)
+                {
+                    loadUI();
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError){}
         });
+    }
+
+    @Override
+    public void loadUI()
+    {
+        toggleUI(false);
+    }
+
+    public void toggleUI(boolean toggle)
+    {
+        if(toggle)
+        {
+            progressBar.setVisibility(View.VISIBLE);
+            matches_recycleView.setVisibility(View.GONE);
+            messages_recycleView.setVisibility(View.GONE);
+            new_matches.setVisibility(View.GONE);
+            messages.setVisibility(View.GONE);
+            no_matches.setVisibility(View.GONE);
+            no_messages.setVisibility(View.GONE);
+        }
+        else
+        {
+            progressBar.setVisibility(View.GONE);
+            matches_recycleView.setVisibility(View.VISIBLE);
+            new_matches.setVisibility(View.VISIBLE);
+            messages_recycleView.setVisibility(View.VISIBLE);
+            messages.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -213,5 +253,6 @@ public class MatchFragment extends Fragment
         super.onDestroy();
         //Log.v("Lakers","onDestroy");
         matches_list.clear();
+
     }
 }

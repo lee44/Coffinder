@@ -94,7 +94,7 @@ public class DateFragment extends Fragment
             @Override public void onRefresh()
             {
                 progressBar.setVisibility(View.VISIBLE);
-                no_data.setVisibility(View.INVISIBLE);
+                no_data.setVisibility(View.GONE);
                 startIntentService();
             }
         });
@@ -219,13 +219,13 @@ public class DateFragment extends Fragment
                     cardsList = parcelable;
                     refresh();
                     swipeRefreshLayout.setEnabled(false);
-                    no_data.setVisibility(View.INVISIBLE);
+                    no_data.setVisibility(View.GONE);
                     toggleUI(false);
                 }
                 else
                 {
                     swipeRefreshLayout.setRefreshing(false);
-                    progressBar.setVisibility(View.INVISIBLE);
+                    progressBar.setVisibility(View.GONE);
                     no_data.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setEnabled(true);
                 }
@@ -238,9 +238,9 @@ public class DateFragment extends Fragment
         Toast.makeText(ctx, s, Toast.LENGTH_SHORT).show();
     }
 
-    public void toggleUI(boolean isToggle)
+    public void toggleUI(boolean toggle)
     {
-        if(isToggle)
+        if(toggle)
         {
             progressBar.setVisibility(View.VISIBLE);
             image.setVisibility(View.GONE);
@@ -263,7 +263,7 @@ public class DateFragment extends Fragment
         }
         else
         {
-            progressBar.setVisibility(View.INVISIBLE);
+            progressBar.setVisibility(View.GONE);
             image.setVisibility(View.VISIBLE);
             name.setVisibility(View.VISIBLE);
             age_city.setVisibility(View.VISIBLE);
