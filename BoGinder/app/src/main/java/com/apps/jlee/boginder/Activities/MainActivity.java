@@ -30,6 +30,7 @@ import android.view.inputmethod.InputMethodManager;
 import com.apps.jlee.boginder.Fragments.AccountFragment;
 import com.apps.jlee.boginder.Fragments.MatchFragment;
 import com.apps.jlee.boginder.Fragments.DateFragment;
+import com.apps.jlee.boginder.Fragments.PhotosFragment;
 import com.apps.jlee.boginder.Fragments.ProfilePreviewFragment;
 import com.apps.jlee.boginder.Fragments.ProgressFragment;
 import com.apps.jlee.boginder.R;
@@ -59,6 +60,7 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar;
 
     private ProfilePreviewFragment profilePreviewFragment;
+    private PhotosFragment photosFragment;
     private MatchFragment matchFragment;
     private DateFragment dateFragment;
 
@@ -79,6 +81,7 @@ public class MainActivity extends AppCompatActivity
 
         profilePreviewFragment = new ProfilePreviewFragment(this);
         matchFragment = new MatchFragment(this);
+        photosFragment = new PhotosFragment(this);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -200,6 +203,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        super.onActivityResult(requestCode, resultCode, data);
+
         getLastLocation();
     }
 

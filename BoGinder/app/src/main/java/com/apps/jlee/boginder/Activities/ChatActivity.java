@@ -3,6 +3,7 @@ package com.apps.jlee.boginder.Activities;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
@@ -34,6 +35,8 @@ import java.util.Map;
 
 public class ChatActivity extends AppCompatActivity
 {
+    @BindView(R.id.chat_toolbar)
+    Toolbar toolbar;
     @BindView(R.id.chat_recycleView)
     RecyclerView recyclerView;
     @BindView(R.id.chat_editText)
@@ -53,6 +56,9 @@ public class ChatActivity extends AppCompatActivity
         setContentView(R.layout.activity_chat);
 
         ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         match_id = getIntent().getExtras().getString("MatchID");
         current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
