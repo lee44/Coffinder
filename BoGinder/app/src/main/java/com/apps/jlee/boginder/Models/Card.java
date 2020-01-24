@@ -3,14 +3,16 @@ package com.apps.jlee.boginder.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
+
 //When passing data between activities, one would use intent.putExtra or pass a Bundle object. Unfortunately this works only for primitive data types and not objects.
 //Parcelable interface serializes a class so its properties can be transferred between activities. Serialize means breaking down an object into bytes and reverting it.
 public class Card implements Parcelable
 {
     private String user_id, name, age, height, city, job, school, ethnicity, religion, description;
-    private String[] profileImageUrl;
+    private ArrayList<String> profileImageUrl;
 
-    public Card(String user_id, String name, String age, String height, String city, String job, String school, String ethnicity, String religion, String description, String[] profileImageUrl)
+    public Card(String user_id, String name, String age, String height, String city, String job, String school, String ethnicity, String religion, String description, ArrayList<String> profileImageUrl)
     {
         this.user_id = user_id;
         this.name = name;
@@ -34,7 +36,7 @@ public class Card implements Parcelable
         parcel.writeString(age);
         parcel.writeString(height);
         parcel.writeString(city);
-        parcel.writeStringArray(profileImageUrl);
+        parcel.writeStringList(profileImageUrl);
     }
 
     //Second: Reconstruct object from un-parceling our parcel in the receiving activity.
@@ -62,7 +64,7 @@ public class Card implements Parcelable
         age = parcel.readString();
         height = parcel.readString();
         city = parcel.readString();
-        profileImageUrl = parcel.createStringArray();
+        profileImageUrl = parcel.readArrayList(null);
     }
 
     @Override
@@ -91,12 +93,12 @@ public class Card implements Parcelable
         this.name = name;
     }
 
-    public String[] getProfileImageUrl()
+    public ArrayList<String> getProfileImageUrl()
     {
         return profileImageUrl;
     }
 
-    public void setProfileImageUrl(String[] profileImageUrl)
+    public void setProfileImageUrl(ArrayList<String> profileImageUrl)
     {
         this.profileImageUrl = profileImageUrl;
     }

@@ -215,6 +215,18 @@ public class FetchIntentService extends IntentService
 
     private void addCards(DataSnapshot dataSnapshot)
     {
+        ArrayList<String> profileImageUrlArray = new ArrayList<>();
+        long childrenSize = dataSnapshot.child("ProfileImageUrl").getChildrenCount();
+        if(childrenSize != 0)
+        {
+            for (DataSnapshot child : dataSnapshot.child("ProfileImageUrl").getChildren()) {
+                profileImageUrlArray.add(child.getValue().toString());
+            }
+        }
+        else
+        {
+            profileImageUrlArray.add(dataSnapshot.child("ProfileImageUrl").getValue().toString());
+        }
         cardsList.add(new Card(
                 dataSnapshot.getKey(),
                 dataSnapshot.child("Name").getValue().toString(),
@@ -226,7 +238,7 @@ public class FetchIntentService extends IntentService
                 dataSnapshot.child("Ethnicity").exists() ? dataSnapshot.child("Ethnicity").getValue().toString() : "N/A",
                 dataSnapshot.child("Religion").exists() ? dataSnapshot.child("Religion").getValue().toString() : "N/A",
                 dataSnapshot.child("Description").exists() ? dataSnapshot.child("Description").getValue().toString() : "N/A",
-                dataSnapshot.child("ProfileImageUrl").getValue().toString()));
+                profileImageUrlArray));
     }
 
     private void deliverResultToReceiver(int resultCode, String message)

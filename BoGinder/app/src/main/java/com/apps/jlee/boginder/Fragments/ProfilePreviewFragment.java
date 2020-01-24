@@ -22,6 +22,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -75,6 +77,20 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
+                ArrayList<String> profileImageUrlArray = new ArrayList<>();
+                long childrenSize = dataSnapshot.child("ProfileImageUrl").getChildrenCount();
+                if(childrenSize != 0)
+                {
+                    for (DataSnapshot child : dataSnapshot.child("ProfileImageUrl").getChildren())
+                    {
+                        profileImageUrlArray.add(child.getValue().toString());
+                    }
+                }
+                else
+                {
+                    profileImageUrlArray.add(dataSnapshot.child("ProfileImageUrl").getValue().toString());
+                }
+
                 Card card = new Card(
                         "",
                         dataSnapshot.child("Name").getValue().toString(),
@@ -86,10 +102,8 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
                         dataSnapshot.child("Ethnicity").exists() ? dataSnapshot.child("Ethnicity").getValue().toString() : "N/A",
                         dataSnapshot.child("Religion").exists() ? dataSnapshot.child("Religion").getValue().toString() : "N/A",
                         dataSnapshot.child("Description").exists() ? dataSnapshot.child("Description").getValue().toString() : "N/A",
-                        for(DataSnapshot child : dataSnapshot.getChildren())
-                        {
-                            dataSnapshot.child("ProfileImageUrl").getValue().toString());
-                        }
+                        profileImageUrlArray
+                        );
 
                 loadUI(card);
             }
@@ -124,7 +138,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
             Glide.with(context).load(R.mipmap.ic_launcher).into(image);
         }
         else
-            Glide.with(context).load(card.getProfileImageUrl()).into(image);
+            Glide.with(context).load(card.getProfileImageUrl().get(0)).into(image);
 
         name.setText(card.getName());
         age_city.setText(card.getAge() + ", " + card.getCity());

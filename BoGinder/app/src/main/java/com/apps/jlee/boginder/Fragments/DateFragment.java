@@ -101,12 +101,12 @@ public class DateFragment extends Fragment
 
         if(cardsList.size() > 0)
         {
-            if (cardsList.get(0).getProfileImageUrl().equals("Default"))
+            if (cardsList.get(0).getProfileImageUrl().get(0).equals("Default"))
             {
-                Glide.with(getContext()).load(R.mipmap.ic_launcher).into(image);
+                Glide.with(context).load(R.mipmap.ic_launcher).into(image);
             }
             else
-                Glide.with(getContext()).load(cardsList.get(0).getProfileImageUrl()).into(image);
+                Glide.with(context).load(cardsList.get(0).getProfileImageUrl().get(0)).into(image);
 
             name.setText(cardsList.get(0).getName());
             age_city.setText(cardsList.get(0).getAge()+", "+cardsList.get(0).getCity());
