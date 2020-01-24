@@ -2,6 +2,7 @@ package com.apps.jlee.boginder.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.apps.jlee.boginder.Models.Card;
 import com.apps.jlee.boginder.Interfaces.ProfileInterface;
 import com.apps.jlee.boginder.R;
+import com.bumptech.glide.Glide;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -84,7 +86,10 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
                         dataSnapshot.child("Ethnicity").exists() ? dataSnapshot.child("Ethnicity").getValue().toString() : "N/A",
                         dataSnapshot.child("Religion").exists() ? dataSnapshot.child("Religion").getValue().toString() : "N/A",
                         dataSnapshot.child("Description").exists() ? dataSnapshot.child("Description").getValue().toString() : "N/A",
-                        dataSnapshot.child("ProfileImageUrl").getValue().toString());
+                        for(DataSnapshot child : dataSnapshot.getChildren())
+                        {
+                            dataSnapshot.child("ProfileImageUrl").getValue().toString());
+                        }
 
                 loadUI(card);
             }
@@ -114,12 +119,12 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     @Override
     public void loadUI(Card card)
     {
-        //if (card.getProfileImageUrl().equals("Default"))
-        //{
-        //    Glide.with(getContext()).load(R.mipmap.ic_launcher).into(image);
-        //}
-        //else
-        //    Glide.with(getContext()).load(card.getProfileImageUrl()).into(image);
+        if (card.getProfileImageUrl().equals("Default"))
+        {
+            Glide.with(context).load(R.mipmap.ic_launcher).into(image);
+        }
+        else
+            Glide.with(context).load(card.getProfileImageUrl()).into(image);
 
         name.setText(card.getName());
         age_city.setText(card.getAge() + ", " + card.getCity());

@@ -3,11 +3,14 @@ package com.apps.jlee.boginder.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//When passing data between activities, one would use intent.putExtra or pass a Bundle object. Unfortunately this works only for primitive data types and not objects.
+//Parcelable interface serializes a class so its properties can be transferred between activities. Serialize means breaking down an object into bytes and reverting it.
 public class Card implements Parcelable
 {
-    private String user_id, name, age, height, city, job, school, ethnicity, religion, description, profileImageUrl;
+    private String user_id, name, age, height, city, job, school, ethnicity, religion, description;
+    private String[] profileImageUrl;
 
-    public Card(String user_id, String name, String age, String height, String city, String job, String school, String ethnicity, String religion, String description, String profileImageUrl)
+    public Card(String user_id, String name, String age, String height, String city, String job, String school, String ethnicity, String religion, String description, String[] profileImageUrl)
     {
         this.user_id = user_id;
         this.name = name;
@@ -22,6 +25,36 @@ public class Card implements Parcelable
         this.profileImageUrl = profileImageUrl;
     }
 
+    //First: Write all properties of the class into a parcel in preparation for transfer
+    @Override
+    public void writeToParcel(Parcel parcel, int i)
+    {
+        parcel.writeString(user_id);
+        parcel.writeString(name);
+        parcel.writeString(age);
+        parcel.writeString(height);
+        parcel.writeString(city);
+        parcel.writeStringArray(profileImageUrl);
+    }
+
+    //Second: Reconstruct object from un-parceling our parcel in the receiving activity.
+    public static final Parcelable.Creator<Card> CREATOR =
+            new Parcelable.Creator<Card>()
+            {
+                @Override
+                public Card createFromParcel(Parcel source)
+                {
+                    return new Card(source);
+                }
+
+                @Override
+                public Card[] newArray(int size)
+                {
+                    return new Card[size];
+                }
+            };
+
+    //Read and Set saved values from parcel into an object. This constructor is used above in createFromParcel method.
     public Card(Parcel parcel)
     {
         user_id = parcel.readString();
@@ -29,7 +62,13 @@ public class Card implements Parcelable
         age = parcel.readString();
         height = parcel.readString();
         city = parcel.readString();
-        profileImageUrl = parcel.readString();
+        profileImageUrl = parcel.createStringArray();
+    }
+
+    @Override
+    public int describeContents()
+    {
+        return 0;
     }
 
     public String getUser_id()
@@ -52,12 +91,12 @@ public class Card implements Parcelable
         this.name = name;
     }
 
-    public String getProfileImageUrl()
+    public String[] getProfileImageUrl()
     {
         return profileImageUrl;
     }
 
-    public void setProfileImageUrl(String profileImageUrl)
+    public void setProfileImageUrl(String[] profileImageUrl)
     {
         this.profileImageUrl = profileImageUrl;
     }
@@ -90,40 +129,6 @@ public class Card implements Parcelable
     public void setCity(String city)
     {
         this.city = city;
-    }
-
-    public static final Parcelable.Creator<Card> CREATOR =
-            new Parcelable.Creator<Card>()
-            {
-
-                @Override
-                public Card createFromParcel(Parcel source)
-                {
-                    return new Card(source);
-                }
-
-                @Override
-                public Card[] newArray(int size)
-                {
-                    return new Card[size];
-                }
-            };
-
-    @Override
-    public int describeContents()
-    {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel parcel, int i)
-    {
-        parcel.writeString(user_id);
-        parcel.writeString(name);
-        parcel.writeString(age);
-        parcel.writeString(height);
-        parcel.writeString(city);
-        parcel.writeString(profileImageUrl);
     }
 
     public String getDescription()

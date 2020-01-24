@@ -60,7 +60,6 @@ public class MainActivity extends AppCompatActivity
     Toolbar toolbar;
 
     private ProfilePreviewFragment profilePreviewFragment;
-    private PhotosFragment photosFragment;
     private MatchFragment matchFragment;
     private DateFragment dateFragment;
 
@@ -81,7 +80,6 @@ public class MainActivity extends AppCompatActivity
 
         profilePreviewFragment = new ProfilePreviewFragment(this);
         matchFragment = new MatchFragment(this);
-        photosFragment = new PhotosFragment(this);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
@@ -203,6 +201,8 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
+        //super.onActivityResult is needed for unhandled result codes. In PhotosFragment, there is also an onActivityResult but that method is never called
+        //because the mainActivity handles the result first.
         super.onActivityResult(requestCode, resultCode, data);
 
         getLastLocation();

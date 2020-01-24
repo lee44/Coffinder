@@ -158,7 +158,7 @@ public class PhotosFragment extends Fragment
         {
             final ProgressDialog progressDialog = new ProgressDialog(context);
             progressDialog.setTitle("Uploading...");
-            progressDialog.show();
+            //progressDialog.show();
 
             //Creates a tree with Profile_Image at the top followed by user_id
             final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id).child("Image"+imageSlot);
