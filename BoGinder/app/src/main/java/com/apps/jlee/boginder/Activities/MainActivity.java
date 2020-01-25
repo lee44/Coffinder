@@ -94,6 +94,7 @@ public class MainActivity extends AppCompatActivity
                 switch (menuItem.getItemId())
                 {
                     case R.id.account:
+                        hideToolbarItems(true);
                         setFragment(profilePreviewFragment);
                         break;
                     case R.id.dates:
