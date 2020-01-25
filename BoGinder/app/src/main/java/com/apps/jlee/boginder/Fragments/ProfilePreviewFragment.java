@@ -133,7 +133,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     @Override
     public void loadUI(Card card)
     {
-        if (card.getProfileImageUrl().equals("Default"))
+        if (card.getProfileImageUrl().get(0).equals("Default"))
         {
             Glide.with(context).load(R.mipmap.ic_launcher).into(image);
         }

@@ -205,7 +205,8 @@ public class MainActivity extends AppCompatActivity
         //because the mainActivity handles the result first.
         super.onActivityResult(requestCode, resultCode, data);
 
-        getLastLocation();
+        if(requestCode == 44)
+            getLastLocation();
     }
 
     private boolean isLocationEnabled()
@@ -351,4 +352,38 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+/*
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        Log.v("Lakers","Activity started");
+
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        Log.v("Lakers","Activity resume");
+
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        Log.v("Lakers","Activity paused");
+
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        Log.v("Lakers","Activity destroyed");
+    }
+
+ */
 }

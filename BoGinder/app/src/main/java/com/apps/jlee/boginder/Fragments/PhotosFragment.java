@@ -16,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -251,8 +252,6 @@ public class PhotosFragment extends Fragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
-        super.onActivityResult(requestCode, resultCode, data);
-
         if(resultCode == Activity.RESULT_OK)
         {
             Uri uri = data.getData();
@@ -272,4 +271,37 @@ public class PhotosFragment extends Fragment
             saveUserInformation(uri,requestCode);
         }
     }
+/*
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        Log.v("Lakers","Fragment started");
+
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        Log.v("Lakers","Fragment resume");
+
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+        Log.v("Lakers","Fragment paused");
+
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        Log.v("Lakers","Fragment destroyed");
+    }
+
+ */
 }
