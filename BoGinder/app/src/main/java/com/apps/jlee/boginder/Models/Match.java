@@ -1,10 +1,13 @@
 package com.apps.jlee.boginder.Models;
 
+import java.util.ArrayList;
+
 public class Match
 {
-    private String user_id, name, profileImageUrl, chat_id, message, message_direction;
+    private ArrayList<String> profileImageUrl;
+    private String user_id, name, chat_id, message, message_direction;
 
-    public Match(String user_id, String name, String profileImageUrl, String chat_id, String message, String message_direction)
+    public Match(String user_id, String name, ArrayList<String> profileImageUrl, String chat_id, String message, String message_direction)
     {
         this.user_id = user_id;
         this.name = name;
@@ -24,12 +27,12 @@ public class Match
         this.user_id = user_id;
     }
 
-    public String getProfileImageUrl()
+    public ArrayList<String> getProfileImageUrl()
     {
         return profileImageUrl;
     }
 
-    public void setProfileImageUrl(String profileImageUrl)
+    public void setProfileImageUrl(ArrayList<String> profileImageUrl)
     {
         this.profileImageUrl = profileImageUrl;
     }

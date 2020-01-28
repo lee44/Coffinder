@@ -125,19 +125,29 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
             {
                 if(dataSnapshot.exists())
                 {
-                    String user_id = dataSnapshot.getKey();
-                    String name = "",profileImageUrl = "";
+                    String user_id = dataSnapshot.getKey(),name = "";
+                    ArrayList<String> profileImageUrlArray = new ArrayList<>();
 
                     if(dataSnapshot.child("Name").getValue() != null)
                     {
                         name = dataSnapshot.child("Name").getValue().toString();
                     }
-                    if(dataSnapshot.child("ProfileImageUrl").getValue() != null)
+
+                    long childrenSize = dataSnapshot.child("ProfileImageUrl").getChildrenCount();
+                    if(childrenSize != 0)
                     {
-                        profileImageUrl = dataSnapshot.child("ProfileImageUrl").getValue().toString();
+                        for (DataSnapshot child : dataSnapshot.child("ProfileImageUrl").getChildren())
+                        {
+                            profileImageUrlArray.add(child.getValue().toString());
+                        }
+                    }
+                    else
+                    {
+                        //else is needed because if the child("ProfileImageUrl") has only one value, it wont be a child
+                        profileImageUrlArray.add(dataSnapshot.child("ProfileImageUrl").getValue().toString());
                     }
 
-                    matches_list.add(new Match(user_id,name,profileImageUrl,chat_id,"",""));
+                    matches_list.add(new Match(user_id,name,profileImageUrlArray,chat_id,"",""));
                     if(matches_list.size() != 0)
                     {
                         no_matches.setVisibility(View.GONE);

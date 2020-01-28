@@ -44,7 +44,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
     {
         holder.matches_name.setText(matches.get(position).getName());
         if(!matches.get(position).getProfileImageUrl().equals("Default"))
-            Glide.with(context).load(matches.get(position).getProfileImageUrl()).into(holder.matches_imageView);
+            Glide.with(context).load(matches.get(position).getProfileImageUrl().get(0)).into(holder.matches_imageView);
         else
             holder.matches_imageView.setImageResource(R.mipmap.ic_launcher);
     }
@@ -73,12 +73,12 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
                 @Override
                 public void onClick(View view)
                 {
-                    int i = getAdapterPosition();
-                    Intent intent = new Intent(view.getContext(), ChatActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("MatchID",matches.get(i).getUser_id());
-                    intent.putExtras(bundle);
-                    view.getContext().startActivity(intent);
+//                    int i = getAdapterPosition();
+//                    Intent intent = new Intent(view.getContext(), ChatActivity.class);
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("MatchID",matches.get(i).getUser_id());
+//                    intent.putExtras(bundle);
+//                    view.getContext().startActivity(intent);
                 }
             });
         }

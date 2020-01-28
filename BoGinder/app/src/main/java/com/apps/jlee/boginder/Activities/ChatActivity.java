@@ -14,10 +14,12 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.apps.jlee.boginder.Adapters.ChatAdapter;
 import com.apps.jlee.boginder.Models.Chat;
 import com.apps.jlee.boginder.R;
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -37,6 +39,8 @@ public class ChatActivity extends AppCompatActivity
 {
     @BindView(R.id.chat_toolbar)
     Toolbar toolbar;
+    @BindView(R.id.messages_profile)
+    ImageView messages_profile_imageView;
     @BindView(R.id.chat_recycleView)
     RecyclerView recyclerView;
     @BindView(R.id.chat_editText)
@@ -47,7 +51,7 @@ public class ChatActivity extends AppCompatActivity
     DatabaseReference databaseReference, databaseChat;
     private ArrayList<Chat> resultChats = new ArrayList<>();
     private ChatAdapter chatAdapter;
-    private String current_user_id, match_id, chat_id;
+    private String current_user_id, match_id, chat_id, profileImageURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -61,6 +65,7 @@ public class ChatActivity extends AppCompatActivity
         getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         match_id = getIntent().getExtras().getString("MatchID");
+        profileImageURL = getIntent().getExtras().getString("ProfileImageURL");
         current_user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+current_user_id+"/Connections/Match/"+match_id+"/chat_id");
         databaseChat = FirebaseDatabase.getInstance().getReference().child("Chat");
@@ -74,6 +79,13 @@ public class ChatActivity extends AppCompatActivity
         mLinearLayoutManager.setStackFromEnd(true);
         recyclerView.setLayoutManager(mLinearLayoutManager);
         recyclerView.scrollToPosition(chatAdapter.getItemCount() - 1);
+
+        if (profileImageURL.equals("Default"))
+        {
+            Glide.with(this).load(R.mipmap.ic_launcher).into(messages_profile_imageView);
+        }
+        else
+            Glide.with(this).load(profileImageURL).into(messages_profile_imageView);
 
         button.setOnClickListener(new View.OnClickListener()
         {

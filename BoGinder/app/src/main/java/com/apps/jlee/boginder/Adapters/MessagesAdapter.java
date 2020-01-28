@@ -51,7 +51,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
             holder.message_direction.setImageResource(R.drawable.arrow_right);
 
         if(!matches.get(position).getProfileImageUrl().equals("Default"))
-            Glide.with(context).load(matches.get(position).getProfileImageUrl()).into(holder.profile_image);
+            Glide.with(context).load(matches.get(position).getProfileImageUrl().get(0)).into(holder.profile_image);
         else
             holder.profile_image.setImageResource(R.mipmap.ic_launcher);
     }
@@ -85,6 +85,7 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
                     Intent intent = new Intent(view.getContext(), ChatActivity.class);
                     Bundle bundle = new Bundle();
                     bundle.putString("MatchID",matches.get(i).getUser_id());
+                    bundle.putString("ProfileImageURL",matches.get(i).getProfileImageUrl().get(0));
                     intent.putExtras(bundle);
                     view.getContext().startActivity(intent);
                 }
