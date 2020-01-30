@@ -50,10 +50,12 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
         if(chat.get(position).getSender_ID().equals(current_user_id))
         {
             holder.senderTextView.setText(chat.get(position).getMessage());
+            holder.sender_datetime.setText(chat.get(position).getDatetime());
         }
         else
         {
             holder.receiver_TextView.setText(chat.get(position).getMessage());
+            holder.receiver_datetime.setText(chat.get(position).getDatetime());
         }
     }
 
@@ -77,13 +79,15 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder>
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-        private TextView receiver_TextView, senderTextView;
+        private TextView receiver_TextView, senderTextView, receiver_datetime, sender_datetime;
 
         public ViewHolder(View itemView)
         {
             super(itemView);
             receiver_TextView = itemView.findViewById(R.id.receiver_textView);
             senderTextView = itemView.findViewById(R.id.sender_textView);
+            receiver_datetime = itemView.findViewById(R.id.receive_datetime);
+            sender_datetime = itemView.findViewById(R.id.sender_datetime);
         }
     }
 }

@@ -2,13 +2,14 @@ package com.apps.jlee.boginder.Models;
 
 public class Chat
 {
-    private String message, receiver_ID, sender_ID;
+    private String message, receiver_ID, sender_ID, datetime;
 
-    public Chat(String message, String receiver_ID, String sender_ID)
+    public Chat(String message, String receiver_ID, String sender_ID, String datetime)
     {
         this.message = message;
         this.receiver_ID = receiver_ID;
         this.sender_ID = sender_ID;
+        this.datetime = datetime;
     }
 
     public String getMessage()
@@ -40,5 +41,13 @@ public class Chat
     public void setSender_ID(String sender_ID)
     {
         this.sender_ID = sender_ID;
+    }
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
     }
 }

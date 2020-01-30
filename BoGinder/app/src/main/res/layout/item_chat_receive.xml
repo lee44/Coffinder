@@ -14,14 +14,23 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/msg_round_receiver"
-        android:padding="10dp"
         android:elevation="2dp"
+        android:padding="10dp"
+        android:text="wats up"
         android:textAlignment="viewStart"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-    </TextView>
+        app:layout_constraintTop_toTopOf="parent"></TextView>
+
+    <TextView
+        android:id="@+id/receive_datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2020-01-28 11:16:54 AM"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/receiver_textView"
+        app:layout_constraintTop_toBottomOf="@+id/receiver_textView"></TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

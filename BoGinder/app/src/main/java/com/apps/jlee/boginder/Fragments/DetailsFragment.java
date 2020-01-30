@@ -143,7 +143,7 @@ public class DetailsFragment extends Fragment implements ChoicesDialogFragment.D
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
-        inflater.inflate(R.menu.menu_toolbar, menu);
+        inflater.inflate(R.menu.toolbar_details_fragment, menu);
     }
 
     @Override

@@ -31,6 +31,8 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,6 +97,17 @@ public class ChatActivity extends AppCompatActivity
                 sendMessage();
             }
         });
+
+        messages_profile_imageView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(ChatActivity.this,MatchProfileActivity.class);
+                intent.putExtra("user_id",match_id);
+                startActivity(intent);
+            }
+        });
     }
 
     private void sendMessage()
@@ -109,6 +122,9 @@ public class ChatActivity extends AppCompatActivity
             map.put("Sender_ID", current_user_id);
             map.put("Message",sendMessageText);
             map.put("Receiver_ID",match_id);
+
+            Date currentTime = Calendar.getInstance().getTime();
+            map.put("Datetime", android.text.format.DateFormat.format("yyyy-MM-dd hh:mm:ss aa", currentTime));
             newMessage.setValue(map);
         }
         editText.setText(null);
@@ -146,6 +162,7 @@ public class ChatActivity extends AppCompatActivity
                     String message = null;
                     String sender_id = null;
                     String receiver_id = null;
+                    String datetime = null;
 
                     if(dataSnapshot.child("Message").getValue().toString() != null)
                     {
@@ -159,9 +176,13 @@ public class ChatActivity extends AppCompatActivity
                     {
                         receiver_id = dataSnapshot.child("Receiver_ID").getValue().toString();
                     }
-                    if(message != null && sender_id != null && receiver_id != null)
+                    if(dataSnapshot.child("Datetime").getValue().toString() != null)
                     {
-                        Chat newMessage = new Chat(message, receiver_id, sender_id);
+                        datetime = dataSnapshot.child("Datetime").getValue().toString();
+                    }
+                    if(message != null && sender_id != null && receiver_id != null && datetime != null)
+                    {
+                        Chat newMessage = new Chat(message, receiver_id, sender_id,datetime);
                         resultChats.add(newMessage);
                         chatAdapter.notifyDataSetChanged();
                     }

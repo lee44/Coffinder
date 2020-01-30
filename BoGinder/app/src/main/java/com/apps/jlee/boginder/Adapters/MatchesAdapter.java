@@ -73,12 +73,12 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
                 @Override
                 public void onClick(View view)
                 {
-//                    int i = getAdapterPosition();
-//                    Intent intent = new Intent(view.getContext(), ChatActivity.class);
-//                    Bundle bundle = new Bundle();
-//                    bundle.putString("MatchID",matches.get(i).getUser_id());
-//                    intent.putExtras(bundle);
-//                    view.getContext().startActivity(intent);
+                    int i = getAdapterPosition();
+                    Intent intent = new Intent(view.getContext(), ChatActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("match_user_id",matches.get(i).getUser_id());
+                    intent.putExtras(bundle);
+                    view.getContext().startActivity(intent);
                 }
             });
         }

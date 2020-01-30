@@ -3,7 +3,7 @@
     package="com.apps.jlee.boginder">
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -12,17 +12,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-        <activity android:name=".Activities.ChatActivity"></activity>
-
+        <activity android:name=".Activities.MatchProfileActivity"></activity>
+        <activity android:name=".Activities.ChatActivity" />
         <activity
             android:name=".Activities.LoginActivity"
             android:windowSoftInputMode="adjustPan" />
         <activity
-
             android:name=".Activities.RegistrationActivity"
             android:windowSoftInputMode="adjustPan" />
-
         <activity android:name=".Activities.LoginRegisterActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,19 +27,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Activities.MainActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".Activities.MainActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <service android:name=".Firebase.MyFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <service
             android:name=".Service.FetchIntentService"
-            android:exported="false"/>
-
+            android:exported="false" />
     </application>
 
 </manifest>
