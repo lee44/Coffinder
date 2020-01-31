@@ -76,4 +76,10 @@ public class Match
     {
         this.message_direction = message_direction;
     }
+
+    @Override
+    public String toString()
+    {
+        return "User_ID: " + user_id +", Name: "+ name +", Chat_ID: "+ chat_id +", Message: "+ message +", Message_Direction: " + message_direction;
+    }
 }

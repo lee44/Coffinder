@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -195,11 +196,15 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
                     if(--childrencount == 0)
                     {
                         loadUI();
+                        Log.v("Lakers",matches_list.get(0).toString());
+                        Log.v("Lakers",matches_list.get(1).toString());
                     }
                 }
                 else if(--childrencount == 0)
                 {
                     loadUI();
+                    Log.v("Lakers",matches_list.get(0).toString());
+                    Log.v("Lakers",matches_list.get(1).toString());
                 }
             }
 

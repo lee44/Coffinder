@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.apps.jlee.boginder.Adapters.ChatAdapter;
@@ -49,6 +50,8 @@ public class ChatActivity extends AppCompatActivity
     EditText editText;
     @BindView(R.id.chat_send_button)
     Button button;
+    @BindView(R.id.back_button)
+    ImageButton back_button;
 
     DatabaseReference databaseReference, databaseChat;
     private ArrayList<Chat> resultChats = new ArrayList<>();
@@ -106,6 +109,15 @@ public class ChatActivity extends AppCompatActivity
                 Intent intent = new Intent(ChatActivity.this,MatchProfileActivity.class);
                 intent.putExtra("user_id",match_id);
                 startActivity(intent);
+            }
+        });
+
+        back_button.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                finish();
             }
         });
     }
@@ -207,8 +219,7 @@ public class ChatActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
-        Intent intent = new Intent(this,MainActivity.class);
-        startActivity(intent);
+        finish();
     }
 
     @Override

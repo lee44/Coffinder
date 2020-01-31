@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apps.jlee.boginder.Activities.ChatActivity;
+import com.apps.jlee.boginder.Activities.MatchProfileActivity;
 import com.apps.jlee.boginder.Models.Match;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
@@ -47,6 +48,17 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
             Glide.with(context).load(matches.get(position).getProfileImageUrl().get(0)).into(holder.matches_imageView);
         else
             holder.matches_imageView.setImageResource(R.mipmap.ic_launcher);
+
+//        holder.matches_imageView.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent = new Intent(view.getContext(), MatchProfileActivity.class);
+//                intent.putExtra("user_id",matches.get(position).getUser_id());
+//                view.getContext().startActivity(intent);
+//            }
+//        });
     }
 
     @Override
@@ -74,10 +86,8 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
                 public void onClick(View view)
                 {
                     int i = getAdapterPosition();
-                    Intent intent = new Intent(view.getContext(), ChatActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putString("match_user_id",matches.get(i).getUser_id());
-                    intent.putExtras(bundle);
+                    Intent intent = new Intent(view.getContext(), MatchProfileActivity.class);
+                    intent.putExtra("user_id",matches.get(i).getUser_id());
                     view.getContext().startActivity(intent);
                 }
             });
