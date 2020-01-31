@@ -166,7 +166,7 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
                         messages_recycleView.setVisibility(View.GONE);
                     }
                     matchesAdapter.notifyDataSetChanged();
-                    fetchLastMessage(chat_id,0);
+                    fetchLastMessage(chat_id,matches_list.size()-1);
                 }
             }
 
@@ -196,15 +196,11 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
                     if(--childrencount == 0)
                     {
                         loadUI();
-                        Log.v("Lakers",matches_list.get(0).toString());
-                        Log.v("Lakers",matches_list.get(1).toString());
                     }
                 }
                 else if(--childrencount == 0)
                 {
                     loadUI();
-                    Log.v("Lakers",matches_list.get(0).toString());
-                    Log.v("Lakers",matches_list.get(1).toString());
                 }
             }
 
