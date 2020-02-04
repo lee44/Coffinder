@@ -94,6 +94,15 @@ public class PhotosFragment extends Fragment
             }
         });
 
+        View.OnLongClickListener v = new View.OnLongClickListener()
+        {
+            @Override
+            public boolean onLongClick(View view)
+            {
+                return false;
+            }
+        };
+
         imageView1.setOnClickListener(new View.OnClickListener()
         {
             @Override
