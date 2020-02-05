@@ -12,6 +12,11 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -24,6 +29,8 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.apps.jlee.boginder.Adapters.PhotoAdapter;
+import com.apps.jlee.boginder.Interfaces.ItemMoveCallback;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,21 +55,12 @@ import java.util.Map;
 
 public class PhotosFragment extends Fragment
 {
-    @BindView(R.id.imageView0)
-    ImageView imageView0;
-    @BindView(R.id.imageView1)
-    ImageView imageView1;
-    @BindView(R.id.imageView2)
-    ImageView imageView2;
-    @BindView(R.id.imageView3)
-    ImageView imageView3;
-    @BindView(R.id.imageView4)
-    ImageView imageView4;
-    @BindView(R.id.imageView5)
-    ImageView imageView5;
+    @BindView(R.id.photo_recycleview)
+    RecyclerView photo_rv;
 
     private DatabaseReference databaseReference;
     private List<Uri> resultUri = new ArrayList<>();
+    ArrayList<String> stringArrayList = new ArrayList<>();
     private Context context;
     private String user_id;
 
@@ -81,82 +79,34 @@ public class PhotosFragment extends Fragment
         user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+user_id+"/ProfileImageUrl");
 
-        getUserPhotos();
+        stringArrayList.add("Item 1");
+        stringArrayList.add("Item 2");
+        stringArrayList.add("Item 3");
+        stringArrayList.add("Item 4");
+        stringArrayList.add("Item 5");
+        stringArrayList.add("Item 6");
+        stringArrayList.add("Item 7");
+        stringArrayList.add("Item 8");
+        stringArrayList.add("Item 9");
+        stringArrayList.add("Item 10");
 
-        imageView0.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent,0);
-            }
-        });
+        PhotoAdapter photoAdapter = new PhotoAdapter(stringArrayList);
+        ItemTouchHelper.Callback callback = new ItemMoveCallback(photoAdapter);
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(photo_rv);
+        photo_rv.setLayoutManager(new GridLayoutManager(context,3));
+        photo_rv.setAdapter(photoAdapter);
 
-        View.OnLongClickListener v = new View.OnLongClickListener()
-        {
-            @Override
-            public boolean onLongClick(View view)
-            {
-                return false;
-            }
-        };
-
-        imageView1.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent,1);
-            }
-        });
-
-        imageView2.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent,2);
-            }
-        });
-
-        imageView3.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent,3);
-            }
-        });
-
-        imageView4.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent,4);
-            }
-        });
-
-        imageView5.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                Intent intent = new Intent(Intent.ACTION_PICK);
-                intent.setType("image/*");
-                startActivityForResult(intent,5);
-            }
-        });
+//        imageView5.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                Intent intent = new Intent(Intent.ACTION_PICK);
+//                intent.setType("image/*");
+//                startActivityForResult(intent,5);
+//            }
+//        });
 
         return view;
     }
@@ -242,12 +192,12 @@ public class PhotosFragment extends Fragment
                         int imageSlot = Integer.valueOf(child.getKey().substring(child.getKey().length()-1));
                         switch (imageSlot)
                         {
-                            case 0: Glide.with(context).load(child.getValue()).into(imageView0); break;
-                            case 1: Glide.with(context).load(child.getValue()).into(imageView1); break;
-                            case 2: Glide.with(context).load(child.getValue()).into(imageView2); break;
-                            case 3: Glide.with(context).load(child.getValue()).into(imageView3); break;
-                            case 4: Glide.with(context).load(child.getValue()).into(imageView4); break;
-                            case 5: Glide.with(context).load(child.getValue()).into(imageView5); break;
+//                            case 0: Glide.with(context).load(child.getValue()).into(imageView0); break;
+//                            case 1: Glide.with(context).load(child.getValue()).into(imageView1); break;
+//                            case 2: Glide.with(context).load(child.getValue()).into(imageView2); break;
+//                            case 3: Glide.with(context).load(child.getValue()).into(imageView3); break;
+//                            case 4: Glide.with(context).load(child.getValue()).into(imageView4); break;
+//                            case 5: Glide.with(context).load(child.getValue()).into(imageView5); break;
                         }
                     }
                 }
@@ -264,53 +214,20 @@ public class PhotosFragment extends Fragment
         if(resultCode == Activity.RESULT_OK)
         {
             Uri uri = data.getData();
-            if(requestCode == 0)
-                imageView0.setImageURI(uri);
-            else if(requestCode == 1)
-                imageView1.setImageURI(uri);
-            else if(requestCode == 2)
-                imageView2.setImageURI(uri);
-            else if(requestCode == 3)
-                imageView3.setImageURI(uri);
-            else if(requestCode == 4)
-                imageView4.setImageURI(uri);
-            else if(requestCode == 5)
-                imageView5.setImageURI(uri);
+//            if(requestCode == 0)
+//                imageView0.setImageURI(uri);
+//            else if(requestCode == 1)
+//                imageView1.setImageURI(uri);
+//            else if(requestCode == 2)
+//                imageView2.setImageURI(uri);
+//            else if(requestCode == 3)
+//                imageView3.setImageURI(uri);
+//            else if(requestCode == 4)
+//                imageView4.setImageURI(uri);
+//            else if(requestCode == 5)
+//                imageView5.setImageURI(uri);
 
             saveUserInformation(uri,requestCode);
         }
     }
-/*
-    @Override
-    public void onStart()
-    {
-        super.onStart();
-        Log.v("Lakers","Fragment started");
-
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-        Log.v("Lakers","Fragment resume");
-
-    }
-
-    @Override
-    public void onPause()
-    {
-        super.onPause();
-        Log.v("Lakers","Fragment paused");
-
-    }
-
-    @Override
-    public void onDestroy()
-    {
-        super.onDestroy();
-        Log.v("Lakers","Fragment destroyed");
-    }
-
- */
 }
