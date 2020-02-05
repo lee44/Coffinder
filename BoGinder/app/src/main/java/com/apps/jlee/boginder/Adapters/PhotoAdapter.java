@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder> implements ItemMoveCallback.ItemTouchHelperContract
@@ -38,7 +39,16 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position)
     {
-        Glide.with(context).load(photos.get(position)).into(holder.imageView);
+        if(photos.get(position).equals("Default"))
+        {
+            holder.imageView.setBackground(ContextCompat.getDrawable(context, R.drawable.add_picture_icon));
+            holder.imageView.setTag("Empty");
+        }
+        else
+        {
+            Glide.with(context).load(photos.get(position)).into(holder.imageView);
+            holder.imageView.setTag("Filled");
+        }
     }
 
     @Override
@@ -50,21 +60,24 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     @Override
     public void onRowMoved(int fromPosition, int toPosition)
     {
-        if (fromPosition < toPosition)
+        if(!photos.get(fromPosition).equals("Default") && !photos.get(toPosition).equals("Default"))
         {
-            for (int i = fromPosition; i < toPosition; i++)
+            if (fromPosition < toPosition)
             {
-                Collections.swap(photos, i, i + 1);
+                for (int i = fromPosition; i < toPosition; i++)
+                {
+                    Collections.swap(photos, i, i + 1);
+                }
             }
-        }
-        else
-        {
-            for (int i = fromPosition; i > toPosition; i--)
+            else
             {
-                Collections.swap(photos, i, i - 1);
+                for (int i = fromPosition; i > toPosition; i--)
+                {
+                    Collections.swap(photos, i, i - 1);
+                }
             }
+            notifyItemMoved(fromPosition, toPosition);
         }
-        notifyItemMoved(fromPosition, toPosition);
     }
 
     @Override

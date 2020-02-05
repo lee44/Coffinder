@@ -1,8 +1,10 @@
 package com.apps.jlee.boginder.Interfaces;
 
 import com.apps.jlee.boginder.Adapters.PhotoAdapter;
+import com.apps.jlee.boginder.R;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,6 +38,9 @@ public class ItemMoveCallback extends ItemTouchHelper.Callback
     @Override
     public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder)
     {
+        if(viewHolder.itemView.findViewById(R.id.imageView).getTag().equals("Empty"))
+            return makeMovementFlags(0, 0);
+
         int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.RIGHT | ItemTouchHelper.DOWN | ItemTouchHelper.LEFT;
         return makeMovementFlags(dragFlags, 0);
     }

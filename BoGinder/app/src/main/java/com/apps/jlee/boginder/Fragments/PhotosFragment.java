@@ -59,8 +59,8 @@ public class PhotosFragment extends Fragment
     RecyclerView photo_rv;
 
     private DatabaseReference databaseReference;
-    private List<Uri> resultUri = new ArrayList<>();
-    ArrayList<String> imageUrlsList = new ArrayList<>();
+    private List<Uri> resultUri;
+    ArrayList<String> imageUrlsList;
     private PhotoAdapter photoAdapter;
     private Context context;
     private String user_id;
@@ -68,6 +68,8 @@ public class PhotosFragment extends Fragment
     public PhotosFragment(Context context)
     {
         this.context = context;
+        resultUri = new ArrayList<>();
+        imageUrlsList = new ArrayList<>();
     }
 
     @Override
@@ -183,8 +185,9 @@ public class PhotosFragment extends Fragment
                     {
                         imageUrlsList.add(child.getValue().toString());
                     }
-                    photoAdapter.notifyDataSetChanged();
                 }
+                initializeArrayList();
+                photoAdapter.notifyDataSetChanged();
             }
 
             @Override
@@ -212,6 +215,14 @@ public class PhotosFragment extends Fragment
 //                imageView5.setImageURI(uri);
 
             saveUserInformation(uri,requestCode);
+        }
+    }
+
+    public void initializeArrayList()
+    {
+        for(int i = imageUrlsList.size(); i < 6; i++)
+        {
+            imageUrlsList.add("Default");
         }
     }
 }
