@@ -1,13 +1,16 @@
 package com.apps.jlee.boginder.Adapters;
 
+import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.apps.jlee.boginder.Interfaces.ItemMoveCallback;
 import com.apps.jlee.boginder.R;
+import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,11 +19,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder> implements ItemMoveCallback.ItemTouchHelperContract
 {
-    private ArrayList<String> data;
+    private ArrayList<String> photos;
+    private Context context;
 
-    public PhotoAdapter(ArrayList<String> data)
+    public PhotoAdapter(Context context, ArrayList<String> photos)
     {
-        this.data = data;
+        this.context = context;
+        this.photos = photos;
     }
 
     @Override
@@ -33,13 +38,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position)
     {
-        holder.mTitle.setText(data.get(position));
+        Glide.with(context).load(photos.get(position)).into(holder.imageView);
     }
 
     @Override
     public int getItemCount()
     {
-        return data.size();
+        return photos.size();
     }
 
     @Override
@@ -49,14 +54,14 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
         {
             for (int i = fromPosition; i < toPosition; i++)
             {
-                Collections.swap(data, i, i + 1);
+                Collections.swap(photos, i, i + 1);
             }
         }
         else
         {
             for (int i = fromPosition; i > toPosition; i--)
             {
-                Collections.swap(data, i, i - 1);
+                Collections.swap(photos, i, i - 1);
             }
         }
         notifyItemMoved(fromPosition, toPosition);
@@ -76,7 +81,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
 
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
-        private TextView mTitle;
+        private ImageView imageView;
         View rowView;
 
         public MyViewHolder(View itemView)
@@ -84,7 +89,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
             super(itemView);
 
             rowView = itemView;
-            mTitle = itemView.findViewById(R.id.textview_photo);
+            imageView = itemView.findViewById(R.id.imageView);
         }
     }
 }

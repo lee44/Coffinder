@@ -60,7 +60,8 @@ public class PhotosFragment extends Fragment
 
     private DatabaseReference databaseReference;
     private List<Uri> resultUri = new ArrayList<>();
-    ArrayList<String> stringArrayList = new ArrayList<>();
+    ArrayList<String> imageUrlsList = new ArrayList<>();
+    private PhotoAdapter photoAdapter;
     private Context context;
     private String user_id;
 
@@ -79,23 +80,14 @@ public class PhotosFragment extends Fragment
         user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users/"+user_id+"/ProfileImageUrl");
 
-        stringArrayList.add("Item 1");
-        stringArrayList.add("Item 2");
-        stringArrayList.add("Item 3");
-        stringArrayList.add("Item 4");
-        stringArrayList.add("Item 5");
-        stringArrayList.add("Item 6");
-        stringArrayList.add("Item 7");
-        stringArrayList.add("Item 8");
-        stringArrayList.add("Item 9");
-        stringArrayList.add("Item 10");
-
-        PhotoAdapter photoAdapter = new PhotoAdapter(stringArrayList);
+        photoAdapter = new PhotoAdapter(getContext(),imageUrlsList);
         ItemTouchHelper.Callback callback = new ItemMoveCallback(photoAdapter);
         ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
         touchHelper.attachToRecyclerView(photo_rv);
         photo_rv.setLayoutManager(new GridLayoutManager(context,3));
         photo_rv.setAdapter(photoAdapter);
+
+        getUserPhotos();
 
 //        imageView5.setOnClickListener(new View.OnClickListener()
 //        {
@@ -189,17 +181,9 @@ public class PhotosFragment extends Fragment
                 {
                     for(DataSnapshot child : dataSnapshot.getChildren())
                     {
-                        int imageSlot = Integer.valueOf(child.getKey().substring(child.getKey().length()-1));
-                        switch (imageSlot)
-                        {
-//                            case 0: Glide.with(context).load(child.getValue()).into(imageView0); break;
-//                            case 1: Glide.with(context).load(child.getValue()).into(imageView1); break;
-//                            case 2: Glide.with(context).load(child.getValue()).into(imageView2); break;
-//                            case 3: Glide.with(context).load(child.getValue()).into(imageView3); break;
-//                            case 4: Glide.with(context).load(child.getValue()).into(imageView4); break;
-//                            case 5: Glide.with(context).load(child.getValue()).into(imageView5); break;
-                        }
+                        imageUrlsList.add(child.getValue().toString());
                     }
+                    photoAdapter.notifyDataSetChanged();
                 }
             }
 
