@@ -14,10 +14,18 @@ import com.apps.jlee.boginder.DialogFragments.PhotoDialogFragment;
 import com.apps.jlee.boginder.Interfaces.ItemMoveCallback;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentManager;
@@ -65,7 +73,15 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
             public void onClick(View view)
             {
                 Bundle bundle = new Bundle();
-                bundle.putString("Status","Empty");
+                if(holder.imageView.getTag().equals("Empty"))
+                {
+                    bundle.putString("Status","Empty");
+                }
+                else
+                {
+                    bundle.putString("Status","Filled");
+                }
+
                 bundle.putInt("Position", position);
 
                 photoDialogFragment.setArguments(bundle);
@@ -118,6 +134,42 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     @Override
     public void deletePhoto(int position)
     {
+        String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        DatabaseReference filepath = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id).child("ProfileImageUrl").child("Image"+position);
+        StorageReference imagePath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id).child("Image"+position);
+
+        filepath.removeValue().addOnSuccessListener(new OnSuccessListener<Void>()
+        {
+            @Override
+            public void onSuccess(Void aVoid)
+            {
+
+            }
+        }).addOnFailureListener(new OnFailureListener()
+        {
+            @Override
+            public void onFailure(@NonNull Exception e)
+            {
+
+            }
+        });
+
+        imagePath.delete().addOnSuccessListener(new OnSuccessListener<Void>()
+        {
+            @Override
+            public void onSuccess(Void aVoid)
+            {
+
+            }
+        }).addOnFailureListener(new OnFailureListener()
+        {
+            @Override
+            public void onFailure(@NonNull Exception e)
+            {
+
+            }
+        });
+
         photos.set(position,"Default");
         notifyItemChanged(position);
     }
