@@ -202,12 +202,25 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
-        //super.onActivityResult is needed for unhandled result codes. In PhotosFragment, there is also an onActivityResult but that method is never called
-        //because the mainActivity handles the result first.
-        super.onActivityResult(requestCode, resultCode, data);
-
+        /*
+        In PhotosFragment, there is an onActivityResult but the method is never called because the mainActivity handles the result.
+        Since the hierarchy is MainActivity -> AccountFragment -> PhotosFragment, use for loop to iterate through all fragments manged by the FragmentManager.
+        Unfortunately AccountFragment uses a childFragmentManager to manage PhotosFragment, DetailsFragment, and PreferencesFragment. This childFragmentManager is
+        not the same as the FragmentManager used in ProfilePreviewFragment. In AccountFragment, onActivityResult must also be overridden and a for loop will iterate
+        through all the fragments mangaged by the ChildFragmentManager.
+        */
         if(requestCode == 44)
             getLastLocation();
+        else
+        {
+            for (Fragment fragment : getSupportFragmentManager().getFragments())
+            {
+                if(fragment.getTag().equals("AccountFragment"))
+                {
+                    fragment.onActivityResult(requestCode, resultCode, data);
+                }
+            }
+        }
     }
 
     private boolean isLocationEnabled()

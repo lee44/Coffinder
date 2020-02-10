@@ -199,7 +199,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     public void setFragment(Fragment fragment)
     {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_frame, fragment);
+        fragmentTransaction.replace(R.id.main_frame, fragment,"AccountFragment");
         fragmentTransaction.commit();
     }
 

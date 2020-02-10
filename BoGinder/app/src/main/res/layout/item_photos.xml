@@ -4,15 +4,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="5dp"
-    android:layout_marginBottom="5dp"
-    >
+    android:layout_margin="5dp">
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="@dimen/photos_imageview"
         android:layout_height="@dimen/photos_imageview"
-        android:src="@drawable/add_picture_icon"
+        android:adjustViewBounds="false"
+        android:cropToPadding="false"
+        android:scaleType="fitCenter"
+        android:src="@drawable/ic_add_box"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
