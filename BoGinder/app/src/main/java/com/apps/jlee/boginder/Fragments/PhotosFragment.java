@@ -121,10 +121,13 @@ public class PhotosFragment extends Fragment
         {
             if(photoURLList.get(i).equals("Default"))
             {
-                photoURLList.set(i,uri.toString());
-                photoAdapter.notifyItemChanged(i);
                 saveUserInformation(uri,i);
                 break;
+            }
+            else if(i == 5)
+            {
+                int slot_position = photoAdapter.getSlot_position();
+                saveUserInformation(uri,slot_position);
             }
         }
     }
@@ -139,7 +142,7 @@ public class PhotosFragment extends Fragment
             progressDialog.show();
 
             //Creates a tree with Profile_Image at the top followed by user_id
-            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id).child("Image"+imageSlot);
+            final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id).child("Image"+System.currentTimeMillis());
 
             Bitmap bitmap = null;
             try
@@ -174,6 +177,8 @@ public class PhotosFragment extends Fragment
                         {
                             //uri has the url and store it in the firebase database tree
                             databaseReference.child("Image"+imageSlot).setValue(uri.toString());
+                            photoURLList.set(imageSlot,uri.toString());
+                            photoAdapter.notifyItemChanged(imageSlot);
                         }
                     });
                 }
@@ -183,7 +188,7 @@ public class PhotosFragment extends Fragment
                 @Override
                 public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot)
                 {
-                    double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
                     progressDialog.setMessage("Uploaded "+(int)progress+"%");
 
                     if(progress == 100)

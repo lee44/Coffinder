@@ -37,6 +37,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     private FragmentManager fragmentManager;
     private ArrayList<String> photos;
     private Context context;
+    private int slot_position;
 
     public PhotoAdapter(Context context, ArrayList<String> photos, FragmentManager fragmentManager)
     {
@@ -72,6 +73,7 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
             @Override
             public void onClick(View view)
             {
+                slot_position = position;
                 Bundle bundle = new Bundle();
                 if(holder.imageView.getTag().equals("Empty"))
                 {
@@ -101,6 +103,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     {
         if(!photos.get(fromPosition).equals("Default") && !photos.get(toPosition).equals("Default"))
         {
+            String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
+
+            DatabaseReference filepath = databaseReference.child("ProfileImageUrl");
+
             if (fromPosition < toPosition)
             {
                 for (int i = fromPosition; i < toPosition; i++)
@@ -114,7 +121,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
                 {
                     Collections.swap(photos, i, i - 1);
                 }
+
             }
+            for(int i = 0; i < 6; i++)
+                filepath.child("Image"+i).setValue(photos.get(i));
+
             notifyItemMoved(fromPosition, toPosition);
         }
     }
@@ -122,37 +133,31 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
     @Override
     public void onRowSelected(MyViewHolder myViewHolder)
     {
-        myViewHolder.rowView.setBackgroundColor(Color.GRAY);
+        //myViewHolder.rowView.setBackgroundColor(Color.GRAY);
     }
 
     @Override
     public void onRowClear(MyViewHolder myViewHolder)
     {
-        myViewHolder.rowView.setBackgroundColor(Color.WHITE);
+        //myViewHolder.rowView.setBackgroundColor(Color.WHITE);
     }
 
     @Override
     public void deletePhoto(int position)
     {
         String user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        DatabaseReference filepath = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id).child("ProfileImageUrl").child("Image"+position);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
+
+        DatabaseReference filepath = databaseReference.child("ProfileImageUrl");
         StorageReference imagePath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id).child("Image"+position);
 
-        filepath.removeValue().addOnSuccessListener(new OnSuccessListener<Void>()
-        {
-            @Override
-            public void onSuccess(Void aVoid)
-            {
+        photos.remove(position);
+        photos.add("Default");
 
-            }
-        }).addOnFailureListener(new OnFailureListener()
-        {
-            @Override
-            public void onFailure(@NonNull Exception e)
-            {
+        for(int i = 0; i < 6; i++)
+            filepath.child("Image"+i).setValue(photos.get(i));
 
-            }
-        });
+        notifyDataSetChanged();
 
         imagePath.delete().addOnSuccessListener(new OnSuccessListener<Void>()
         {
@@ -169,9 +174,11 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
 
             }
         });
+    }
 
-        photos.set(position,"Default");
-        notifyItemChanged(position);
+    public int getSlot_position()
+    {
+        return slot_position;
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder
