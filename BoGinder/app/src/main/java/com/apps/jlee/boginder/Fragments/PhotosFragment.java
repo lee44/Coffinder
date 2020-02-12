@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Matrix;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 
@@ -42,8 +44,11 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class PhotosFragment extends Fragment
 {
@@ -116,19 +121,23 @@ public class PhotosFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
         Uri uri = data.getData();
+        int slot_position = photoAdapter.getSlot_position();
 
-        for(int i = 0; i < 6; i++)
+        if(photoURLList.get(slot_position).equals("Default"))
         {
-            if(photoURLList.get(i).equals("Default"))
+            for(int i = 0; i < 6; i++)
             {
-                saveUserInformation(uri,i);
-                break;
+                if(photoURLList.get(i).equals("Default"))
+                {
+                    saveUserInformation(uri,i);
+                    break;
+                }
             }
-            else if(i == 5)
-            {
-                int slot_position = photoAdapter.getSlot_position();
-                saveUserInformation(uri,slot_position);
-            }
+        }
+        else
+        {
+            deletePhoto(slot_position);
+            saveUserInformation(uri,slot_position);
         }
     }
 
@@ -144,12 +153,7 @@ public class PhotosFragment extends Fragment
             //Creates a tree with Profile_Image at the top followed by user_id
             final StorageReference filepath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id).child("Image"+System.currentTimeMillis());
 
-            Bitmap bitmap = null;
-            try
-            {
-                //Retrieves an image as a bitmap
-                bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-            }catch (IOException e){e.printStackTrace();}
+            Bitmap bitmap = rotateImage(uri);
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG,20,byteArrayOutputStream);
@@ -196,6 +200,70 @@ public class PhotosFragment extends Fragment
                 }
             });
         }
+    }
+
+    private void deletePhoto(int position)
+    {
+        String image_name = photoURLList.get(position);
+        int beginning_index = image_name.lastIndexOf("Image");
+        int ending_index = image_name.lastIndexOf("?alt");
+
+        image_name = image_name.substring(beginning_index,ending_index);
+
+        StorageReference imagePath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id).child(image_name);
+
+        imagePath.delete().addOnSuccessListener(new OnSuccessListener<Void>()
+        {
+            @Override
+            public void onSuccess(Void aVoid)
+            {
+
+            }
+        }).addOnFailureListener(new OnFailureListener()
+        {
+            @Override
+            public void onFailure(@NonNull Exception e)
+            {
+
+            }
+        });
+    }
+
+    private Bitmap rotateImage(Uri uri)
+    {
+        ExifInterface exifInterface = null;
+        try
+        {
+            //InputStream is an ordered stream of bytes
+            //ContentResolver gives access to the image using the uri
+            //Together they break down the image to a stream of bytes
+            InputStream inputStream = context.getContentResolver().openInputStream(uri);
+            ExifInterface exif = new ExifInterface(inputStream);
+            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            Matrix matrix = new Matrix();
+            //Checks the orientation of the image
+            switch (orientation)
+            {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    matrix.setRotate(90);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    matrix.setRotate(180);
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_270:
+                    matrix.setRotate(270);
+                    break;
+            }
+            //Grabs the bitmap of the image using the uri
+            Bitmap bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
+            //returns the rotated bitmap
+            return Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,true);
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void fillPhotoURLList()
