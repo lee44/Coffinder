@@ -149,7 +149,13 @@ public class PhotoAdapter extends RecyclerView.Adapter<PhotoAdapter.MyViewHolder
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
 
         DatabaseReference filepath = databaseReference.child("ProfileImageUrl");
-        StorageReference imagePath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id).child("Image"+position);
+
+        String image_name = photos.get(position);
+        int beginning_index = image_name.lastIndexOf("Image");
+        int ending_index = image_name.lastIndexOf("?alt");
+
+        image_name = image_name.substring(beginning_index,ending_index);
+        StorageReference imagePath = FirebaseStorage.getInstance().getReference().child("Profile_Image").child(user_id).child(image_name);
 
         photos.remove(position);
         photos.add("Default");

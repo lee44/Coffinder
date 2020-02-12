@@ -20,7 +20,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import android.provider.MediaStore;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,10 +44,8 @@ import com.google.firebase.storage.UploadTask;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
 
 public class PhotosFragment extends Fragment
 {
@@ -136,7 +133,7 @@ public class PhotosFragment extends Fragment
         }
         else
         {
-            deletePhoto(slot_position);
+            replacePhoto(slot_position);
             saveUserInformation(uri,slot_position);
         }
     }
@@ -202,7 +199,7 @@ public class PhotosFragment extends Fragment
         }
     }
 
-    private void deletePhoto(int position)
+    private void replacePhoto(int position)
     {
         String image_name = photoURLList.get(position);
         int beginning_index = image_name.lastIndexOf("Image");
