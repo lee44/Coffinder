@@ -1,6 +1,7 @@
 package com.apps.jlee.boginder.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.apps.jlee.boginder.Activities.ProfileSliderActivity;
 import com.apps.jlee.boginder.Models.Card;
 import com.apps.jlee.boginder.Interfaces.ProfileInterface;
 import com.apps.jlee.boginder.R;
@@ -53,7 +55,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
 
     private Context context;
     private DatabaseReference databaseReference;
-    private ValueEventListener valueEventListener;
+    private ArrayList<String> profileImageUrlArray;
 
     public ProfilePreviewFragment(Context context)
     {
@@ -72,12 +74,35 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
         String currentUser_id = firebaseAuth.getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser_id);
 
-        valueEventListener = new ValueEventListener()
+        image.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(getActivity(),ProfileSliderActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("url_arraylist",profileImageUrlArray);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
+        editButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                setFragment(new AccountFragment());
+            }
+        });
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                ArrayList<String> profileImageUrlArray = new ArrayList<>();
+                profileImageUrlArray = new ArrayList<>();
                 long childrenSize = dataSnapshot.child("ProfileImageUrl").getChildrenCount();
                 if(childrenSize != 0)
                 {
@@ -113,17 +138,6 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
             {
                 progressBar.setVisibility(View.GONE);
                 no_data.setVisibility(View.VISIBLE);
-            }
-        };
-
-        databaseReference.addValueEventListener(valueEventListener);
-
-        editButton.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                setFragment(new AccountFragment());
             }
         });
 
@@ -232,7 +246,6 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     {
         super.onDestroy();
         //Log.v("Lakers","DateFragment destroyed");
-        databaseReference.removeEventListener(valueEventListener);
     }
 }
 

@@ -7,7 +7,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,10 +25,10 @@ public class AccountFragment extends Fragment
     {
         super.onActivityCreated(savedInstanceState);
 
-        MyTabPagerAdapter tabPager = new MyTabPagerAdapter(getChildFragmentManager());
-
         /*ViewPager is the container for the pages*/
         ViewPager viewPager = getView().findViewById(R.id.viewpager);
+
+        ViewPagerAdapter tabPager = new ViewPagerAdapter(getChildFragmentManager());
         viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(tabPager);
 
@@ -48,11 +47,11 @@ public class AccountFragment extends Fragment
     }
 
     /*Handles which fragment is displayed inside the ViewPager*/
-    class MyTabPagerAdapter extends FragmentPagerAdapter
+    class ViewPagerAdapter extends FragmentPagerAdapter
     {
         private String tabTitles[] = new String[] { "PHOTOS", "DETAILS", "PREFERENCES"};
 
-        MyTabPagerAdapter(FragmentManager fm)
+        ViewPagerAdapter(FragmentManager fm)
         {
             super(fm);
         }

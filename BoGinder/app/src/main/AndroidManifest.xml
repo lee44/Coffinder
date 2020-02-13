@@ -30,6 +30,9 @@
         <activity
             android:name=".Activities.MainActivity"
             android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activities.ProfileSliderActivity"
+            android:windowSoftInputMode="adjustPan" />
 
         <service android:name=".Firebase.MyFirebaseMessagingService">
             <intent-filter>
