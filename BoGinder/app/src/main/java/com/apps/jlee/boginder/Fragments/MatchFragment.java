@@ -45,7 +45,7 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
 
     private DatabaseReference databaseReference;
     private Context context;
-    private ArrayList<Match> matches_list;
+    private ArrayList<Match> matches_list, last_message_list;
     private MatchesAdapter matchesAdapter;
     private MessagesAdapter messagesAdapter;
     private String current_user_id;
@@ -55,6 +55,7 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
     {
         this.context = context;
         matches_list = new ArrayList<>();
+        last_message_list = new ArrayList<>();
     }
 
     @Override
@@ -71,19 +72,14 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
         getMatchUserID();
 
         matches_recycleView.setLayoutManager(new LinearLayoutManager(context,RecyclerView.HORIZONTAL,false));
-        matchesAdapter = new MatchesAdapter(getMatches(),context);
+        matchesAdapter = new MatchesAdapter(matches_list,context);
         matches_recycleView.setAdapter(matchesAdapter);
 
         messages_recycleView.setLayoutManager(new LinearLayoutManager(context,RecyclerView.VERTICAL,false));
-        messagesAdapter = new MessagesAdapter(getMatches(),context);
+        messagesAdapter = new MessagesAdapter(last_message_list,context);
         messages_recycleView.setAdapter(messagesAdapter);
 
         return view;
-    }
-
-    private List<Match> getMatches()
-    {
-        return matches_list;
     }
 
     /**
@@ -149,6 +145,7 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
                     }
 
                     matches_list.add(new Match(user_id,name,profileImageUrlArray,chat_id,"",""));
+                    last_message_list.add(new Match(user_id,name,profileImageUrlArray,chat_id,"",""));
                     if(matches_list.size() != 0)
                     {
                         no_matches.setVisibility(View.GONE);
@@ -166,7 +163,7 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
                         messages_recycleView.setVisibility(View.GONE);
                     }
                     matchesAdapter.notifyDataSetChanged();
-                    fetchLastMessage(chat_id,matches_list.size()-1);
+                    fetchLastMessage(chat_id);
                 }
             }
 
@@ -175,9 +172,10 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
         });
     }
 
-    private void fetchLastMessage(final String chat_id, final int position)
+    private void fetchLastMessage(String chat_id)
     {
         Query lastQuery = databaseReference.child("Chat").child(chat_id).orderByKey().limitToLast(1);
+        int position = last_message_list.size()-1;
 
         lastQuery.addListenerForSingleValueEvent(new ValueEventListener()
         {
@@ -188,18 +186,20 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
                 {
                     for (DataSnapshot m : dataSnapshot.getChildren())
                     {
-                        matches_list.get(position).setMessage(m.child("Message").getValue().toString());
+                        last_message_list.get(position).setMessage(m.child("Message").getValue().toString());
                         if(m.child("Sender_ID").getValue().toString().equals(current_user_id))
-                            matches_list.get(position).setMessage_direction("Sent");
+                            last_message_list.get(position).setMessage_direction("Sent");
                     }
                     messagesAdapter.notifyDataSetChanged();
                     if(--childrencount == 0)
                     {
+                        removeEmptyLastMessages();
                         loadUI();
                     }
                 }
                 else if(--childrencount == 0)
                 {
+                    removeEmptyLastMessages();
                     loadUI();
                 }
             }
@@ -207,6 +207,18 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
             @Override
             public void onCancelled(DatabaseError databaseError){}
         });
+    }
+
+    public void removeEmptyLastMessages()
+    {
+        for(int i = 0; i < last_message_list.size(); i ++)
+        {
+            if(last_message_list.get(i).getMessage().isEmpty())
+            {
+                last_message_list.remove(i);
+                messagesAdapter.notifyItemRemoved(i);
+            }
+        }
     }
 
     @Override
