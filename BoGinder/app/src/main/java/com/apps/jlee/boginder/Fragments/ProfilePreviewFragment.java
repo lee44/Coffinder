@@ -1,10 +1,12 @@
 package com.apps.jlee.boginder.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -28,13 +30,16 @@ import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class ProfilePreviewFragment extends Fragment implements ProfileInterface.ProfileCallback
 {
-    @BindView(R.id.pic) ImageView image;
+    @BindView(R.id.view_pager) ViewPager viewPager;
     @BindView(R.id.age_city) TextView age_city;
     @BindView(R.id.name) TextView name;
     @BindView(R.id.height_header) TextView height_header;
@@ -53,15 +58,16 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.no_data) TextView no_data;
 
-    private Context context;
+    private ImageFragmentPagerAdapter imageFragmentPagerAdapter;
     private DatabaseReference databaseReference;
-    private ArrayList<String> profileImageUrlArray;
+    static ArrayList<String> profileImageUrlArray;
 
     public ProfilePreviewFragment(Context context)
     {
-        this.context = context;
+        profileImageUrlArray = new ArrayList<>();
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
@@ -74,17 +80,26 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
         String currentUser_id = firebaseAuth.getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser_id);
 
-        image.setOnClickListener(new View.OnClickListener()
+        imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getChildFragmentManager());
+        viewPager.setAdapter(imageFragmentPagerAdapter);
+
+        viewPager.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
-            public void onClick(View view)
+            public boolean onTouch(View view, MotionEvent motionEvent)
             {
-                Intent intent = new Intent(getActivity(),ProfileSliderActivity.class);
+                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {}
+                if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {}
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP)
+                {
+                    Intent intent = new Intent(getActivity(),ProfileSliderActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putStringArrayList("url_arraylist",profileImageUrlArray);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                }
 
-                Bundle bundle = new Bundle();
-                bundle.putStringArrayList("url_arraylist",profileImageUrlArray);
-                intent.putExtras(bundle);
-                startActivity(intent);
+                return false;
             }
         });
 
@@ -102,7 +117,6 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                profileImageUrlArray = new ArrayList<>();
                 long childrenSize = dataSnapshot.child("ProfileImageUrl").getChildrenCount();
                 if(childrenSize != 0)
                 {
@@ -115,6 +129,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
                 {
                     profileImageUrlArray.add(dataSnapshot.child("ProfileImageUrl").getValue().toString());
                 }
+                imageFragmentPagerAdapter.notifyDataSetChanged();
 
                 Card card = new Card(
                         "",
@@ -147,13 +162,6 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     @Override
     public void loadUI(Card card)
     {
-        if (card.getProfileImageUrl().get(0).equals("Default"))
-        {
-            Glide.with(context).load(R.mipmap.ic_launcher).into(image);
-        }
-        else
-            Glide.with(context).load(card.getProfileImageUrl().get(0)).into(image);
-
         name.setText(card.getName());
         age_city.setText(card.getAge() + ", " + card.getCity());
         height.setText(card.getHeight());
@@ -171,7 +179,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
         if(toggle)
         {
             progressBar.setVisibility(View.VISIBLE);
-            image.setVisibility(View.GONE);
+            viewPager.setVisibility(View.GONE);
             name.setVisibility(View.GONE);
             age_city.setVisibility(View.GONE);
             job_image.setVisibility(View.GONE);
@@ -191,7 +199,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
         else
         {
             progressBar.setVisibility(View.INVISIBLE);
-            image.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.VISIBLE);
             name.setVisibility(View.VISIBLE);
             age_city.setVisibility(View.VISIBLE);
             job_image.setVisibility(View.VISIBLE);
@@ -215,6 +223,62 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.main_frame, fragment,"AccountFragment");
         fragmentTransaction.commit();
+    }
+
+    class ImageFragmentPagerAdapter extends FragmentPagerAdapter
+    {
+        public ImageFragmentPagerAdapter(FragmentManager fm)
+        {
+            super(fm);
+        }
+
+        @Override
+        public int getCount()
+        {
+            if(!profileImageUrlArray.isEmpty())
+                for(int i = 0; i < profileImageUrlArray.size(); i++)
+                {
+                    if(profileImageUrlArray.get(i).equals("Default"))
+                    {
+                        return i;
+                    }
+                }
+            return 6;
+        }
+
+        @Override
+        public Fragment getItem(int position)
+        {
+            SwipeFragment fragment = new SwipeFragment();
+            return fragment.newInstance(position);
+        }
+    }
+
+    public static class SwipeFragment extends Fragment
+    {
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            View swipeView = inflater.inflate(R.layout.fragment_swipe, container, false);
+            ImageView imageView = swipeView.findViewById(R.id.imageView);
+
+            Bundle bundle = getArguments();
+            int position = bundle.getInt("position");
+
+            Glide.with(getContext()).load(profileImageUrlArray.get(position)).into(imageView);
+
+            return swipeView;
+        }
+
+        public SwipeFragment newInstance(int position)
+        {
+            SwipeFragment swipeFragment = new SwipeFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("position", position);
+            swipeFragment.setArguments(bundle);
+            return swipeFragment;
+        }
     }
 
     @Override

@@ -19,20 +19,15 @@
             android:layout_height="match_parent"
             android:paddingBottom="100dp">
 
-            <ImageView
-                android:id="@+id/pic"
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/view_pager"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginTop="16dp"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:src="@mipmap/ic_launcher"
                 app:layout_constraintBottom_toTopOf="@+id/guideline10"
                 app:layout_constraintEnd_toStartOf="@+id/guideline19"
-                app:layout_constraintHorizontal_bias="1.0"
                 app:layout_constraintStart_toStartOf="@+id/guideline11"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"></ImageView>
+                app:layout_constraintTop_toTopOf="parent">
+            </androidx.viewpager.widget.ViewPager>
 
             <TextView
                 android:id="@+id/age_city"

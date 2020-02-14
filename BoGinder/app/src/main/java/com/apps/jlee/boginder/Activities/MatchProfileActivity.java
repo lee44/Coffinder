@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,10 +30,8 @@ import java.util.ArrayList;
 
 public class MatchProfileActivity extends AppCompatActivity implements ProfileInterface.ProfileCallback
 {
-    @BindView(R.id.pic)
-    ImageView image;
-    @BindView(R.id.age_city)
-    TextView age_city;
+    @BindView(R.id.pic) ImageView image;
+    @BindView(R.id.age_city) TextView age_city;
     @BindView(R.id.name) TextView name;
     @BindView(R.id.height_header) TextView height_header;
     @BindView(R.id.height) TextView height;
@@ -46,14 +45,11 @@ public class MatchProfileActivity extends AppCompatActivity implements ProfileIn
     @BindView(R.id.religion) TextView religion;
     @BindView(R.id.ethnicity_header) TextView ethnicity_header;
     @BindView(R.id.ethnicity) TextView ethnicity;
-    @BindView(R.id.progressBar)
-    ProgressBar progressBar;
+    @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.no_data) TextView no_data;
-    @BindView(R.id.bottom_nav_bar)
-    BottomNavigationView bottomNavigationView;
+    @BindView(R.id.bottom_nav_bar) BottomNavigationView bottomNavigationView;
 
-    private DatabaseReference databaseReference;
-    private ValueEventListener valueEventListener;
+    private ArrayList<String> profileImageUrlArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -67,14 +63,14 @@ public class MatchProfileActivity extends AppCompatActivity implements ProfileIn
 
         FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
         String user_id = getIntent().getExtras().getString("user_id");
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
 
-        valueEventListener = new ValueEventListener()
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener()
         {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot)
             {
-                ArrayList<String> profileImageUrlArray = new ArrayList<>();
+                profileImageUrlArray = new ArrayList<>();
                 long childrenSize = dataSnapshot.child("ProfileImageUrl").getChildrenCount();
                 if(childrenSize != 0)
                 {
@@ -111,7 +107,7 @@ public class MatchProfileActivity extends AppCompatActivity implements ProfileIn
                 progressBar.setVisibility(View.GONE);
                 no_data.setVisibility(View.VISIBLE);
             }
-        };
+        });
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener()
         {
@@ -123,7 +119,19 @@ public class MatchProfileActivity extends AppCompatActivity implements ProfileIn
             }
         });
 
-        databaseReference.addValueEventListener(valueEventListener);
+        image.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                Intent intent = new Intent(MatchProfileActivity.this,ProfileSliderActivity.class);
+
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("url_arraylist",profileImageUrlArray);
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
