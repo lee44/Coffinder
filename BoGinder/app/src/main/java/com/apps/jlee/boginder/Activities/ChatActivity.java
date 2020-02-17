@@ -106,7 +106,7 @@ public class ChatActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
-                Intent intent = new Intent(ChatActivity.this,MatchProfileActivity.class);
+                Intent intent = new Intent(ChatActivity.this,ProfilePreviewActivity.class);
                 intent.putExtra("user_id",match_id);
                 startActivity(intent);
             }

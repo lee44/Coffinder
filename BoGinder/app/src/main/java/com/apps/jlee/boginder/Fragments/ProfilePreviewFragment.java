@@ -76,9 +76,13 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
 
         toggleUI(true);
 
-        FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
-        String currentUser_id = firebaseAuth.getCurrentUser().getUid();
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUser_id);
+        String user_id;
+        if(getArguments() == null)
+            user_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        else
+            user_id = getArguments().getString("user_id");
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("Users").child(user_id);
 
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(imageFragmentPagerAdapter);
@@ -146,6 +150,8 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
                         );
 
                 loadUI(card);
+
+                if(getArguments() != null) editButton.hide();
             }
 
             @Override
@@ -221,7 +227,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     public void setFragment(Fragment fragment)
     {
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_frame, fragment,"AccountFragment");
+        fragmentTransaction.replace(R.id.profile_preview_main_frame, fragment,"AccountFragment");
         fragmentTransaction.commit();
     }
 

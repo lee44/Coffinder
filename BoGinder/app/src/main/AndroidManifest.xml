@@ -12,7 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activities.MatchProfileActivity"></activity>
         <activity android:name=".Activities.ChatActivity" />
         <activity
             android:name=".Activities.LoginActivity"
@@ -32,6 +31,9 @@
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".Activities.ProfileSliderActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".Activities.ProfilePreviewActivity"
             android:windowSoftInputMode="adjustPan" />
 
         <service android:name=".Firebase.MyFirebaseMessagingService">

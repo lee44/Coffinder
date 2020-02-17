@@ -95,7 +95,8 @@ public class MainActivity extends AppCompatActivity
                 {
                     case R.id.account:
                         hideToolbarItems(true);
-                        setFragment(profilePreviewFragment);
+                        Intent intent = new Intent(MainActivity.this, ProfilePreviewActivity.class);
+                        startActivity(intent);
                         break;
                     case R.id.dates:
                         hideToolbarItems(true);

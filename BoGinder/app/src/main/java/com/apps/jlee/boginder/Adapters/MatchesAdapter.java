@@ -2,15 +2,13 @@ package com.apps.jlee.boginder.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.apps.jlee.boginder.Activities.ChatActivity;
-import com.apps.jlee.boginder.Activities.MatchProfileActivity;
+import com.apps.jlee.boginder.Activities.ProfilePreviewActivity;
 import com.apps.jlee.boginder.Models.Match;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
@@ -69,7 +67,6 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
 
     public class ViewHolder extends RecyclerView.ViewHolder
     {
-
         ImageView matches_imageView;
         TextView matches_name;
 
@@ -86,7 +83,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.ViewHold
                 public void onClick(View view)
                 {
                     int i = getAdapterPosition();
-                    Intent intent = new Intent(view.getContext(), MatchProfileActivity.class);
+                    Intent intent = new Intent(view.getContext(), ProfilePreviewActivity.class);
                     intent.putExtra("user_id",matches.get(i).getUser_id());
                     view.getContext().startActivity(intent);
                 }
