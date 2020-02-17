@@ -283,7 +283,6 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     {
         super.onStart();
         //Log.v("Lakers","DateFragment started");
-
     }
 
     @Override

@@ -102,6 +102,12 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
                         fetchMatchInformation(match.getKey(),match.child("chat_id").getValue().toString());
                     }
                 }
+                else
+                {
+                    loadUI();
+                    no_matches.setVisibility(View.VISIBLE);
+                    no_messages.setVisibility(View.VISIBLE);
+                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError){}
@@ -221,6 +227,7 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
         }
     }
 
+    //Callback method for when the data is finished loading
     @Override
     public void loadUI()
     {
@@ -253,29 +260,28 @@ public class MatchFragment extends Fragment implements MatchInterface.MatchCallb
     public void onStart()
     {
         super.onStart();
-        //Log.v("Lakers","onStart");
+        Log.v("Lakers","onStart");
 
     }
     @Override
     public void onResume()
     {
         super.onResume();
-        //Log.v("Lakers","onResume");
+        Log.v("Lakers","onResume");
 
     }
     @Override
     public void onPause()
     {
         super.onPause();
-        //Log.v("Lakers","onPause");
+        Log.v("Lakers","onPause");
 
     }
     @Override
     public void onDestroy()
     {
         super.onDestroy();
-        //Log.v("Lakers","onDestroy");
+        Log.v("Lakers","onDestroy");
         matches_list.clear();
-
     }
 }
