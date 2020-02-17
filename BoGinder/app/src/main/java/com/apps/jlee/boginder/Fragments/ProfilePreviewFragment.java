@@ -235,27 +235,35 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
         @Override
         public int getCount()
         {
-            if(!profileImageUrlArray.isEmpty())
-                for(int i = 0; i < profileImageUrlArray.size(); i++)
+            for(int i = 0; i < profileImageUrlArray.size(); i++)
+            {
+                if(profileImageUrlArray.get(i).equals("Default"))
                 {
-                    if(profileImageUrlArray.get(i).equals("Default"))
-                    {
-                        return i;
-                    }
+                    return i;
                 }
-            return 6;
+            }
+            return profileImageUrlArray.size();
         }
 
         @Override
         public Fragment getItem(int position)
         {
-            SwipeFragment fragment = new SwipeFragment();
-            return fragment.newInstance(position);
+            return SwipeFragment.newInstance(position);
         }
     }
 
     public static class SwipeFragment extends Fragment
     {
+        public static SwipeFragment newInstance(int position)
+        {
+            SwipeFragment swipeFragment = new SwipeFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("SwipeFragment_position", position);
+            swipeFragment.setArguments(bundle);
+            return swipeFragment;
+        }
+
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
@@ -263,21 +271,10 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
             ImageView imageView = swipeView.findViewById(R.id.imageView);
 
             Bundle bundle = getArguments();
-            int position = bundle.getInt("position");
-
+            int position = bundle.getInt("SwipeFragment_position");
             Glide.with(getContext()).load(profileImageUrlArray.get(position)).into(imageView);
 
             return swipeView;
-        }
-
-        public SwipeFragment newInstance(int position)
-        {
-            SwipeFragment swipeFragment = new SwipeFragment();
-
-            Bundle bundle = new Bundle();
-            bundle.putInt("position", position);
-            swipeFragment.setArguments(bundle);
-            return swipeFragment;
         }
     }
 
