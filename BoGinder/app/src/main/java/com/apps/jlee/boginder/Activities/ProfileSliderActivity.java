@@ -59,7 +59,7 @@ public class ProfileSliderActivity extends AppCompatActivity
                     return i;
                 }
             }
-            return 6;
+            return profileImageUrlArray.size();
         }
 
         @Override

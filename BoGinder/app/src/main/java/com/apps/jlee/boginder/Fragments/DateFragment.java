@@ -1,5 +1,6 @@
 package com.apps.jlee.boginder.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
@@ -7,15 +8,19 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.fragment.app.FragmentTransaction;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import android.os.Handler;
 import android.os.ResultReceiver;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -23,6 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.apps.jlee.boginder.Activities.ProfileSliderActivity;
 import com.apps.jlee.boginder.Models.Card;
 import com.apps.jlee.boginder.R;
 import com.apps.jlee.boginder.Service.Constants;
@@ -40,7 +46,7 @@ import java.util.ArrayList;
 
 public class DateFragment extends Fragment
 {
-    @BindView(R.id.pic) ImageView image;
+    @BindView(R.id.view_pager) ViewPager viewPager;
     @BindView(R.id.age_city) TextView age_city;
     @BindView(R.id.name) TextView name;
     @BindView(R.id.height_header) TextView height_header;
@@ -63,11 +69,15 @@ public class DateFragment extends Fragment
 
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
-    private Context context;
-    private ArrayList<Card> cardsList;
     private ProfileResultReceiver resultReceiver;
+    private ImageFragmentPagerAdapter imageFragmentPagerAdapter;
+    private ArrayList<Card> cardsList;
+    static ArrayList<String> profileImageUrlArray;
     private Location lastLocation;
+    private Context context;
     private String currentUser_id;
+    private float x, y;
+    private final int THRESHOLD = 3;
 
     public DateFragment(Context context, ArrayList<Card> cardsList, Location lastLocation)
     {
@@ -76,6 +86,7 @@ public class DateFragment extends Fragment
         this.lastLocation = lastLocation;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState)
     {
@@ -86,28 +97,16 @@ public class DateFragment extends Fragment
         currentUser_id = firebaseAuth.getCurrentUser().getUid();
         databaseReference = FirebaseDatabase.getInstance().getReference().child("Users");
 
+        profileImageUrlArray = cardsList.get(0).getProfileImageUrl();
+
         swipeRefreshLayout.setEnabled(false);
         swipeRefreshLayout.setRefreshing(false);
 
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
-            @Override public void onRefresh()
-            {
-                progressBar.setVisibility(View.VISIBLE);
-                no_data.setVisibility(View.GONE);
-                startIntentService();
-            }
-        });
+        imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getFragmentManager());
+        viewPager.setAdapter(imageFragmentPagerAdapter);
 
         if(cardsList.size() > 0)
         {
-            if (cardsList.get(0).getProfileImageUrl().get(0).equals("Default"))
-            {
-                Glide.with(context).load(R.mipmap.ic_launcher).into(image);
-            }
-            else
-                Glide.with(context).load(cardsList.get(0).getProfileImageUrl().get(0)).into(image);
-
             name.setText(cardsList.get(0).getName());
             age_city.setText(cardsList.get(0).getAge()+", "+cardsList.get(0).getCity());
             height.setText(cardsList.get(0).getHeight());
@@ -147,6 +146,44 @@ public class DateFragment extends Fragment
             toggleUI(true);
             startIntentService();
         }
+
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
+        {
+            @Override public void onRefresh()
+            {
+                progressBar.setVisibility(View.VISIBLE);
+                no_data.setVisibility(View.GONE);
+                startIntentService();
+            }
+        });
+
+        viewPager.setOnTouchListener(new View.OnTouchListener()
+        {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent)
+            {
+                switch (motionEvent.getAction())
+                {
+                    case MotionEvent.ACTION_DOWN:
+                        x = motionEvent.getX();
+                        y = motionEvent.getY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        x -= motionEvent.getX();
+                        y -= motionEvent.getY();
+                        if(Math.abs(x) <= THRESHOLD && Math.abs(y) <= THRESHOLD)
+                        {
+                            Intent intent = new Intent(getActivity(), ProfileSliderActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putStringArrayList("url_arraylist",profileImageUrlArray);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
 
         return view;
     }
@@ -243,7 +280,7 @@ public class DateFragment extends Fragment
         if(toggle)
         {
             progressBar.setVisibility(View.VISIBLE);
-            image.setVisibility(View.GONE);
+            viewPager.setVisibility(View.GONE);
             name.setVisibility(View.GONE);
             age_city.setVisibility(View.GONE);
             job_image.setVisibility(View.GONE);
@@ -264,7 +301,7 @@ public class DateFragment extends Fragment
         else
         {
             progressBar.setVisibility(View.GONE);
-            image.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.VISIBLE);
             name.setVisibility(View.VISIBLE);
             age_city.setVisibility(View.VISIBLE);
             job_image.setVisibility(View.VISIBLE);
@@ -281,6 +318,59 @@ public class DateFragment extends Fragment
             ethnicity.setVisibility(View.VISIBLE);
             likeButton.show();
             nopeButton.show();
+        }
+    }
+
+    class ImageFragmentPagerAdapter extends FragmentPagerAdapter
+    {
+        public ImageFragmentPagerAdapter(FragmentManager fm)
+        {
+            super(fm);
+        }
+
+        @Override
+        public int getCount()
+        {
+            for(int i = 0; i < profileImageUrlArray.size(); i++)
+            {
+                if(profileImageUrlArray.get(i).equals("Default"))
+                {
+                    return i;
+                }
+            }
+            return profileImageUrlArray.size();
+        }
+
+        @Override
+        public Fragment getItem(int position)
+        {
+            return SwipeFragment.newInstance(position);
+        }
+    }
+
+    public static class SwipeFragment extends Fragment
+    {
+        public static SwipeFragment newInstance(int position)
+        {
+            SwipeFragment swipeFragment = new SwipeFragment();
+
+            Bundle bundle = new Bundle();
+            bundle.putInt("SwipeFragment_position", position);
+            swipeFragment.setArguments(bundle);
+            return swipeFragment;
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
+        {
+            View swipeView = inflater.inflate(R.layout.fragment_swipe, container, false);
+            ImageView imageView = swipeView.findViewById(R.id.imageView);
+
+            Bundle bundle = getArguments();
+            int position = bundle.getInt("SwipeFragment_position");
+            Glide.with(getContext()).load(profileImageUrlArray.get(position)).into(imageView);
+
+            return swipeView;
         }
     }
 
