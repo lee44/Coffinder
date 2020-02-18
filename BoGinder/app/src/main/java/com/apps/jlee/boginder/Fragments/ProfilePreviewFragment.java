@@ -61,6 +61,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     private ImageFragmentPagerAdapter imageFragmentPagerAdapter;
     private DatabaseReference databaseReference;
     static ArrayList<String> profileImageUrlArray;
+    private float x, y;
 
     public ProfilePreviewFragment(Context context)
     {
@@ -92,17 +93,25 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent)
             {
-                if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {}
-                if (motionEvent.getAction() == MotionEvent.ACTION_MOVE) {}
-                if (motionEvent.getAction() == MotionEvent.ACTION_UP)
+                switch (motionEvent.getAction())
                 {
-                    Intent intent = new Intent(getActivity(),ProfileSliderActivity.class);
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArrayList("url_arraylist",profileImageUrlArray);
-                    intent.putExtras(bundle);
-                    startActivity(intent);
+                    case MotionEvent.ACTION_DOWN:
+                        x = motionEvent.getX();
+                        y = motionEvent.getY();
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        x -= motionEvent.getX();
+                        y -= motionEvent.getY();
+                        if(Math.abs(x) <= 2 && Math.abs(y) <= 2)
+                        {
+                            Intent intent = new Intent(getActivity(),ProfileSliderActivity.class);
+                            Bundle bundle = new Bundle();
+                            bundle.putStringArrayList("url_arraylist",profileImageUrlArray);
+                            intent.putExtras(bundle);
+                            startActivity(intent);
+                        }
+                        break;
                 }
-
                 return false;
             }
         });
