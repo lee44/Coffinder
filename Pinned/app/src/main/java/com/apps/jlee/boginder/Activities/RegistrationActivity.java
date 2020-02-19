@@ -61,9 +61,6 @@ public class RegistrationActivity extends AppCompatActivity implements HeightDia
 
         ButterKnife.bind(this);
 
-        email.setText("@gmail.com");
-        password.setText("123456");
-
         firebaseAuth = FirebaseAuth.getInstance();
         heightDialogFragment = new HeightDialogFragment(this);
 

@@ -37,8 +37,7 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="4dp"
             android:focusedByDefault="false"
-            android:hint="Email Address"
-            android:text="@gmail.com">
+            android:hint="Email Address">
         </EditText>
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -56,8 +55,8 @@
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password"
-            android:text="123456"></EditText>
+            android:hint="Password">
+        </EditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -78,13 +77,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".1" />
+        app:layout_constraintGuide_percent=".05" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintGuide_percent=".9" />
+        app:layout_constraintGuide_percent=".95" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
