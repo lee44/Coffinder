@@ -1,22 +1,15 @@
 package com.apps.jlee.boginder.Activities;
 
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.apps.jlee.boginder.R;
 import com.bumptech.glide.Glide;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -75,7 +68,7 @@ public class ProfileSliderActivity extends AppCompatActivity
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View swipeView = inflater.inflate(R.layout.fragment_swipe, container, false);
+            View swipeView = inflater.inflate(R.layout.fragment_swipe_large, container, false);
             ImageView imageView = swipeView.findViewById(R.id.imageView);
 
             Bundle bundle = getArguments();

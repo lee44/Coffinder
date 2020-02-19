@@ -363,7 +363,7 @@ public class DateFragment extends Fragment
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View swipeView = inflater.inflate(R.layout.fragment_swipe, container, false);
+            View swipeView = inflater.inflate(R.layout.fragment_swipe_small, container, false);
             ImageView imageView = swipeView.findViewById(R.id.imageView);
 
             Bundle bundle = getArguments();

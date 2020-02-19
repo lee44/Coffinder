@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
-    private ProfilePreviewFragment profilePreviewFragment;
     private MatchFragment matchFragment;
     private DateFragment dateFragment;
 
@@ -67,6 +66,8 @@ public class MainActivity extends AppCompatActivity
     private FusedLocationProviderClient mFusedLocationClient;
     protected Location lastLocation;
     private AddressResultReceiver resultReceiver;
+
+    private int lastTabSelected = R.id.dates;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -78,7 +79,6 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
 
-        profilePreviewFragment = new ProfilePreviewFragment(this);
         matchFragment = new MatchFragment(this);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -95,6 +95,7 @@ public class MainActivity extends AppCompatActivity
                 {
                     case R.id.account:
                         hideToolbarItems(true);
+                        lastTabSelected = R.id.account;
                         Intent intent = new Intent(MainActivity.this, ProfilePreviewActivity.class);
                         startActivity(intent);
                         break;
@@ -302,13 +303,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onBackPressed()
-    {
-        //Intent intent = new Intent(this,LoginRegisterActivity.class);
-        //startActivity(intent);
-    }
-
-    @Override
     public boolean dispatchTouchEvent(MotionEvent ev)
     {
         if (getCurrentFocus() != null)
@@ -354,43 +348,41 @@ public class MainActivity extends AppCompatActivity
                 ArrayList parcelable = resultData.getParcelableArrayList("Profiles");
                 //Log.v("Lakers", parcelable.toString());
                 dateFragment = new DateFragment(MainActivity.this,parcelable,lastLocation);
-                bottomNavigationView.setSelectedItemId(R.id.dates);
                 bottomNavigationView.setVisibility(View.VISIBLE);
+                bottomNavigationView.setSelectedItemId(R.id.dates);
+                lastTabSelected = bottomNavigationView.getSelectedItemId();
             }
         }
     }
 
-/*
     @Override
     public void onStart()
     {
         super.onStart();
-        Log.v("Lakers","Activity started");
-
+        //Log.v("Lakers","Activity started");
     }
 
     @Override
     public void onResume()
     {
         super.onResume();
-        Log.v("Lakers","Activity resume");
+        //Log.v("Lakers","Activity resumed");
 
+        if (lastTabSelected == R.id.account)
+            bottomNavigationView.setSelectedItemId(R.id.dates);
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        Log.v("Lakers","Activity paused");
-
+        //Log.v("Lakers","Activity paused");
     }
 
     @Override
     public void onDestroy()
     {
         super.onDestroy();
-        Log.v("Lakers","Activity destroyed");
+        //Log.v("Lakers","Activity destroyed");
     }
-
- */
 }

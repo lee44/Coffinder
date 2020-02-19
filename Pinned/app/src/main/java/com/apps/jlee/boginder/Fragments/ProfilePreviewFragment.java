@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -283,7 +282,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
         {
-            View swipeView = inflater.inflate(R.layout.fragment_swipe, container, false);
+            View swipeView = inflater.inflate(R.layout.fragment_swipe_small, container, false);
             ImageView imageView = swipeView.findViewById(R.id.imageView);
 
             Bundle bundle = getArguments();

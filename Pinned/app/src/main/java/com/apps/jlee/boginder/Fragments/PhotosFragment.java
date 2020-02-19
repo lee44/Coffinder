@@ -54,6 +54,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 public class PhotosFragment extends Fragment
 {
     @BindView(R.id.photo_recycleview)
@@ -126,47 +128,34 @@ public class PhotosFragment extends Fragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
-        if(requestCode == PICK_IMAGE_GALLERY_REQUEST_CODE)
-        {
-            Uri sourceUri = data.getData();
-//            File file = null;
-//            try {
-//                file = getImageFile();
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//            }
-//            Uri destinationUri = Uri.fromFile(file);
-            openCropActivity(sourceUri);
-        }
-        else if(requestCode == UCrop.REQUEST_CROP)
-        {
-            Uri uri = UCrop.getOutput(data);
+        if(resultCode == RESULT_OK && data != null)
+            if(requestCode == PICK_IMAGE_GALLERY_REQUEST_CODE )
+            {
+                Uri sourceUri = data.getData();
+                openCropActivity(sourceUri);
+            }
+            else if(requestCode == UCrop.REQUEST_CROP)
+            {
+                Uri uri = UCrop.getOutput(data);
 
-            int slot_position = photoAdapter.getSlot_position();
+                int slot_position = photoAdapter.getSlot_position();
 
-            if (photoURLList.get(slot_position).equals("Default")) {
-                for (int i = 0; i < 6; i++) {
-                    if (photoURLList.get(i).equals("Default")) {
-                        saveUserInformation(uri, i);
-                        break;
+                if (photoURLList.get(slot_position).equals("Default"))
+                {
+                    for (int i = 0; i < 6; i++) {
+                        if (photoURLList.get(i).equals("Default"))
+                        {
+                            saveUserInformation(uri, i);
+                            break;
+                        }
                     }
                 }
+                else
+                {
+                    replacePhoto(slot_position);
+                    saveUserInformation(uri, slot_position);
+                }
             }
-            else {
-                replacePhoto(slot_position);
-                saveUserInformation(uri, slot_position);
-            }
-        }
-    }
-
-    //creates a random File name with .jpg extension inside the external storage directory to store the cropped photo
-    private File getImageFile() throws IOException
-    {
-        String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
-        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
-        File file = File.createTempFile(imageFileName, ".jpg", storageDir);
-        currentPhotoPath = "file:" + file.getAbsolutePath();
-        return file;
     }
 
     private void openCropActivity(Uri sourceUri)
