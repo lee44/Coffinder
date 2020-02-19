@@ -1,6 +1,8 @@
 package com.apps.jlee.boginder.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.apps.jlee.boginder.Fragments.ProfilePreviewFragment;
 import com.apps.jlee.boginder.R;
@@ -37,6 +39,17 @@ public class ProfilePreviewActivity extends AppCompatActivity
         }
 
         setFragment(profilePreviewFragment);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode,resultCode,data);
+
+        for (Fragment fragment : getSupportFragmentManager().getFragments())
+        {
+            fragment.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
     public void setFragment(Fragment fragment)

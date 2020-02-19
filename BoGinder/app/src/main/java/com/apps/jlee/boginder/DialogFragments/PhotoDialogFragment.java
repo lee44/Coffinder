@@ -24,6 +24,7 @@ public class PhotoDialogFragment extends DialogFragment
     private DeletePhotoCallback deletePhotoCallback;
     private AlertDialog dialog;
     private Button gallery, delete;
+    private static final int PICK_IMAGE_GALLERY_REQUEST_CODE = 609;
 
     public PhotoDialogFragment(DeletePhotoCallback deletePhotoCallback)
     {
@@ -63,7 +64,9 @@ public class PhotoDialogFragment extends DialogFragment
             {
                 Intent intent = new Intent(Intent.ACTION_PICK);
                 intent.setType("image/*");
-                startActivityForResult(intent,24);
+                //For some reason, requestCode gets changed by Activity that owns the fragment if we use just startActivityForResult
+                //getActivity() solved the problem
+                getActivity().startActivityForResult(intent,PICK_IMAGE_GALLERY_REQUEST_CODE);
                 dialog.dismiss();
             }
         });

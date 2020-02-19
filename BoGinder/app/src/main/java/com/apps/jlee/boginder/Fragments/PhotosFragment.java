@@ -12,6 +12,8 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -19,12 +21,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.apps.jlee.boginder.Activities.ProfilePreviewActivity;
 import com.apps.jlee.boginder.Adapters.PhotoAdapter;
 import com.apps.jlee.boginder.Interfaces.ItemMoveCallback;
 import com.apps.jlee.boginder.R;
@@ -40,8 +45,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -58,6 +65,8 @@ public class PhotosFragment extends Fragment
     ArrayList<String> photoURLList;
     private Context context;
     private String user_id;
+    private String currentPhotoPath = "";
+    private static final int PICK_IMAGE_GALLERY_REQUEST_CODE = 609;
 
     public PhotosFragment(Context context)
     {
@@ -117,25 +126,59 @@ public class PhotosFragment extends Fragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data)
     {
-        Uri uri = data.getData();
-        int slot_position = photoAdapter.getSlot_position();
-
-        if(photoURLList.get(slot_position).equals("Default"))
+        if(requestCode == PICK_IMAGE_GALLERY_REQUEST_CODE)
         {
-            for(int i = 0; i < 6; i++)
-            {
-                if(photoURLList.get(i).equals("Default"))
-                {
-                    saveUserInformation(uri,i);
-                    break;
+            Uri sourceUri = data.getData();
+//            File file = null;
+//            try {
+//                file = getImageFile();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//            Uri destinationUri = Uri.fromFile(file);
+            openCropActivity(sourceUri);
+        }
+        else if(requestCode == UCrop.REQUEST_CROP)
+        {
+            Uri uri = UCrop.getOutput(data);
+
+            int slot_position = photoAdapter.getSlot_position();
+
+            if (photoURLList.get(slot_position).equals("Default")) {
+                for (int i = 0; i < 6; i++) {
+                    if (photoURLList.get(i).equals("Default")) {
+                        saveUserInformation(uri, i);
+                        break;
+                    }
                 }
             }
+            else {
+                replacePhoto(slot_position);
+                saveUserInformation(uri, slot_position);
+            }
         }
-        else
-        {
-            replacePhoto(slot_position);
-            saveUserInformation(uri,slot_position);
-        }
+    }
+
+    //creates a random File name with .jpg extension inside the external storage directory to store the cropped photo
+    private File getImageFile() throws IOException
+    {
+        String imageFileName = "JPEG_" + System.currentTimeMillis() + "_";
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "Camera");
+        File file = File.createTempFile(imageFileName, ".jpg", storageDir);
+        currentPhotoPath = "file:" + file.getAbsolutePath();
+        return file;
+    }
+
+    private void openCropActivity(Uri sourceUri)
+    {
+        String destinationFileName = "JPEG_" + System.currentTimeMillis() + "_";
+        UCrop.Options options = new UCrop.Options();
+        options.setCircleDimmedLayer(true);
+        options.setCropFrameColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        UCrop.of(sourceUri, Uri.fromFile(new File(getContext().getCacheDir(), destinationFileName)))
+                .withMaxResultSize(1920, 1080)
+                .withAspectRatio(1f, 1f)
+                .start((ProfilePreviewActivity)getContext());
     }
 
     public void saveUserInformation(Uri uri, final int imageSlot)

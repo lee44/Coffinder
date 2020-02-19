@@ -210,18 +210,10 @@ public class MainActivity extends AppCompatActivity
         not the same as the FragmentManager used in ProfilePreviewFragment. In AccountFragment, onActivityResult must also be overridden and a for loop will iterate
         through all the fragments mangaged by the ChildFragmentManager.
         */
+        super.onActivityResult(requestCode,resultCode,data);
+
         if(requestCode == 44)
             getLastLocation();
-        else
-        {
-            for (Fragment fragment : getSupportFragmentManager().getFragments())
-            {
-                if(fragment.getTag().equals("AccountFragment"))
-                {
-                    fragment.onActivityResult(requestCode, resultCode, data);
-                }
-            }
-        }
     }
 
     private boolean isLocationEnabled()
