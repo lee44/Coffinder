@@ -13,29 +13,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.apps.jlee.coffinder.Activities.ChatActivity" />
+        <activity
+            android:name="com.apps.jlee.coffinder.Activities.ChatActivity"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.apps.jlee.coffinder.Activities.LoginActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.apps.jlee.coffinder.Activities.RegistrationActivity"
-            android:windowSoftInputMode="adjustPan" />
-        <activity android:name="com.apps.jlee.coffinder.Activities.LoginRegisterActivity">
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name="com.apps.jlee.coffinder.Activities.LoginRegisterActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.apps.jlee.coffinder.Activities.MainActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.apps.jlee.coffinder.Activities.ProfileSliderActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.apps.jlee.coffinder.Activities.ProfilePreviewActivity"
-            android:windowSoftInputMode="adjustPan" />
+            android:windowSoftInputMode="adjustPan"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
