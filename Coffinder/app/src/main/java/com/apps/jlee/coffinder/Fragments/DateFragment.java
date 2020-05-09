@@ -7,6 +7,7 @@ import android.location.Location;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -25,6 +26,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,6 +69,7 @@ public class DateFragment extends Fragment
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.no_data) TextView no_data;
     @BindView(R.id.swiperefreshlayout) SwipeRefreshLayout swipeRefreshLayout;
+    @BindView(R.id.SliderDots) LinearLayout sliderDotspanel;
 
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
@@ -79,6 +82,8 @@ public class DateFragment extends Fragment
     private String currentUser_id;
     private float x, y;
     private final int THRESHOLD = 3;
+    private int dotscount;
+    private ImageView[] dots;
 
     public DateFragment(Context context, ArrayList<Card> cardsList, Location lastLocation)
     {
@@ -107,6 +112,20 @@ public class DateFragment extends Fragment
          MainActivity -> DateFragment -> SwipeFragment */
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(imageFragmentPagerAdapter);
+
+        dotscount = imageFragmentPagerAdapter.getCount();
+        dots = new ImageView[dotscount];
+
+        for(int i = 0; i < dotscount; i++)
+        {
+            dots[i] = new ImageView(getContext());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.non_active_dot));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(8, 0, 8, 0);
+            sliderDotspanel.addView(dots[i], params);
+        }
+
+        dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
 
         if(cardsList.size() > 0)
         {
@@ -160,6 +179,25 @@ public class DateFragment extends Fragment
             }
         });
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position)
+            {
+                for(int i = 0; i< dotscount; i++)
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.non_active_dot));
+
+                dots[position].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) { }
+        });
+
+        /*When user taps viewpager, a slideshow activity opens*/
         viewPager.setOnTouchListener(new View.OnTouchListener()
         {
             @Override
@@ -381,30 +419,27 @@ public class DateFragment extends Fragment
     public void onStart()
     {
         super.onStart();
-        Log.v("Lakers","DateFragment started");
-        Log.v("Lakers","CardsList Size: "+cardsList.get(0).getProfileImageUrl().size());
+        //Log.v("Lakers","DateFragment started");
     }
 
     @Override
     public void onResume()
     {
         super.onResume();
-        Log.v("Lakers","DateFragment resume");
-
+        //Log.v("Lakers","DateFragment resume");
     }
 
     @Override
     public void onPause()
     {
         super.onPause();
-        Log.v("Lakers","DateFragment paused");
-
+        //Log.v("Lakers","DateFragment paused");
     }
 
     @Override
     public void onDestroy()
     {
         super.onDestroy();
-        Log.v("Lakers","DateFragment destroyed");
+        //Log.v("Lakers","DateFragment destroyed");
     }
 }
