@@ -4,11 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -28,6 +30,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
@@ -56,12 +59,15 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     @BindView(R.id.edit_floatingActionButton) FloatingActionButton editButton;
     @BindView(R.id.progressBar) ProgressBar progressBar;
     @BindView(R.id.no_data) TextView no_data;
+    @BindView(R.id.SliderDots) LinearLayout sliderDotspanel;
 
     private ImageFragmentPagerAdapter imageFragmentPagerAdapter;
     private DatabaseReference databaseReference;
     static ArrayList<String> profileImageUrlArray;
     private float x, y;
     private final int THRESHOLD = 3;
+    private int dotscount;
+    private ImageView[] dots;
 
     public ProfilePreviewFragment(Context context)
     {
@@ -87,6 +93,24 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
 
         imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(imageFragmentPagerAdapter);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener()
+        {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+
+            @Override
+            public void onPageSelected(int position)
+            {
+                for(int i = 0; i< dotscount; i++)
+                    dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.non_active_dot));
+
+                dots[position].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) { }
+        });
 
         viewPager.setOnTouchListener(new View.OnTouchListener()
         {
@@ -185,6 +209,19 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
         description.setText(card.getDescription().length() != 0 ? card.getDescription() : "N/A");
         ethnicity.setText(card.getEthnicity().length() != 0 ? card.getEthnicity() : "N/A");
         religion.setText(card.getReligion().length() != 0 ? card.getReligion() : "N/A");
+
+        dotscount = imageFragmentPagerAdapter.getCount();
+        dots = new ImageView[dotscount];
+
+        for(int i = 0; i < dotscount; i++)
+        {
+            dots[i] = new ImageView(getContext());
+            dots[i].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.non_active_dot));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+            params.setMargins(8, 0, 8, 0);
+            sliderDotspanel.addView(dots[i], params);
+        }
+        dots[0].setImageDrawable(ContextCompat.getDrawable(getContext(), R.drawable.active_dot));
 
         toggleUI(false);
     }
