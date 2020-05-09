@@ -19,6 +19,7 @@ import butterknife.ButterKnife;
 
 import android.os.Handler;
 import android.os.ResultReceiver;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -102,7 +103,9 @@ public class DateFragment extends Fragment
         swipeRefreshLayout.setEnabled(false);
         swipeRefreshLayout.setRefreshing(false);
 
-        imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getFragmentManager());
+        /*SwipeFragment is showing the pictures so use fragment manager of parent fragment which is DateFragment
+         MainActivity -> DateFragment -> SwipeFragment */
+        imageFragmentPagerAdapter = new ImageFragmentPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(imageFragmentPagerAdapter);
 
         if(cardsList.size() > 0)
@@ -378,15 +381,15 @@ public class DateFragment extends Fragment
     public void onStart()
     {
         super.onStart();
-        //Log.v("Lakers","DateFragment started");
-
+        Log.v("Lakers","DateFragment started");
+        Log.v("Lakers","CardsList Size: "+cardsList.get(0).getProfileImageUrl().size());
     }
 
     @Override
     public void onResume()
     {
         super.onResume();
-        //Log.v("Lakers","DateFragment resume");
+        Log.v("Lakers","DateFragment resume");
 
     }
 
@@ -394,7 +397,7 @@ public class DateFragment extends Fragment
     public void onPause()
     {
         super.onPause();
-        //Log.v("Lakers","DateFragment paused");
+        Log.v("Lakers","DateFragment paused");
 
     }
 
@@ -402,6 +405,6 @@ public class DateFragment extends Fragment
     public void onDestroy()
     {
         super.onDestroy();
-        //Log.v("Lakers","DateFragment destroyed");
+        Log.v("Lakers","DateFragment destroyed");
     }
 }
