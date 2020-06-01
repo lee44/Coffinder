@@ -81,7 +81,7 @@ public class DateFragment extends Fragment
     private Context context;
     private String currentUser_id;
     private float x, y;
-    private final int THRESHOLD = 3;
+    private final int THRESHOLD = 10;
     private int dotscount;
     private ImageView[] dots;
 

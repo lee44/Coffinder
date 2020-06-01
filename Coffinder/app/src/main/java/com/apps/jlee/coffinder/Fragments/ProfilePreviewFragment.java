@@ -65,7 +65,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
     private DatabaseReference databaseReference;
     static ArrayList<String> profileImageUrlArray;
     private float x, y;
-    private final int THRESHOLD = 3;
+    private final int THRESHOLD = 10;
     private int dotscount;
     private ImageView[] dots;
 
@@ -126,6 +126,7 @@ public class ProfilePreviewFragment extends Fragment implements ProfileInterface
                     case MotionEvent.ACTION_UP:
                         x -= motionEvent.getX();
                         y -= motionEvent.getY();
+                        Log.v("Lakers","X:"+Math.abs(x)+", Y:"+Math.abs(y));
                         if(Math.abs(x) <= THRESHOLD && Math.abs(y) <= THRESHOLD)
                         {
                             Intent intent = new Intent(getActivity(),ProfileSliderActivity.class);
