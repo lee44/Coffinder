@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -22,7 +23,8 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toTopOf="parent"></TextView>
+            app:layout_constraintTop_toTopOf="parent">
+        </TextView>
 
         <TextView
             android:id="@+id/textView"
@@ -71,7 +73,8 @@
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
-            app:layout_constraintTop_toBottomOf="@+id/name_et"></EditText>
+            app:layout_constraintTop_toBottomOf="@+id/name_et">
+        </EditText>
 
         <TextView
             android:id="@+id/height_textView"
@@ -83,7 +86,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/height_et"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/age_et"></TextView>
+            app:layout_constraintTop_toBottomOf="@+id/age_et">
+        </TextView>
 
         <EditText
             android:id="@+id/height_et"
@@ -93,7 +97,8 @@
             android:focusable="false"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
-            app:layout_constraintTop_toBottomOf="@+id/age_et"></EditText>
+            app:layout_constraintTop_toBottomOf="@+id/age_et">
+        </EditText>
 
         <TextView
             android:id="@+id/ethnicity_textView"
@@ -105,7 +110,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/ethnicity_et"
             app:layout_constraintEnd_toStartOf="@+id/guideline8"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/height_et"></TextView>
+            app:layout_constraintTop_toBottomOf="@+id/height_et">
+        </TextView>
 
         <EditText
             android:id="@+id/ethnicity_et"
@@ -114,7 +120,8 @@
             android:focusable="false"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline8"
-            app:layout_constraintTop_toBottomOf="@+id/height_et"></EditText>
+            app:layout_constraintTop_toBottomOf="@+id/height_et">
+        </EditText>
 
         <TextView
             android:id="@+id/religion_textView"
@@ -305,13 +312,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
-            android:background="@drawable/default_round_button"
+
             android:text="Sign Out"
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintEnd_toStartOf="@+id/guideline4"
             app:layout_constraintStart_toStartOf="@+id/guideline7"
-            app:layout_constraintTop_toBottomOf="@+id/description_editText"></Button>
+            app:layout_constraintTop_toBottomOf="@+id/description_editText">
+        </Button>
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/guideline4"
@@ -337,3 +345,4 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
+

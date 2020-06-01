@@ -160,7 +160,7 @@ public class PhotosFragment extends Fragment
         String destinationFileName = "JPEG_" + System.currentTimeMillis() + "_";
         UCrop.Options options = new UCrop.Options();
         options.setCircleDimmedLayer(true);
-        options.setCropFrameColor(ContextCompat.getColor(getContext(), R.color.colorAccent));
+        options.setCropFrameColor(ContextCompat.getColor(getContext(), R.color.purple_200));
         UCrop.of(sourceUri, Uri.fromFile(new File(getContext().getCacheDir(), destinationFileName)))
                 .withMaxResultSize(1920, 1080)
                 .withAspectRatio(1f, 1f)
