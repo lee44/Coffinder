@@ -15,7 +15,7 @@ import com.apps.jlee.coffinder.R;
 
 public class LoginRegisterActivity extends AppCompatActivity
 {
-    @BindView(R.id.login)
+    @BindView(R.id.sign_in)
     Button login;
     @BindView(R.id.register)
     Button register;
