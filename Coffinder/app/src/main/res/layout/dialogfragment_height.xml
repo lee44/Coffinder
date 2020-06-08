@@ -44,8 +44,7 @@
         android:layout_margin="5dp"
         android:layout_weight="1"
         android:text="Done"
-        android:textSize="18sp"
-        android:background="@drawable/default_round_button">
+        android:textSize="18sp">
     </Button>
 
 </RelativeLayout>
