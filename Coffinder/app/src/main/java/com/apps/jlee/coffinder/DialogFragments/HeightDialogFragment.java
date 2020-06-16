@@ -40,7 +40,7 @@ public class HeightDialogFragment extends DialogFragment
         //Gets the window of the Dialog
         Window window = getDialog().getWindow();
         window.setLayout((int)(Resources.getSystem().getDisplayMetrics().widthPixels *.95), WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //window.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP);
         getDialog().setCanceledOnTouchOutside(true);
     }

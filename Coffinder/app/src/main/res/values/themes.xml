@@ -68,7 +68,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="DialogFragment" parent="Theme.AppCompat.DayNight.Dialog">
+    <style name="ErrorTextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
     </style>
 

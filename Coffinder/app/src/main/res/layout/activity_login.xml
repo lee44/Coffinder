@@ -27,6 +27,8 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
+        app:boxBackgroundMode="outline"
+        app:boxBackgroundColor="@color/white_50"
         app:layout_constraintBottom_toTopOf="@+id/input_layout_password"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline5">
@@ -45,25 +47,26 @@
         android:id="@+id/input_layout_password"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        app:boxBackgroundColor="@color/white_50"
+        app:boxBackgroundMode="outline"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline6"
         app:layout_constraintStart_toStartOf="@+id/guideline5"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.35000002">
+        app:layout_constraintVertical_bias=".4">
 
         <EditText
             android:id="@+id/password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Password">
-        </EditText>
+            android:hint="Password"></EditText>
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
         android:id="@+id/sign_in"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/rect_signin_button_states"
         android:text="Sign In"
         android:textColor="@color/white"

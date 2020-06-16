@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollview"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="300dp">
+        android:layout_height="wrap_content"
+        >
 
         <TextView
             android:id="@+id/title"
@@ -31,6 +33,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:boxBackgroundColor="@color/white_50"
+            app:boxBackgroundMode="outline"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/title">
@@ -39,16 +43,18 @@
                 android:id="@+id/name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="4dp"
+                android:layout_marginTop="16dp"
                 android:hint="Name"
-                android:textAlignment="viewStart">
-            </EditText>
+                android:textAlignment="viewStart"></EditText>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/input_layout_age"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:boxBackgroundColor="@color/white_50"
+            app:boxBackgroundMode="outline"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_name">
@@ -67,6 +73,9 @@
             android:id="@+id/input_layout_height"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:boxBackgroundColor="@color/white_50"
+            app:boxBackgroundMode="outline"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_age">
@@ -147,7 +156,8 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
-            app:layout_constraintTop_toBottomOf="@+id/gender_radio_group"></TextView>
+            app:layout_constraintTop_toBottomOf="@+id/gender_radio_group">
+        </TextView>
 
         <RadioGroup
             android:id="@+id/orientation_radio_group"
@@ -199,6 +209,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:boxBackgroundColor="@color/white_50"
+            app:boxBackgroundMode="outline"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/orientation_radio_group">
@@ -218,6 +230,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:boxBackgroundColor="@color/white_50"
+            app:boxBackgroundMode="outline"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_email">
@@ -228,7 +242,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:hint="Password"
-                android:textAlignment="viewStart"></EditText>
+                android:textAlignment="viewStart">
+            </EditText>
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

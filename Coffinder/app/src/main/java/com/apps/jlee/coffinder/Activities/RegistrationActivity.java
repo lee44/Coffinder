@@ -141,6 +141,7 @@ public class RegistrationActivity extends AppCompatActivity implements HeightDia
             @Override
             public void onClick(View view)
             {
+                height.setShowSoftInputOnFocus(false);
                 heightDialogFragment.show(getSupportFragmentManager(),"height_fragment");
             }
         });
