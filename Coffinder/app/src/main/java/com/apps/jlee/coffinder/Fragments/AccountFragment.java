@@ -70,6 +70,7 @@ public class AccountFragment extends Fragment
                 case 0:
                     return new PhotosFragment(getContext());
                 case 1:
+                    getActivity().findViewById(R.id.toolbar).setVisibility(View.VISIBLE);
                     return new DetailsFragment(getContext());
                 case 2:
                     return new PreferencesFragment();

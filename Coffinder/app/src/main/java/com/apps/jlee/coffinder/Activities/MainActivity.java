@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity
 
         setSupportActionBar(toolbar);
 
+        toolbar.setVisibility(View.GONE);
+
         matchFragment = new MatchFragment(this);
 
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);

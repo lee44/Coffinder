@@ -45,7 +45,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:hint="Name"
-                android:textAlignment="viewStart"></EditText>
+                android:textAlignment="viewStart">
+            </EditText>
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
@@ -246,15 +247,15 @@
             </EditText>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/register"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:background="@drawable/rect_register_button_states"
             android:text="Register"
             android:textColor="@color/white"
             android:textSize="18sp"
+            style="@style/Widget.Button"
             app:layout_constraintEnd_toStartOf="@+id/guideline3"
             app:layout_constraintStart_toStartOf="@+id/guideline2"
             app:layout_constraintTop_toBottomOf="@+id/input_layout_password" />

@@ -2,6 +2,7 @@ package com.apps.jlee.coffinder.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.apps.jlee.coffinder.Fragments.ProfilePreviewFragment;
 import com.apps.jlee.coffinder.R;
@@ -26,6 +27,8 @@ public class ProfilePreviewActivity extends AppCompatActivity
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+
+        toolbar.setVisibility(View.GONE);
 
         ProfilePreviewFragment profilePreviewFragment = new ProfilePreviewFragment(this);
 

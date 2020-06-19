@@ -44,7 +44,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@mipmap/ic_launcher"></ImageView>
+                    android:src="@mipmap/ic_launcher">
+                </ImageView>
 
             </androidx.cardview.widget.CardView>
 
@@ -63,7 +64,8 @@
         app:layout_constraintBottom_toTopOf="@+id/chat_send_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chat_toolbar"></androidx.recyclerview.widget.RecyclerView>
+        app:layout_constraintTop_toBottomOf="@+id/chat_toolbar">
+    </androidx.recyclerview.widget.RecyclerView>
 
     <EditText
         android:id="@+id/chat_editText"
@@ -77,18 +79,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/chat_send_button"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/chat_send_button"></EditText>
+        app:layout_constraintTop_toTopOf="@+id/chat_send_button">
+    </EditText>
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/chat_send_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:text="Send"
-        android:background="@drawable/msg_round_send_btn"
+        style="@style/Widget.Button"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
-    </Button>
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
