@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+    <!--Top level Light theme to be used in AndroidManifest.xml-->
+    <style name="Theme.MyApp" parent="Base.Theme.MyApp"/>
+
+    <!-- Theme specified for Light -->
     <style name="Base.Theme.MaterialThemeBuilder" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowLightStatusBar" tools:ignore="NewApi">false</item>
         <item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
     </style>
 
-    <!--Top level DayNight theme to be used in AndroidManifest.xml-->
-    <style name="Theme.MyApp" parent="Base.Theme.MyApp"/>
-
-    <!--Base custom theme which will be shared between both light and dark theme variants-->
+    <!--Base theme shared between both light and dark theme -->
     <style name="Base.Theme.MyApp" parent="Base.Theme.MaterialThemeBuilder">
         <item name="colorPrimary">@color/primaryColor</item>
         <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+
         <item name="colorSecondary">@color/secondaryColor</item>
+
         <item name="android:textColorPrimary">@color/textColorPrimary</item>
         <item name="android:textColorSecondary">@color/textColorSecondary</item>
 
         <item name="android:colorBackground">@color/white_50</item>
         <item name="colorError">@color/red_600</item>
-
     </style>
 
     <style name="Widget.Toolbar" parent="Widget.AppCompat.Toolbar">
